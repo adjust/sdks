@@ -1,3 +1,5 @@
+## Summary
+
 We currently provide the AdjustIo SDK for the following platforms. Click on a link to find the respective downloads and installation instructions.
 
 * [AdjustIo SDK for iOS][ios]
