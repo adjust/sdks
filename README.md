@@ -8,8 +8,8 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [adjust SDK for Adobe Air][air]
 * [adjust SDK for Unity][unity]
 
-[ios]: https://github.com/adeven/adjust_ios_sdk
-[android]: https://github.com/adeven/adjust_android_sdk
-[windows]: https://github.com/adeven/adjust_windows_sdk
-[unity]: https://github.com/adeven/adjust_unity_sdk
-[air]: https://github.com/adeven/adjust_air_sdk
+[ios]: https://github.com/adjust/ios_sdk
+[android]: https://github.com/adjust/android_sdk
+[windows]: https://github.com/adjust/windows_sdk
+[unity]: https://github.com/adjust/unity_sdk
+[air]: https://github.com/adjust/adobe_air_sdk
