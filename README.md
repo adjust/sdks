@@ -7,9 +7,11 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [adjust SDK for Windows][windows]
 * [adjust SDK for Adobe Air][air]
 * [adjust SDK for Unity][unity]
+* [adjust SDK for Cordova][cordova]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
 [windows]: https://github.com/adjust/windows_sdk
 [unity]: https://github.com/adjust/unity_sdk
 [air]: https://github.com/adjust/adobe_air_sdk
+[cordova]: https://github.com/adjust/cordova_sdk
