@@ -9,6 +9,7 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [adjust SDK for Unity][unity]
 * [adjust SDK for Cordova][cordova]
 * [adjust SDK for Marmalade][marmalade]
+* [adjust SDK for Xamarin][xamarin]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
@@ -17,3 +18,4 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [air]: https://github.com/adjust/adobe_air_sdk
 [cordova]: https://github.com/adjust/cordova_sdk
 [marmalade]: https://github.com/adjust/marmalade_sdk
+[xamarin]: https://github.com/adjust/xamarin_sdk
