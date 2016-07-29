@@ -1,6 +1,6 @@
 ## Webview SDKs
 
-We currently provide instructions for integrating the adjust™ SDK ito support webviews for the following platforms. Click on a link to find the respective instructions.
+We currently provide instructions for integrating the adjust™ SDK to support webviews for the following platforms. Click on a link to find the respective instructions.
 
 Webview adjust SDK for
 * [iOS][ios]
