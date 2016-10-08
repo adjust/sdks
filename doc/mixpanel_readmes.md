@@ -6,6 +6,6 @@ Mixpanel & the adjust SDK for
 * [iOS][ios]
 * [Android][android]
 
-[ios]: https://github.com/adjust/ios_sdk/blob/master/doc/mixpanel.md
-[android]: https://github.com/adjust/android_sdk/blob/master/doc/mixpanel.md
+[ios]: https://github.com/adjust/ios_sdk/blob/master/doc/english/mixpanel.md
+[android]: https://github.com/adjust/android_sdk/blob/master/doc/english/mixpanel.md
 
