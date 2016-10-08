@@ -14,6 +14,6 @@ Webview adjust SDK for
 
 [en-ios]: https://github.com/adjust/ios_sdk/blob/master/doc/english/web_views.md
 [en-android]: https://github.com/adjust/android_sdk/blob/master/doc/english/web_views.md
-[ja-ios]: https://github.com/adjust/ios_sdk/blob/master/doc/japanese/web_views.md
-[ja-android]: https://github.com/adjust/android_sdk/blob/master/doc/japanese/web_views.md
+[ja-ios]: https://github.com/adjust/ios_sdk/blob/master/doc/japanese/web_views_ja.md
+[ja-android]: https://github.com/adjust/android_sdk/blob/master/doc/japanese/web_views_ja.md
 
