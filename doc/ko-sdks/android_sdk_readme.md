@@ -1,92 +1,46 @@
-## Summary
+## 요약
 
-This is the Android SDK of adjust™. You can read more about adjust™ at [adjust.com].
+이 항목에서는 adjust의 Android SDK에 대해 설명합니다. adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-If your app is an app which uses web views and you would like to use adjust tracking from Javascript code, please consult
-our [Android web views SDK guide](doc/web_views.md).
+## 앱 예제
 
-## Table of contents
+[`example` 디렉터리][example]에 앱 예제가 있습니다. Android 프로젝트를
+열어 adjust SDK를 연동할 수 있는 방법의 예를 확인할 수 있습니다.
 
-* [Example app](#example-app)
-* [Basic integration](#basic-integration)
-   * [Get the SDK](#sdk-get)
-   * [Import the Adjust module](#sdk-import)
-   * [Add the SDK to your project](#sdk-add)
-   * [Add Google Play Services](#sdk-gps)
-   * [Add permissions](#sdk-permissions)
-   * [Proguard settings](#sdk-proguard)
-   * [Adjust broadcast receiver](#sdk-broadcast-receiver)
-   * [Integrate the SDK into your app](#sdk-integrate)
-   * [Basic setup](#basic-setup)
-   * [Session tracking](#session-tracking)
-      * [API level 14 and higher](#session-tracking-api14)
-      * [API level 9 until 13](#session-tracking-api9)
-   * [Adjust logging](#adjust-logging)
-   * [Build your app](#build-the-app)
-* [Additional features](#additional-features)
-   * [Event tracking](#event-tracking)
-      * [Track revenue](#revenue-tracking)
-      * [Revenue deduplication](#revenue-deduplication)
-      * [In-App Purchase verification](#iap-verification)
-      * [Callback parameters](#callback-parameters)
-      * [Partner parameters](#partner-parameters)
-   * [Session parameters](#session-parameters)
-      * [Session callback parameters](#session-callback-parameters)
-      * [Session partner parameters](#session-partner-parameters)
-      * [Delay start](#delay-start)
-   * [Attribution callback](#attribution-callback)
-   * [Session and event callbacks](#session-event-callbacks)
-   * [Disable tracking](#disable-tracking)
-   * [Offline mode](#offline-mode)
-   * [Event buffering](#event-buffering)
-   * [Background tracking](#background-tracking)
-   * [Device IDs](#device-ids)
-   * [Push token](#push-token)
-   * [Pre-installed trackers](#pre-installed-trackers)
-   * [Deep linking](#deeplinking)
-      * [Standard deep linking scenario](#deeplinking-standard)
-      * [Deferred deep linking scenario](#deeplinking-deferred)
-      * [Reattribution via deep links](#deeplinking-reattribution)
-* [Troubleshooting](#troubleshooting)
-   * [I'm seeing the "Session failed (Ignoring too frequent session. ...)" error](#ts-session-failed)
-   * [Is my broadcast receiver capturing the install referrer?](#ts-broadcast-receiver)
-   * [Can I trigger an event at application launch?](#ts-event-at-launch)
-* [License](#license)
+## 기본 설치
 
-## <a id="example-app"></a>Example app
+다음은 adjust SDK를 Android 프로젝트와 연동하기 위해 최소한으로 수행해야 하는
+절차입니다. 여기서는 Android Studio를 Android 개발에
+사용하고 Android API 레벨 9(Gingerbread) 이상을 대상으로 한다고 가정합니다.
 
-There is an example app inside the [`example` directory][example]. You can open the Android project to see an example on
-how the adjust SDK can be integrated.
+[Maven Repository][maven]를 사용하는 경우에는 [3단계](#step3)부터 시작해도 됩니다.
 
-## <a id="basic-integration"></a>Basic integration
+### 1. SDK 다운로드 및 설치
 
-These are the minimal steps required to integrate the adjust SDK into your Android project. We are going to assume that you
-use Android Studio for your Android development and target an Android API level 9 (Gingerbread) or later.
+[릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. 압축 파일을
+선택한 폴더에 풉니다.
 
-If you're using the [Maven Repository][maven] you can start with [this step](#sdk-add).
+### 2. Adjust 프로젝트 만들기
 
-### <a id="sdk-get"></a>Get the SDK
-
-Download the latest version from our [releases page][releases]. Extract the archive in a folder of your choice.
-
-### <a id="sdk-import"></a>Import the Adjust module
-
-In the Android Studio menu select `File → Import Module...`.
+Android Studio 메뉴에서 `File a†’ Import Module...`을 선택합니다.
 
 ![][import_module]
 
-In the `Source directory` field, locate the folder you extracted in step 1. Select and choose the folder
-`./android_sdk/Adjust/adjust`.  Make sure the module name `:adjust` appears before finishing.
+`Source directory` 필드에서는 1단계에서 압축을 푼 폴더를 찾습니다.
+`./android_sdk/Adjust/adjust` 폴더를 선택합니다.  작업을 완료하기 전에
+모듈 이름 `:adjust`가 표시되는지 확인합니다.
 
 ![][select_module]
 
-The `adjust` module should be imported into your Android Studio project afterwards.
+`adjust` 모듈을 나중에 Android Studio 프로젝트로
+가져옵니다.
 
 ![][imported_module]
 
-### <a id="sdk-add"></a>Add the SDK to your project
+### <a id="step3"></a>3. 프로젝트에 adjust 라이브러리 추가
 
-Open the `build.gradle` file of your app and find the `dependencies` block. Add the following line:
+앱의 `build.gradle` 파일을 열고 `dependencies` 블록을 찾습니다. 다음
+행을 추가합니다.
 
 ```
 compile project(":adjust")
@@ -94,30 +48,33 @@ compile project(":adjust")
 
 ![][gradle_adjust]
 
-If you are using Maven, add this line instead:
+Maven을 사용하는 경우 다음 행을 대신 추가합니다.
 
 ```
-compile 'com.adjust.sdk:adjust-android:4.10.2'
+compile 'com.adjust.sdk:adjust-android:4.7.0'
 ```
 
-### <a id="sdk-gps"></a>Add Google Play Services
+### 4. Google Play 서비스 추가
 
-Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to
-uniquely identify devices. To allow the adjust SDK to use the Google Advertising ID, you must integrate the
-[Google Play Services][google_play_services]. If you haven't done this yet, follow these steps:
+2014년 8월 1일 이후로 Google Play Store의 앱은 [Google 광고 ID]
+[google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. adjust SDK에서
+Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][google_play_services]를 연동해야 합니다. 이 작업을 아직 수행하지 않은 경우
+다음 단계를 수행하십시오.
 
-1. Open the `build.gradle` file of your app and find the `dependencies` block. Add the following line:
+1. 앱의 `build.gradle` 파일을 열고 `dependencies` 블록을 찾습니다. 다음 행을
+추가합니다.
 
     ```
-    compile 'com.google.android.gms:play-services-analytics:9.2.1'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     ```
 
     ![][gradle_gps]
 
-2. **Skip this step if you are using version 7 or later of Google Play Services**:
-   In the Package Explorer open the `AndroidManifest.xml` of your Android
-   project.  Add the following `meta-data` tag inside the `<application>`
-   element.
+2. Google Play 서비스 버전 7 이상을 사용 중인 경우 이 단계를 건너뜁니다.
+   Package Explorer에서 Android 프로젝트의 `AndroidManifest.xml`을
+엽니다.  다음 `meta-data` 태그를 `<application>` 요소에
+추가합니다.
+
 
     ```xml
     <meta-data android:name="com.google.android.gms.version"
@@ -126,16 +83,16 @@ uniquely identify devices. To allow the adjust SDK to use the Google Advertising
 
     ![][manifest_gps]
 
-### <a id="sdk-permissions"></a>Add permissions
+### 5. 권한 추가
 
-In the Package Explorer open the `AndroidManifest.xml` of your Android project. Add the `uses-permission` tag for
-`INTERNET` if it's not present already.
+Package Explorer에서 Android 프로젝트의 `AndroidManifest.xml`을 엽니다.
+`INTERNET`에 대한 `uses-permission` 태그가 아직 없는 경우 이 태그를 추가합니다.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-If you are **not targeting the Google Play Store**, add both of these permissions instead:
+Google Play Store가 대상이 *아닌* 경우 다음 두 권한을 모두 추가합니다.
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -144,15 +101,9 @@ If you are **not targeting the Google Play Store**, add both of these permission
 
 ![][manifest_permissions]
 
-### <a id="sdk-proguard"></a>Proguard settings
-
-If you are using Proguard, add these lines to your Proguard file:
+Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가합니다.
 
 ```
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
 -keep class com.adjust.sdk.plugin.MacAddressUtil {
     java.lang.String getMacAddress(android.content.Context);
 }
@@ -163,28 +114,29 @@ If you are using Proguard, add these lines to your Proguard file:
     int SUCCESS;
 }
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient {
-    com.google.android.gms.ads.identifier.AdvertisingIdClient$Info getAdvertisingIdInfo(android.content.Context);
+    com.google.android.gms.ads.identifier.AdvertisingIdClient$Info getAdvertisingIdInfo (android.content.Context);
 }
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info {
-    java.lang.String getId();
+    java.lang.String getId ();
     boolean isLimitAdTrackingEnabled();
 }
 ```
 
-If you are **not targeting the Google Play Store**, you can remove the `com.google.android.gms` rules.
+Google Play Store가 대상이 *아닌* 경우 `com.google.android.gms` 규칙을 제거할
+수 있습니다.
 
 ![][proguard]
 
-**Important**: If you are using an `-overloadaggressively` flag in your Proguard file, then in order for the adjust SDK to
-work properly you should consider one of two possible scenarios:
+**중요**: Proguard 파일의 `-overloadaggressively` 플래그를
+사용할 경우 adjust SDK가 올바르게 작동하려면 다음 두 가지 시나리오 중 하나를 고려해야 합니다.
 
-* Remove `-overloadaggressively` if it is not necessary
-* Add a `-useuniqueclassmembernames` flag to your Proguard file
+* `-overloadaggressively`가 필요하지 않은 경우 제거합니다.
+* `-useuniqueclassmembernames` 플래그를 Proguard 파일에 추가합니다.
 
-### <a id="sdk-broadcast-receiver"></a>Adjust broadcast receiver
+### <a id="broadcast_receiver"></a>6. 브로드캐스트 수신기 추가
 
-If you are **not using your own broadcast receiver** to receive `INSTALL_REFERRER` intent, add the following `receiver` tag
-inside the `application` tag in your `AndroidManifest.xml`.
+`AndroidManifest.xml`에서 다음 `receiver` 태그를 `application` 태그에
+추가합니다.
 
 ```xml
 <receiver
@@ -198,27 +150,29 @@ inside the `application` tag in your `AndroidManifest.xml`.
 
 ![][receiver]
 
-We use this broadcast receiver to retrieve the install referrer, in order to improve conversion tracking.
+이 브로드캐스트 수신기는 전환 트래킹을 개선하기 위해 설치 참조
+페이지를 검색하는 데 사용됩니다.
 
-If you are already using a different broadcast receiver for the `INSTALL_REFERRER` intent, follow
-[these instructions][referrer] to add the Adjust broadcast receiver.
+다른 브로드캐스트 수신기를 `INSTALL_REFERRER` intent로 이미
+사용 중인 경우 [이 지침][referrer]에 따라 adjust 수신기를
+추가하십시오.
 
-### <a id="sdk-integrate"></a>Integrate the SDK into your app
+### 7. 앱과 adjust 연동
 
-To start with, we'll set up basic session tracking.
+먼저 기본 세션 트래킹을 설정합니다.
 
-### <a id="basic-setup"></a>Basic setup
+#### 기본 설정
 
-We recommend using a global android [Application][android_application] class to initialize the SDK. If you don't have one
-in your app already, follow these steps:
+전역 android [응용 프로그램][android_application] 클래스를 사용하여
+SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없는 경우 다음 단계를 수행하십시오.
 
-1. Create a class that extends `Application`.
+1. `Application`을 확장하는 클래스를 만듭니다.
     ![][application_class]
 
-2. Open the `AndroidManifest.xml` file of your app and locate the `<application>` element.
-3. Add the attribute `android:name` and set it to the name of your new application class pefixed by a dot.
+2. 앱의 `AndroidManifest.xml` 파일을 열고 `<application>` 요소를 찾습니다.
+3. `android:name` 특성을 추가하고 새 응용 프로그램 클래스 이름으로 설정한 후 이름 앞에 점을 추가합니다.
 
-    In our example app we use an `Application` class named `GlobalApplication`, so the manifest file is configured as:
+    앱 예제에서는 이름이 `GlobalApplication`인 `Application` 클래스를 사용하므로, 매니페스트 파일은 다음과 같이 구성됩니다.
     ```xml
      <application
        android:name=".GlobalApplication"
@@ -229,8 +183,8 @@ in your app already, follow these steps:
 
     ![][manifest_application]
 
-4. In your `Application` class find or create the `onCreate` method and add the following code to initialize the adjust
-SDK:
+4. `Application` 클래스에서 `onCreate` 메서드를 추가하거나 만들고 다음 코드를
+추가하여 adjust SDK를 초기화합니다.
 
     ```java
     import com.adjust.sdk.Adjust;
@@ -251,48 +205,40 @@ SDK:
 
     ![][application_config]
 
-    Replace `{YourAppToken}` with your app token. You can find this in your
-    [dashboard].
+    `{YourAppToken}`을 앱 토큰으로 대체합니다. 앱 토큰은 [대시보드]에서 찾을
+    수 있습니다.
 
-    Depending on whether you build your app for testing or for production, you must
-    set `environment` with one of these values:
+    앱을 테스트에 사용할지 아니면 프로덕션에 사용할 지에 따라 `environment`를
+    다음 값 중 하나로 설정해야 합니다.
 
     ```java
     String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
     String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
     ```
 
-    **Important:** This value should be set to `AdjustConfig.ENVIRONMENT_SANDBOX`
-    if and only if you or someone else is testing your app. Make sure to set the
-    environment to `AdjustConfig.ENVIRONMENT_PRODUCTION` just before you publish
-    the app. Set it back to `AdjustConfig.ENVIRONMENT_SANDBOX` when you start
-    developing and testing it again.
+    **중요:** 이 값은 앱을 테스트하는 경우에만
+    `AdjustConfig.ENVIRONMENT_SANDBOX`로 설정해야 합니다. 앱을 게시하기 전에
+    environment를 `AdjustConfig.ENVIRONMENT_PRODUCTION`으로 설정해야 합니다. 개발 및 테스트를 다시 시작할 경우에는 `AdjustConfig.ENVIRONMENT_SANDBOX`로
+    다시 설정하십시오.
 
-    We use this environment to distinguish between real traffic and test traffic
-    from test devices. It is very important that you keep this value meaningful at
-    all times! This is especially important if you are tracking revenue.
+    이 environment는 실제 트래픽과 테스트 장치의 테스트 트래픽을 구별하기 위해
+    사용합니다. 이 값을 항상 의미 있게 유지해야 합니다! 이것은 특히 매출을 트래킹하는 경우에 중요합니다.
 
-### <a id="session-tracking"></a>Session tracking
 
-**Note**: This step is **really important** and please **make sure that you implement it properly in your app**. By
-implementing it, you will enable proper session tracking by the adjust SDK in your app.
-
-### <a id="session-tracking-api14"></a>API level 14 and higher
-
-1. Add a private class that implements the `ActivityLifecycleCallbacks` interface. If you don't have access to this
-interface, your app is targeting an Android API level inferior to 14. You will have to update manually each Activity by
-following these [instructions](#session-tracking-api9). If you had `Adjust.onResume` and `Adjust.onPause` calls on each
-Activity of your app before, you should remove them.
+5. `ActivityLifecycleCallbacks` 인터페이스를 구현하는 비공개 클래스를 추가합니다.
+이 인터페이스에 액세스할 권한이 없으면 앱의 대상 Android api 레벨이 14보다 낮기 때문입니다.
+이 [지침][activity_resume_pause]에 따라 각 작업을 수동으로 업데이트해야 합니다.
+이전에 앱의 각 작업에 대한 `Adjust.onResume` 및 `Adjust.onPause` 호출이 있었을 경우
+각 호출을 제거해야 합니다.
 
     ![][activity_lifecycle_class]
 
-2. Edit the `onActivityResumed(Activity activity)` method and add a call to `Adjust.onResume()`. Edit the
-`onActivityPaused(Activity activity)` method and add a call to `Adjust.onPause()`.
+6. `onActivityResumed(Activity activity)` 메서드를 편집하고 `Adjust.onResume()`에 호출을 추가합니다.
+`onActivityPaused(Activity activity)` 메서드를 편집하고 `Adjust.onPause()`에 호출을 추가합니다.
 
     ![][activity_lifecycle_methods]
 
-3. Add on the `onCreate()` method where the adjust SDK is configured and add call  `registerActivityLifecycleCallbacks`
-with an instance of the created `ActivityLifecycleCallbacks` class.
+7. adjust SDK가 구성된 `onCreate()` 메서드를 추가하고 `registerActivityLifecycleCallbacks` 호출을 이전에 만든 `ActivityLifecycleCallbacks` 클래스의 인스턴스와 함께 추가합니다.
 
     ```java
     import com.adjust.sdk.Adjust;
@@ -312,69 +258,27 @@ with an instance of the created `ActivityLifecycleCallbacks` class.
 
             //...
         }
+    }
+    private static final class AdjustLifecycleCallbacks implements ActivityLifecycleCallbacks {
+        @Override
+        public void onActivityResumed(Activity activity) {
+            Adjust.onResume();
+        }
 
-         private static final class AdjustLifecycleCallbacks implements ActivityLifecycleCallbacks {
-             @Override
-             public void onActivityResumed(Activity activity) {
-                 Adjust.onResume();
-             }
-
-             @Override
-             public void onActivityPaused(Activity activity) {
-                 Adjust.onPause();
-             }
-
-             //...
-         }
-      }
+        @Override
+        public void onActivityPaused(Activity activity) {
+            Adjust.onPause();
+        }
+        //...
+    }
     ```
 
     ![][activity_lifecycle_register]
 
-### <a id="session-tracking-api9"></a>API level 9 until 13
+#### adjust 로깅
 
-If your app `minSdkVersion` in gradle is between `9` and `13`, consider updating it to at least `14` to simplify the
-integration process in the long term. Consult the official Android [dashboard][android-dashboard] to know the latest market
-share of the major versions.
-
-To provide proper session tracking it is required to call certain adjust SDK methods every time any Activity resumes or
-pauses. Otherwise the SDK might miss a session start or session end. In order to do so you should **follow these steps for
-each Activity of your app**:
-
-1. Open the source file of your Activity.
-2. Add the `import` statement at the top of the file.
-3. In your Activity's `onResume` method call `Adjust.onResume`. Create the
-  method if needed.
-4. In your Activity's `onPause` method call `Adjust.onPause`. Create the method
-  if needed.
-
-After these steps your activity should look like this:
-
-```java
-import com.adjust.sdk.Adjust;
-// ...
-public class YourActivity extends Activity {
-    protected void onResume() {
-        super.onResume();
-        Adjust.onResume();
-    }
-    protected void onPause() {
-        super.onPause();
-        Adjust.onPause();
-    }
-    // ...
-}
-```
-
-![][activity]
-
-Repeat these steps for **every** Activity of your app. Don't forget these steps when you create new Activities in the
-future. Depending on your coding style you might want to implement this in a common superclass of all your Activities.
-
-### <a id="adjust-logging"></a>Adjust Logging
-
-You can increase or decrease the amount of logs that you see during testing by calling `setLogLevel` on your `AdjustConfig`
-instance with one of the following parameters:
+다음 매개변수 중 하나를 사용하여 `AdjustConfig` 인스턴스에서 `setLogLevel`을 호출하면 테스트에 표시되는 로그의 양을 늘리거나 줄일 수
+있습니다.
 
 ```java
 config.setLogLevel(LogLevel.VERBOSE);   // enable all logging
@@ -383,96 +287,44 @@ config.setLogLevel(LogLevel.INFO);      // the default
 config.setLogLevel(LogLevel.WARN);      // disable info logging
 config.setLogLevel(LogLevel.ERROR);     // disable warnings as well
 config.setLogLevel(LogLevel.ASSERT);    // disable errors as well
-config.setLogLevel(LogLevel.SUPRESS);   // disable all log output
 ```
 
-In case you want all your log output to be disabled, beside setting the log level to suppress, you should also use 
-constructor for `AdjustConfig` object which gets boolean parameter indicating whether suppress log level should be supported 
-or not:
+### 8. 앱 작성
 
-```java
-String appToken = "{YourAppToken}";
-String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
-
-AdjustConfig config = new AdjustConfig(this, appToken, environment, true);
-config.setLogLevel(LogLevel.SUPRESS);
-
-Adjust.onCreate(config);
-```
-
-### <a id="build-the-app"></a>Build your app
-
-Build and run your Android app. In your `LogCat` viewer you can set the filter `tag:Adjust` to hide all other logs. After
-your app has launched you should see the following Adjust log: `Install tracked`
+Android 앱을 작성하고 실행합니다. LogCat 뷰어에서 `tag:Adjust` 필터를 설정하여
+다른 모든 로그를 숨길 수 있습니다. 앱이 시작된 후에 다음 adjust 로그가
+표시됩니다. `Install tracked`
 
 ![][log_message]
 
-## Additional Features
+## 추가 기능
 
-Once you have integrated the adjust SDK into your project, you can take advantage of the following features.
+adjust SDK를 프로젝트와 연동한 후에는 다음 기능을 사용할 수
+있습니다.
 
-### <a id="event-tracking">Event tracking
+### 9. 사용자 지정 이벤트 트래킹 추가
 
-You can use adjust to track any event in your app. Suppose you want to track every tap on a button. You would have to
-create a new event token in your [dashboard]. Let's say that event token is `abc123`. In your button's `onClick` method you
-could then add the following lines to track the click:
+adjust를 사용하여 앱의 모든 이벤트를 트래킹할 수 있습니다. 버튼의 모든 탭을 트래킹하려면 [대시보드]에서 새 이벤트 토큰을 만들어야
+합니다. 이벤트 토큰이 `abc123`일 경우, 버튼의 `onClick`
+메서드에 다음 행을 추가하여 클릭을 트래킹할 수 있습니다.
 
 ```java
 AdjustEvent event = new AdjustEvent("abc123");
 Adjust.trackEvent(event);
 ```
 
-### <a id="revenue-tracking">Revenue tracking
+이벤트 인스턴스를 사용하여 이벤트를 트래킹하기 전에 더 자세히
+구성할 수 있습니다.
 
-If your users can generate revenue by tapping on advertisements or making In-App Purchases you can track those revenues
-with events. Lets say a tap is worth one Euro cent. You could then track the revenue event like this:
+### 10. 콜백 매개변수 추가
 
-```java
-AdjustEvent event = new AdjustEvent("abc123");
-event.setRevenue(0.01, "EUR");
-Adjust.trackEvent(event);
-```
+[대시보드]에서 이벤트의 콜백 URL을 등록할 수 있습니다. 이벤트가
+트래킹될 때마다 GET 요청이 해당 URL로 전송됩니다. 이 이벤트를 트래킹하기
+전에 이벤트 인스턴스에서 `addCallbackParameter`를 호출하여 콜백 매개변수를
+해당 이벤트에 추가할 수 있습니다. 그러면 해당 매개변수가 콜백 URL에 추가됩니다.
 
-This can be combined with callback parameters of course.
-
-When you set a currency token, adjust will automatically convert the incoming revenues into a reporting revenue of your
-choice. Read more about [currency conversion here.][currency-conversion]
-
-You can read more about revenue and event tracking in the [event tracking guide.][event-tracking]
-
-The event instance can be used to configure the event further before tracking it:
-
-### <a id="revenue-deduplication">Revenue deduplication
-
-You can also add an optional order ID to avoid tracking duplicate revenues. The last ten order IDs are remembered, and 
-revenue events with duplicate order IDs are skipped. This is especially useful for In-App Purchase tracking. You can see an 
-example below.
-
-If you want to track in-app purchases, please make sure to call the `trackEvent` only if the purchase is finished and item is 
-purchased. That way you can avoid tracking revenue that is not actually being generated.
-
-```java
-AdjustEvent event = new AdjustEvent("abc123");
-
-event.setRevenue(0.01, "EUR");
-event.setOrderId("{OrderId}");
-
-Adjust.trackEvent(event);
-```
-
-### <a id="iap-verification">In-App Purchase verification
-
-If you want to check the validity of In-App Purchases made in your app using Purchase Verification, adjust's server side
-receipt verification tool, then check out our Android purchase SDK to read more about it
-[here][android-purchase-verification].
-
-### <a id="callback-parameters">Callback parameters
-
-You can register a callback URL for your events in your [dashboard]. We will send a GET request to that URL whenever the
-event is tracked. You can add callback parameters to that event by calling `addCallbackParameter` to the event instance
-before tracking it. We will then append these parameters to your callback URL.
-
-For example, suppose you have registered the URL `http://www.adjust.com/callback` then track an event like this:
+예를 들어 URL `http://www.adjust.com/callback`을 등록한 경우
+이벤트를 다음과 같이 트래킹할 수 있습니다.
 
 ```java
 AdjustEvent event = new AdjustEvent("abc123");
@@ -483,27 +335,29 @@ event.addCallbackParameter("foo", "bar");
 Adjust.trackEvent(event);
 ```
 
-In that case we would track the event and send a request to:
+이 경우에는 이벤트가 트래킹되고 요청이 다음 주소로 전송됩니다.
 
 ```
 http://www.adjust.com/callback?key=value&foo=bar
 ```
 
-It should be mentioned that we support a variety of placeholders like `{gps_adid}` that can be used as parameter values.
-In the resulting callback this placeholder would be replaced with the Google Play Services ID  of the current device. Also
-note that we don't store any of your custom parameters, but only append them to your callbacks. If you haven't registered 
-a callback for an event, these parameters won't even be read.
+매개변수 값으로 사용할 수 있는 `{android_id}`와 같은 다양한 자리 표시자가 지원됩니다. 결과로 생성된 콜백에서
+이 자리 표시자는 현재 장치의 AndroidID로 대체됩니다.
+또한 사용자 지정 매개변수는 저장되지 않고 콜백에만
+추가됩니다. 이벤트에 대한 콜백을 등록하지 않은 경우
+해당 매개변수는 읽을 수 없습니다.
 
-You can read more about using URL callbacks, including a full list of available values, in our
-[callbacks guide][callbacks-guide].
+사용 가능한 값의 전체 목록을 포함한 URL 콜백 사용에 대한 자세한 내용은
+[콜백 설명서][callbacks-guide]를 참조하십시오.
 
-### <a id="partner-parameters">Partner parameters
 
-You can also add parameters to be transmitted to network partners, which have been activated in your
-adjust dashboard.
+### 11. 파트너 매개변수
 
-This works similarly to the callback parameters mentioned above, but can be added by calling the `addPartnerParameter`
-method on your `AdjustEvent` instance.
+adjust 대시보드에서 활성화된 연동에 대해 네트워크 파트너로 전송할
+매개변수도 추가할 수 있습니다.
+
+이 매개변수는 위에서 설명한 콜백 매개변수의 경우와 비슷하지만,
+`AdjustEvent` 인스턴스에서 `addPartnerParameter` 메서드를 호출해야 추가할 수 있습니다.
 
 ```java
 AdjustEvent event = new AdjustEvent("abc123");
@@ -514,109 +368,86 @@ event.addPartnerParameter("foo", "bar");
 Adjust.trackEvent(event);
 ```
 
-You can read more about special partners and these integrations in our [guide to special partners][special-partners].
+특별 파트너와 해당 파트너와의 연동에 대한 자세한 내용은 [특별 파트너
+설명서][special-partners]를 참조하십시오.
 
-### <a id="session-parameters">Set up session parameters
+### 12. 매출 트래킹 추가
 
-Some parameters are saved to be sent in every event and session of the adjust SDK.
-Once you have added any of these parameters, you don't need to add them every time, since they will be saved locally.
-If you add the same parameter twice, there will be no effect.
-
-These session parameters can be called before the adjust SDK is launched to make sure they are sent even on install.
-If you need to send them with an install, but can only obtain the needed values after launch, it's possible to 
-[delay](#delay-start) the first launch of the adjust SDK to allow this behaviour.
-
-### <a id="session-callback-parameters">Session callback parameters
-
-The same callback parameters that are registered for [events](#callback-parameters) can be also saved to be sent in every 
-event or session of the adjust SDK.
-
-The session callback parameters have a similar interface to the event callback parameters.
-Instead of adding the key and it's value to an event, it's added through a call to 
-`Adjust.addSessionCallbackParameter(String key, String value)`:
+사용자가 광고를 누르거나 인앱 구매를 통해 매출을 발생시킬 수 있는
+경우 이벤트를 사용하여 해당 매출을 트래킹할 수 있습니다. 한 번 누를 때 0.01 유로의
+매출이 발생한다고 가정할 경우 매출 이벤트를 다음과 같이 트래킹할 수 있습니다.
 
 ```java
-Adjust.addSessionCallbackParameter("foo", "bar");
+AdjustEvent event = new AdjustEvent("abc123");
+event.setRevenue(0.01, "EUR");
+Adjust.trackEvent(event);
 ```
 
-The session callback parameters will be merged with the callback parameters added to an event.
-The callback parameters added to an event have precedence over the session callback parameters.
-Meaning that, when adding a callback parameter to an event with the same key to one added from the session, the value that 
-prevails is the callback parameter added to the event.
+이것을 콜백 매개변수와 결합할 수도 있습니다.
 
-It's possible to remove a specific session callback parameter by passing the desiring key to the method 
-`Adjust.removeSessionCallbackParameter(String key)`.
+통화 토큰을 설정하면 adjust에서 수신되는 매출이 선택한 보고 매출로 자동 변환됩니다. 통화 변환에 대한 자세한 내용은 [여기][currency-conversion]를 참조하십시오.
+
+매출과 이벤트 트래킹에 대한 자세한 내용은 [이벤트 트래킹
+설명서][event-tracking]를 참조하십시오.
+
+### 13. 딥링크 리어트리뷰션 설정
+
+앱을 열기 위해 사용하는 딥링크를 처리하도록 adjust SDK를 설정할
+수 있습니다. adjust에서는 특정 adjust 관련 매개변수만 읽습니다. 딥링크를 사용하여
+리타게팅 또는 재참여 캠페인을 운영할 계획인 경우 이 설정은 필수입니다.
+
+딥링크를 허용하는 각 작업에 대해 `onCreate` 메서드를 찾고 다음 호출을
+adjust에 추가합니다.
 
 ```java
-Adjust.removeSessionCallbackParameter("foo");
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+    Adjust.appWillOpenUrl(data);
+    //...
+}
 ```
 
-If you wish to remove all keys and their corresponding values from the session callback parameters, you can reset it with 
-the method `Adjust.resetSessionCallbackParameters()`.
+### 14. 이벤트 버퍼링 사용
+
+앱에서 이벤트 트래킹을 많이 사용하는 경우 일부 HTTP 요청을 지연하여 1분마다
+하나의 배치로 보낼 수 있습니다. `AdjustConfig` 인스턴스를 통해
+이벤트 버퍼링을 사용하도록 설정할 수 있습니다.
 
 ```java
-Adjust.resetSessionCallbackParameters();
+AdjustConfig config = new AdjustConfig(this, appToken, environment);
+
+config.setEventBufferingEnabled(true);
+
+Adjust.onCreate(config);
 ```
 
-### <a id="session-partner-parameters">Session partner parameters
+### 15. 백그라운드에서 보내기
 
-In the same way that there are [session callback parameters](#session-callback-parameters) sent in every event or session 
-of the adjust SDK, there is also session partner parameters.
-
-These will be transmitted to network partners, for the integrations that have been activated in your adjust [dashboard].
-
-The session partner parameters have a similar interface to the event partner parameters.
-Instead of adding the key and it's value to an event, it's added through a call to 
-`Adjust.addSessionPartnerParameter(String key, String value)`:
+adjust SDK는 기본적으로 앱이 백그라운드에서 설정되어 있는 동안 HTTP 요청 보내기를 일시정지합니다.
+이 설정을 `AdjustConfig` 인스턴스에서 변경할 수 있습니다.
 
 ```java
-Adjust.addSessionPartnerParameter("foo", "bar");
+AdjustConfig config = new AdjustConfig(this, appToken, environment);
+
+config.setSendInBackground(true);
+
+Adjust.onCreate(config);
 ```
 
-The session partner parameters will be merged with the partner parameters added to an event.
-The partner parameters added to an event have precedence over the session partner parameters.
-Meaning that, when adding a partner parameter to an event with the same key to one added from the session, the value that 
-prevails is the partner parameter added to the event.
+### <a id="attribution_changed_listener"></a>16. 어트리뷰션 변경에 대한 수신기 설정
 
-It's possible to remove a specific session partner parameter by passing the desiring key to the method 
-`Adjust.removeSessionPartnerParameter(String key)`.
+트래커 어트리뷰션 변경에 대한 알림을 수신할 수신기를 등록할 수 있습니다. 어트리뷰션에
+대해 다양한 소스가 고려되기 때문에 이 정보는 동시에 제공할 수
+없습니다. 가장 간단한 방법은 익명 수신기를 하나 만드는
+것입니다.
 
-```java
-Adjust.removeSessionPartnerParameter("foo");
-```
+[해당 어트리뷰션 데이터 정책][attribution-data]을
+고려하십시오.
 
-If you wish to remove all keys and their corresponding values from the session partner parameters, you can reset it with 
-the method `Adjust.resetSessionPartnerParameters()`.
-
-```java
-Adjust.resetSessionPartnerParameters();
-```
-
-### <a id="delay-start">Delay start
-
-Delaying the start of the adjust SDK allows your app some time to obtain session parameters, such as unique identifiers, 
-to be sent on install.
-
-Set the initial delay time in seconds with the method `setDelayStart` in the `AdjustConfig` instance:
-
-```java
-adjustConfig.setDelayStart(5.5);
-```
-
-In this case, this will make the adjust SDK not send the initial install session and any event created for 5.5 seconds.
-After this time is expired or if you call `Adjust.sendFirstPackages()` in the meanwhile, every session parameter will be 
-added to the delayed install session and events and the adjust SDK will resume as usual.
-
-The maximum delay start time of the adjust SDK is 10 seconds.
-
-### <a id="attribution-callback"></a>Attribution callback
-
-You can register a listener to be notified of tracker attribution changes. Due to the different sources considered for
-attribution, this information can not be provided synchronously. The simplest way is to create a single anonymous listener:
-
-Please make sure to consider our [applicable attribution data policies][attribution-data].
-
-With the `AdjustConfig` instance, before starting the SDK, add the anonymous listener:
+SDK를 시작하기 전에 `AdjustConfig` 인스턴스를 사용하여 익명 수신기를 추가합니다.
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -630,8 +461,8 @@ config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
 Adjust.onCreate(config);
 ```
 
-Alternatively, you could implement the `OnAttributionChangedListener` interface in your `Application` class and set it as
-listener:
+또는 `Application` 클래스에서 `OnAttributionChangedListener`
+인터페이스를 구현하고 수신기로 설정할 수 있습니다.
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -639,27 +470,28 @@ config.setOnAttributionChangedListener(this);
 Adjust.onCreate(config);
 ```
 
-The listener function will be called after the SDK receives the final attribution data. Within the listener function
-you have access to the `attribution` parameter. Here is a quick summary of its properties:
+SDK에 최종 어트리뷰션 정보가 수신되면 수신기 함수가
+호출됩니다. 수신기 함수를 통해 `attribution` 매개변수에 액세스할
+수 있습니다. 다음은 매개변수 속성에 대한 정보를 간략히 요약하고 있습니다.
 
-- `String trackerToken` the tracker token of the current install.
-- `String trackerName` the tracker name of the current install.
-- `String network` the network grouping level of the current install.
-- `String campaign` the campaign grouping level of the current install.
-- `String adgroup` the ad group grouping level of the current install.
-- `String creative` the creative grouping level of the current install.
-- `String clickLabel` the click label of the current install.
+- `String trackerToken` 현재 설치의 트래커 토큰
+- `String trackerName` 현재 설치의 트래커 이름
+- `String network` 현재 설치의 network 그룹화 기준
+- `String campaign` 현재 설치의 campaign 그룹화 기준
+- `String adgroup` 현재 설치의 ad group 그룹화 기준
+- `String creative` 현재 설치의 creative 그룹화 기준
+- `String clickLabel` 현재 설치의 클릭 레이블
 
-### <a id="session-event-callbacks"></a>Session and event callbacks
+### 17. 트래킹하는 이벤트 및 세션의 수신기 설정
 
-You can register a listener to be notified when events or sessions are tracked. There are four listeners: one for tracking
-successful events, one for tracking failed events, one for tracking successful sessions and one for tracking failed
-sessions. You can add any number of listeners after creating the `AdjustConfig` object:
+이벤트 또는 세션이 트래킹될 때 알림을 수신할 수신기를 등록할 수 있습니다.
+성공적인 이벤트 트래킹 수신기, 실패한 이벤트 트래킹 수신기, 성공적인 세션 트래킹 수신기, 실패한 세션 트래킹 수신기와 같이 4개의 수신기가 있습니다.
+`AdjustConfig` 개체를 만든 후에 수신기를 원하는 수만큼 추가할 수 있습니다.
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
 
-// Set event success tracking delegate.
+// set event success tracking delegate
 config.setOnEventTrackingSucceededListener(new OnEventTrackingSucceededListener() {
     @Override
     public void onFinishedEventTrackingSucceeded(AdjustEventSuccess eventSuccessResponseData) {
@@ -667,7 +499,7 @@ config.setOnEventTrackingSucceededListener(new OnEventTrackingSucceededListener(
     }
 });
 
-// Set event failure tracking delegate.
+// set event failure tracking delegate
 config.setOnEventTrackingFailedListener(new OnEventTrackingFailedListener() {
     @Override
     public void onFinishedEventTrackingFailed(AdjustEventFailure eventFailureResponseData) {
@@ -675,7 +507,7 @@ config.setOnEventTrackingFailedListener(new OnEventTrackingFailedListener() {
     }
 });
 
-// Set session success tracking delegate.
+// set session success tracking delegate
 config.setOnSessionTrackingSucceededListener(new OnSessionTrackingSucceededListener() {
     @Override
     public void onFinishedSessionTrackingSucceeded(AdjustSessionSuccess sessionSuccessResponseData) {
@@ -683,7 +515,7 @@ config.setOnSessionTrackingSucceededListener(new OnSessionTrackingSucceededListe
     }
 });
 
-// Set session failure tracking delegate.
+// set session failure tracking delegate
 config.setOnSessionTrackingFailedListener(new OnSessionTrackingFailedListener() {
     @Override
     public void onFinishedSessionTrackingFailed(AdjustSessionFailure sessionFailureResponseData) {
@@ -694,242 +526,35 @@ config.setOnSessionTrackingFailedListener(new OnSessionTrackingFailedListener() 
 Adjust.onCreate(config);
 ```
 
-The listener function will be called after the SDK tries to send a package to the server. Within the listener function you
-have access to a response data object specifically for the listener. Here is a quick summary of the success session
-response data object fields:
+수신기 함수는 SDK에서 서버로 패키지를 보내려고 시도한 후에 호출됩니다. 수신기 함수를 통해 수신기 전용 응답 데이터 개체에 액세스할 수 있습니다. 다음은 성공 세션 응답 데이터 개체 필드에 대한 정보를 간략히 요약하고 있습니다.
 
-- `String message` the message from the server or the error logged by the SDK.
-- `String timestamp` timestamp from the server.
-- `String adid` a unique device identifier provided by adjust.
-- `JSONObject jsonResponse` the JSON object with the reponse from the server.
+- `String message` 서버에서 전송된 메시지 또는 SDK에 의해 로깅된 오류
+- `String timestamp` 서버에서 전송된 데이터의 타임스탬프
+- `String adid` adjust에 의해 제공된 고유 장치 식별자
+- `JSONObject jsonResponse` 서버에서 전송된 응답이 있는 JSON 개체
 
-Both event response data objects contain:
+두 개의 이벤트 응답 데이터 개체에는 다음 정보가 포함됩니다.
 
-- `String eventToken` the event token, if the package tracked was an event.
+- `String eventToken` 트래킹한 패키지가 이벤트인 경우 이벤트 토큰
 
-And both event and session failed objects also contain:
+그리고 이벤트 및 세션 실패 개체에는 다음 정보도 포함됩니다.
 
-- `boolean willRetry` indicates that will be an attempt to resend the package at a later time.
+- `boolean willRetry` 나중에 패키지를 다시 보내려는 시도가 있을 것임을 나타냅니다.
 
-### <a id="disable-tracking"></a>Disable tracking
+### 18. 지연된 딥링크에 대한 수신기 설정
 
-You can disable the adjust SDK from tracking any activities of the current device by calling `setEnabled` with parameter
-`false`. **This setting is remembered between sessions**.
-
-```java
-Adjust.setEnabled(false);
-```
-
-You can check if the adjust SDK is currently enabled by calling the function `isEnabled`. It is always possible to activatе
-the adjust SDK by invoking `setEnabled` with the enabled parameter as `true`.
-
-### <a id="offline-mode"></a>Offline mode
-
-You can put the adjust SDK in offline mode to suspend transmission to our servers, while retaining tracked data to be sent
-later. While in offline mode, all information is saved in a file, so be careful not to trigger too many events while in
-offline mode.
-
-You can activate offline mode by calling `setOfflineMode` with the parameter `true`.
-
-```java
-Adjust.setOfflineMode(true);
-```
-
-Conversely, you can deactivate offline mode by calling `setOfflineMode` with `false`. When the adjust SDK is put back in
-online mode, all saved information is sent to our servers with the correct time information.
-
-Unlike disabling tracking, this setting is **not remembered** between sessions. This means that the SDK is in online mode
-whenever it is started, even if the app was terminated in offline mode.
-
-### <a id="event-buffering"></a>Event buffering
-
-If your app makes heavy use of event tracking, you might want to delay some HTTP requests in order to send them in one
-batch every minute. You can enable event buffering with your `AdjustConfig` instance:
+지연된 딥링크가 열리기 전에 알림을 수신할 수신기를 등록한 후 adjust SDK에서 딥링크를 열지 결정할 수 있습니다.
+SDK를 시작하기 전에 `AdjustConfig` 인스턴스를 사용하여 익명 수신기를 추가합니다.
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
 
-config.setEventBufferingEnabled(true);
-
-Adjust.onCreate(config);
-```
-
-### <a id="background-tracking"></a>Background tracking
-
-The default behaviour of the adjust SDK is to pause sending HTTP requests while the app is in the background. You can
-change this in your `AdjustConfig` instance:
-
-```java
-AdjustConfig config = new AdjustConfig(this, appToken, environment);
-
-config.setSendInBackground(true);
-
-Adjust.onCreate(config);
-```
-
-### <a id="device-ids"></a>Device IDs
-
-Certain services (such as Google Analytics) require you to coordinate Device and Client IDs in order to prevent duplicate
-reporting.
-
-If you need to obtain the Google Advertising ID, there is a restriction that only allows it to be read in a background
-thread. If you call the function `getGoogleAdId` with the context and a `OnDeviceIdsRead` instance, it will work in any
-situation:
-
-```java
-Adjust.getGoogleAdId(this, new OnDeviceIdsRead() {
-    @Override
-    public void onGoogleAdIdRead(String googleAdId) {
-        // ...
-    }
-});
-```
-
-Inside the method `onGoogleAdIdRead` of the `OnDeviceIdsRead` instance, you will have access to Google Advertising ID as
-the variable `googleAdId`.
-
-### <a id="push-token"></a>Push token
-
-To send us the push notification token, add the following call to Adjust once you have obtained your token or when ever
-it's value is changed:
-
-```java
-Adjust.setPushToken(pushNotificationsToken);
-```
-
-### <a id="pre-installed-trackers">Pre-installed trackers
-
-If you want to use the Adjust SDK to recognize users that found your app
-pre-installed on their device, follow these steps.
-
-1. Create a new tracker in your [dashboard].
-2. Open your app delegate and add set the default tracker of your `AdjustConfig`:
-
-  ```objc
-  AdjustConfig config = new AdjustConfig(this, appToken, environment);
-  config.setDefaultTracker("{TrackerToken}");
-  Adjust.onCreate(config);
-  ```
-
-  Replace `{TrackerToken}` with the tracker token you created in step 2.
-  Please note that the dashboard displays a tracker URL (including
-  `http://app.adjust.com/`). In your source code, you should specify only the
-  six-character token and not the entire URL.
-
-3. Build and run your app. You should see a line like the following in LogCat:
-
-    ```
-    Default tracker: 'abc123'
-    ```
-
-### <a id="deeplinking"></a>Deep linking
-
-If you are using the adjust tracker URL with an option to deep link into your app from the URL, there is the possibility to
-get info about the deep link URL and its content. Hitting the URL can happen when the user has your app already installed
-(standard deep linking scenario) or if they don't have the app on their device (deferred deep linking scenario). In the
-standard deep linking scenario, Android platform natively offers the possibility for you to get the info about the deep
-link content. Deferred deep linking scenario is something which Android platform doesn't support out of box and for this
-case, the adjust SDK will offer you the mechanism to get the info about the deep link content.
-
-### <a id="deeplinking-standard">Standard deep linking scenario
-
-If a user has your app installed and you want it to launch after hitting an adjust tracker URL with the `deep_link`
-parameter in it, you need enable deep linking in your app. This is being done by choosing a desired **unique scheme name**
-and assigning it to the Activity which you want to launch once the app opens after the user clicked on the link. This is
-set in the `AndroidManifest.xml`. You need to add the `intent-filter` section to your desired Activity definition in the
-manifest file and assign `android:scheme` property value with the desired scheme name:
-
-```xml
-<activity
-    android:name=".MainActivity"
-    android:configChanges="orientation|keyboardHidden"
-    android:label="@string/app_name"
-    android:screenOrientation="portrait">
-
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="adjustExample" />
-    </intent-filter>
-</activity>
-```
-
-With this being set, you need to use the assigned scheme name in the adjust tracker URL's `deep_link` parameter if you want
-your app to launch once the tracker URL is clicked. A tracker URL without any information added to the deep link can be
-built to look something like this:
-
-```
-https://app.adjust.com/abc123?deep_link=adjustExample%3A%2F%2F
-```
-
-Please, have in mind that the `deep_link` parameter value in the URL **must be URL encoded**.
-
-After clicking this tracker URL, and with the app set as described above, your app will launch along with the
-`MainActivity` intent. Inside the `MainActivity` class, you will automatically be provided with the information about the
-`deep_link` parameter content. Once this content is delivered to you, it **will not be encoded**, although it was encoded
-in the URL.
-
-Depending on the `android:launchMode` setting of your Activity in the `AndroidManifest.xml` file, information about the
-`deep_link` parameter content will be delivered to the appropriate place in the Activity file. For more information about
-the possible values of the `android:launchMode` property, check [the official Android documentation][android-launch-modes].
-
-There are two possible places in which information about the deep link content will be delivered to your desired Activity
-via `Intent` object - either in the Activity's `onCreate` or `onNewIntent` method. After the app has launched and one of
-these methods is triggered, you will be able to get the actual deeplink passed in the `deep_link` parameter in the click
-URL. You can then use this information to do some additional logic in your app.
-
-You can extract the deep link content from these two methods like this:
-
-```java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    Intent intent = getIntent();
-    Uri data = intent.getData();
-
-    // data.toString() -> This is your deep_link parameter value.
-}
-```
-
-```java
-@Override
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-
-    Uri data = intent.getData();
-
-    // data.toString() -> This is your deep_link parameter value.
-}
-```
-
-### <a id="deeplinking-deferred">Deferred deep linking scenario
-
-Deferred deep linking scenario happens when a user clicks on the adjust tracker URL with the `deep_link` parameter in it,
-but does not have the app installed on the device at the moment of click. After that, the user will get redirected to the
-Play Store to download and install your app. After opening it for the first time, the content of the `deep_link` parameter
-will be delivered to the app.
-
-In order to get info about the `deep_link` parameter content in a deferred deep linking scenario, you should set a listener
-method on the `AdjustConfig` object. This will get triggered once the adjust SDK gets the info about the deep link content
-from the backend.
-
-```java
-AdjustConfig config = new AdjustConfig(this, appToken, environment);
-
-// Evaluate the deeplink to be launched.
+// evaluate deeplink to be launched
 config.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
     @Override
     public boolean launchReceivedDeeplink(Uri deeplink) {
         // ...
-        if (shouldAdjustSdkLaunchTheDeeplink(deeplink)) {
+        if (allowAdjustSDKToOpenDeeplink(deeplink)) {
             return true;
         } else {
             return false;
@@ -940,215 +565,181 @@ config.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
 Adjust.onCreate(config);
 ```
 
-Once the adjust SDK receives the info about the deep link content from the backend, it will deliver you the info about its
-content in this listener and expect the `boolean` return value from you. This return value represents your decision on
-whether the adjust SDK should launch the Activity to which you have assigned the scheme name from the deep link (like in
-the standard deep linking scenario) or not.
+수신기 함수는 SDK에서 지연된 딥링크를 서버로부터 수신한 후와 딥링크를 열기 전에 호출됩니다.
+수신기 함수를 통해 딥링크에 액세스할 수 있으며, 반환하는 부울식에 따라 SDK에서 딥싱크를 실행할지 여부가 결정됩니다.
+예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
 
-If you return `true`, we will launch it and the exact same scenario which is described in the
-[Standard deep linking scenario chapter](#deeplinking-standard) will happen. If you do not want the SDK to launch the
-Activity, you can return `false` from this listener and based on the deep link content decide on your own what to do next
-in your app.
+### 19. 트래킹 사용 중지
 
-### <a id="deeplinking-reattribution">Reattribution via deep links
-
-Adjust enables you to run re-engagement campaigns with usage of deep links. For more information on how to do that, please
-check our [official docs][reattribution-with-deeplinks].
-
-If you are using this feature, in order for your user to be properly reattributed, you need to make one additional call to
-the adjust SDK in your app.
-
-Once you have received deep link content information in your app, add a call to `Adjust.appWillOpenUrl` method. By making
-this call, the adjust SDK will try to find if there is any new attribution info inside of the deep link and if any, it will
-be sent to the adjust backend. If your user should be reattributed due to a click on the adjust tracker URL with deep link
-content in it, you will see the [attribution callback](#attribution-callback) in your app being triggered with new
-attribution info for this user.
-
-The call to `Adjust.appWillOpenUrl` should be done like this:
+`setEnabled`를 `false` 매개변수로 설정한 상태로 호출하면 adjust SDK에서 현재 장치의 모든 작업을 트래킹하지 않도록 할 수 있습니다. 이 설정은
+세션 간에 기억됩니다.
 
 ```java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    Intent intent = getIntent();
-    Uri data = intent.getData();
-
-    Adjust.appWillOpenUrl(data);
-}
+Adjust.setEnabled(false);
 ```
+
+`isEnabled` 함수를 호출하여 adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 매개변수가 `true`로 설정된 `setEnabled`를 호출하면 adjust SDK를 언제든지 활성화할 수 있습니다.
+
+### 20. 오프라인 모드
+
+adjust SDK를 오프라인 모드로 전환하여 adjust 서버로 전송하는 작업을 일시 중단하고 트래킹된 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로 오프라인 모드에서 너무 많은 이벤트가 트리거되지 않도록 주의하십시오.
+
+`setOfflineMode`를 `true` 매개변수로 설정한 상태로 호출하면 오프라인 모드를 활성화할 수 있습니다.
 
 ```java
-@Override
-protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-
-    Uri data = intent.getData();
-
-    Adjust.appWillOpenUrl(data);
-}
+Adjust.setOfflineMode(true);
 ```
 
-## <a id="troubleshooting">Troubleshooting
+또는 `setOfflineMode`를 `false`로 설정한 상태로 호출하면 오프라인 모드를 비활성화할 수 있습니다.
+adjust SDK를 다시 온라인 모드로 전환하면 저장된 정보가 모두 올바른 시간 정보와 함께 adjust 서버로 전송됩니다.
 
-### <a id="ts-session-failed">I'm seeing the "Session failed (Ignoring too frequent session. ...)" error.
+트래킹 사용 중지와 달리 이 설정은 세션 간에 *기억되지
+않습니다.* 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는
+항상 온라인 모드로 시작됩니다.
 
-This error typically occurs when testing installs. Uninstalling and reinstalling the app is not enough to trigger a new
-install. The servers will determine that the SDK has lost its locally aggregated session data and ignore the erroneous
-message, given the information available on the servers about the device.
+### 21. 장치 ID
 
-This behaviour can be cumbersome during tests, but is necessary in order to have the sandbox behaviour match production as
-much as possible.
+Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 장치 ID와 클라이언트 ID를 조정해야 합니다.
 
-You can reset the session data of the device in our servers. Check the error message in the logs:
+Google 광고 ID가 필요한 경우 제한 사항으로 인해 백그라운드 스레드에서만 ID를 읽을 수 있습니다.
+ `getGoogleAdId` 함수를 컨텍스트와 `OnDeviceIdsRead` 인스턴스와 함께 호출하면 상황에 관계 없이 작동합니다.
+
+```java
+Adjust.getGoogleAdId(this, new OnDeviceIdsRead() {
+    @Override
+    public void onGoogleAdIdRead(String googleAdId) {
+        // ...
+    }
+});
+```
+
+`OnDeviceIdsRead` 인스턴스의 `onGoogleAdIdRead` 메서드를 통해 Google 광고 ID에 `googleAdId` 변수로 액세스할 수 있습니다.
+
+## 문제 해결
+
+### "Session failed (Ignoring too frequent session. ...)" 오류가 나타납니다.
+
+이 오류는 일반적으로 설치를 테스트할 때 발생합니다. 앱을 제거하고 다시 설치해도 새 설치를 트리거할 수 없습니다. 서버에서는 SDK가 로컬에서 집계된 세션 데이터를
+유실했다고 판단하며 서버에 제공된 장치 관련 정보에 따라 오류 메시지를 무시합니다.
+
+이 동작은 테스트 중에 불편을 초래할 수도 있지만, sandbox 동작이 프로덕션 환경과 최대한
+일치하도록 하기 위해 필요합니다.
+
+장치의 세션 데이터를 adjust 서버에서 재설정할 수 있습니다. 로그에서 다음 오류 메시지를 확인합니다.
 
 ```
 Session failed (Ignoring too frequent session. Last session: YYYY-MM-DDTHH:mm:ss, this session: YYYY-MM-DDTHH:mm:ss, interval: XXs, min interval: 20m) (app_token: {yourAppToken}, adid: {adidValue})
 ```
 
-With the `{yourAppToken}` and `{adidValue}`/`{gps_adidValue}`/`{androidIDValue}` values filled in below, open one of the 
-following links:
-
+아래에 `{yourAppToken}` 및 `{adidValue}` 값을 입력하고 다음 링크를 엽니다.
 
 ```
 http://app.adjust.com/forget_device?app_token={yourAppToken}&adid={adidValue}
 ```
 
-```
-http://app.adjust.com/forget_device?app_token={yourAppToken}&gps_adid={gps_adidValue}
-```
+장치가 메모리에서 삭제되면 링크에서 `Forgot device`만 반환됩니다. 장치가 이미 메모리에서 삭제되었거나 값이 올바르지 않으면 `Device not found` 메시지가 반환됩니다.
 
-```
-http://app.adjust.com/forget_device?app_token={yourAppToken}&android_id={androidIDValue}
-```
+### 브로드캐스트 수신기에서 설치 참조 페이지를 캡처하고 있습니까?
 
-When the device is forgotten, the link just returns `Forgot device`. If the device was already forgotten or the values were
-incorrect, the link returns `Device not found`.
+[설명서](#broadcast_receiver)의 지침을 따른 경우 브로드캐스트 수신기는 설치 참조 페이지를 adjust SDK와 adjust 서버로 보내도록 구성됩니다.
 
-### <a id="ts-broadcast-receiver">Is my broadcast receiver capturing the install referrer?
-
-If you followed the instructions in the [guide](#broadcast_receiver), the broadcast receiver should be configured to send
-the install referrer to our SDK and to our servers.
-
-You can test this by triggering a test install referrer manually. Replace `com.your.appid` with your app ID and run the
-following command with the [adb](http://developer.android.com/tools/help/adb.html) tool that comes with Android Studio:
+테스트 설치 참조 페이지를 수동으로 트리거하여 이 구성을 테스트할 수 있습니다.
+`com.your.appid`를 앱 ID로 대체하고 Android Studio와 함께 제공되는 [adb](http://developer.android.com/tools/help/adb.html) 도구를 사용하여 다음 명령을 실행합니다.
 
 ```
 adb shell am broadcast -a com.android.vending.INSTALL_REFERRER -n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver --es "referrer" "adjust_reftag%3Dabc1234%26tracking_id%3D123456789%26utm_source%3Dnetwork%26utm_medium%3Dbanner%26utm_campaign%3Dcampaign"
 ```
 
-If you are already using a different broadcast receiver for the `INSTALL_REFERRER` intent and followed this
-[guide][referrer], replace `com.adjust.sdk.AdjustReferrerReceiver` with your broadcast receiver.
+이미 다른 브로드캐스트 수신기를 `INSTALL_REFERRER` intent로 사용 중이고 이 [설명서][referrer]의 지침을 따른 경우, `com.adjust.sdk.AdjustReferrerReceiver`를 브로드캐스트 수신기로 대체합니다.
 
-You can also remove the `-n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver` parameter so that all the apps in the
-device will receive the `INSTALL_REFERRER` intent.
+`-n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver` 매개변수를 제거하여 장치의 모든 앱에서 `INSTALL_REFERRER` intent를 수신하도록 할 수도 있습니다.
 
-If you set the log level to `verbose`, you should be able to see the log from reading the referrer:
+로그 레벨을 `verbose`로 설정하면 참조 페이지
 
 ````
 V/Adjust: Reading query string (adjust_reftag=abc1234&tracking_id=123456789&utm_source=network&utm_medium=banner&utm_campaign=campaign) from reftag
 ```
 
-And a click package added to the SDK's package handler:
+와 SDK 패키지 처리기에 추가된 다음 클릭 패키지를 읽어서 로그를 볼 수 있습니다.
 
 ```
 V/Adjust: Path:      /sdk_click
     ClientSdk: android4.6.0
     Parameters:
-      app_token        abc123abc123
-      click_time       yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z
-      created_at       yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z
-      environment      sandbox
-      gps_adid         12345678-0abc-de12-3456-7890abcdef12
-      needs_attribution_data 1
-      referrer         adjust_reftag=abc1234&tracking_id=123456789&utm_source=network&utm_medium=banner&utm_campaign=campaign
-      reftag           abc1234
-      source           reftag
-      tracking_enabled 1
+        app_token        abc123abc123
+        click_time       yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z
+        created_at       yyyy-MM-dd'T'HH:mm:ss.SSS'Z'Z
+        environment      sandbox
+        gps_adid         12345678-0abc-de12-3456-7890abcdef12
+        needs_attribution_data 1
+        referrer         adjust_reftag=abc1234&tracking_id=123456789&utm_source=network&utm_medium=banner&utm_campaign=campaign
+        reftag           abc1234
+        source           reftag
+        tracking_enabled 1
 ```
 
-If you perform this test before launching the app, you won't see the package being sent. The package will be sent once the
-app is launched.
+앱을 시작하기 전에 이 테스트를 실시하면 전송할 패키지가 보이지 않습니다.
+앱이 시작된 후에 패키지가 전송됩니다.
 
-### <a id="ts-event-at-launch">Can I trigger an event at application launch?
+### 응용 프로그램 시작 시 이벤트를 트리거할 수 있습니까?
 
-Not how you might intuitively think. The `onCreate` method on the global `Application` class is called not only at
-application launch, but also when a system or application event is captured by the app.
+직관적으로 생각하는 것과는 다를 수 있습니다. 전역 `Application` 클래스의 `onCreate` 메서드는 응용 프로그램 시작 시에만 호출되는 것이 아니라 시스템 또는 응용 프로그램 이벤트가 앱에 의해 캡처될 때도 호출됩니다.
 
-Our SDK is prepared for initialization at this time, but not actually started. This will only happen when an activity is
-started, i.e., when a user actually launches the app.
+adjust SDK는 이 때 초기화할 준비가 되지만, 실제로 시작되지는 않습니다.
+작업이 시작될 때, 즉 사용자가 실제로 앱을 시작할 경우에만 adjust SDK가 실제로 시작됩니다.
 
-That's why triggering an event at this time will not do what you would expect. Such calls will start the adjust SDK and
-send the events, even when the app was not launched by the user - at a time that depends on external factors of the app.
+따라서 이 때 이벤트를 트리거하면 원하는 작업이 수행되지 않습니다.
+이런 호출은 사용자가 앱을 시작하지 않은 경우에도 adjust SDK를 앱의 외부 요인에 따라 결정되는 시간에 시작하고 이벤트를 보냅니다.
 
-Triggering events at application launch will thus result in inaccuracies in the number of installs and sessions tracked.
+따라서 응용 프로그램 시작 시 이벤트를 트리거하면 트래킹되는 설치 및 세션의 수가 부정확해집니다.
 
-If you want to trigger an event after the install, use the [attribution changed listener](#attribution_changed_listener).
+설치 후에 이벤트를 트리거하려면 [어트리뷰션 변경 수신기](#attribution_changed_listener)를 사용하십시오.
 
-If you want to trigger an event when the app is launched, use the `onCreate` method of the Activity which is started.
+앱이 시작될 때 이벤트를 트리거하려면 시작된 작업의 `onCreate` 메서드를 사용하십시오.
 
-[dashboard]:                      http://adjust.com
-[adjust.com]:                     http://adjust.com
+[dashboard]:     http://adjust.com
+[releases]:      https://github.com/adjust/adjust_android_sdk/releases
+[import_module]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/01_import_module.png
+[select_module]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/02_select_module.png
+[imported_module]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/03_imported_module.png
+[gradle_adjust]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/04_gradle_adjust.png
+[gradle_gps]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/05_gradle_gps.png
+[manifest_gps]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/06_manifest_gps.png
+[manifest_permissions]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/07_manifest_permissions.png
+[proguard]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/08_proguard_new.png
+[receiver]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/09_receiver.png
+[application_class]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/11_application_class.png
+[manifest_application]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/12_manifest_application.png
+[application_config]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/13_application_config.png
+[log_message]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/15_log_message.png
+[activity_lifecycle_class]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/16_activity_lifecycle_class.png
+[activity_lifecycle_methods]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/17_activity_lifecycle_methods.png
+[activity_lifecycle_register]: https://raw.github.com/adjust/sdks/master/Resources/android/v4/18_activity_lifecycle_register.png
 
-[maven]:                          http://maven.org
-[example]:                        https://github.com/adjust/android_sdk/tree/master/Adjust/example
-[releases]:                       https://github.com/adjust/adjust_android_sdk/releases
-[referrer]:                       doc/english/referrer.md
-[google_ad_id]:                   https://support.google.com/googleplay/android-developer/answer/6048248?hl=en
-[event-tracking]:                 https://docs.adjust.com/en/event-tracking
-[callbacks-guide]:                https://docs.adjust.com/en/callbacks
-[application_name]:               http://developer.android.com/guide/topics/manifest/application-element.html#nm
-[special-partners]:               https://docs.adjust.com/en/special-partners
-[attribution-data]:               https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[android-dashboard]:              http://developer.android.com/about/dashboards/index.html
-[currency-conversion]:            https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
-[android_application]:            http://developer.android.com/reference/android/app/Application.html
-[android-launch-modes]:           https://developer.android.com/guide/topics/manifest/activity-element.html
-[google_play_services]:           http://developer.android.com/google/play-services/setup.html
-[activity_resume_pause]:          doc/activity_resume_pause.md
-[reattribution-with-deeplinks]:   https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
-[android-purchase-verification]:  https://github.com/adjust/android_purchase_sdk
+[referrer]:      doc/referrer.md
+[attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[google_play_services]: http://developer.android.com/google/play-services/setup.html
+[android_application]:  http://developer.android.com/reference/android/app/Application.html
+[application_name]:     http://developer.android.com/guide/topics/manifest/application-element.html#nm
+[google_ad_id]:         https://support.google.com/googleplay/android-developer/answer/6048248?hl=en
+[callbacks-guide]:      https://docs.adjust.com/en/callbacks
+[event-tracking]:       https://docs.adjust.com/en/event-tracking
+[special-partners]:     https://docs.adjust.com/en/special-partners
+[maven]:                http://maven.org
+[example]:              https://github.com/adjust/android_sdk/tree/master/Adjust/example
+[currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[activity_resume_pause]: doc/activity_resume_pause.md
 
-[activity]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/14_activity.png
-[proguard]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/08_proguard_new.png
-[receiver]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/09_receiver.png
-[gradle_gps]:                   https://raw.github.com/adjust/sdks/master/Resources/android/v4/05_gradle_gps.png
-[log_message]:                  https://raw.github.com/adjust/sdks/master/Resources/android/v4/15_log_message.png
-[manifest_gps]:                 https://raw.github.com/adjust/sdks/master/Resources/android/v4/06_manifest_gps.png
-[gradle_adjust]:                https://raw.github.com/adjust/sdks/master/Resources/android/v4/04_gradle_adjust.png
-[import_module]:                https://raw.github.com/adjust/sdks/master/Resources/android/v4/01_import_module.png
-[select_module]:                https://raw.github.com/adjust/sdks/master/Resources/android/v4/02_select_module.png
-[imported_module]:              https://raw.github.com/adjust/sdks/master/Resources/android/v4/03_imported_module.png
-[application_class]:            https://raw.github.com/adjust/sdks/master/Resources/android/v4/11_application_class.png
-[application_config]:           https://raw.github.com/adjust/sdks/master/Resources/android/v4/13_application_config.png
-[manifest_permissions]:         https://raw.github.com/adjust/sdks/master/Resources/android/v4/07_manifest_permissions.png
-[manifest_application]:         https://raw.github.com/adjust/sdks/master/Resources/android/v4/12_manifest_application.png
-[activity_lifecycle_class]:     https://raw.github.com/adjust/sdks/master/Resources/android/v4/16_activity_lifecycle_class.png
-[activity_lifecycle_methods]:   https://raw.github.com/adjust/sdks/master/Resources/android/v4/17_activity_lifecycle_methods.png
-[activity_lifecycle_register]:  https://raw.github.com/adjust/sdks/master/Resources/android/v4/18_activity_lifecycle_register.png
+## 라이선스
 
-## <a id="license"></a>License
+adjust SDK는 MIT 라이선스에 따라 사용이 허가되었습니다.
 
-The adjust SDK is licensed under the MIT License.
-
-Copyright (c) 2012-2016 adjust GmbH,
+Copyright (c) 2012-2015 adjust GmbH,
 http://www.adjust.com
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+이로써 본 소프트웨어와 관련 문서 파일(이하 "소프트웨어")의 복사본을 받는 사람에게는 아래 조건에 따라 소프트웨어를 제한 없이 다룰 수 있는 권한이 무료로 부여됩니다. 이 권한에는 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여할 권리와 소프트웨어를 제공 받은 사람이 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여하는 것을 허가할 수 있는 권리가 제한 없이 포함됩니다.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+위 저작권 고지문과 본 권한 고지문은 소프트웨어의 모든 복사본이나 주요 부분에 포함되어야 합니다.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+소프트웨어는 상품성, 특정 용도에 대한 적합성 및 비침해에 대한 보증 등을 비롯한 어떤 종류의 명시적이거나 암묵적인 보증 없이 "있는 그대로" 제공됩니다. 어떤 경우에도 저작자나 저작권 보유자는 소프트웨어와 소프트웨어의 사용 또는 기타 취급에서 비롯되거나 그에 기인하거나 그와 관련하여 발생하는 계약 이행 또는 불법 행위 등에 관한 배상 청구, 피해 또는 기타 채무에 대해 책임지지 않습니다.
+--END--
