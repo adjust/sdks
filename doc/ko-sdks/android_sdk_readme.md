@@ -1,16 +1,11 @@
----
-layout: page
-title: adjust Android SDK
-permalink: /ko/sdk/android/
-locale: ko
-type: guide
-description: "adjust Android SDK readme in Korean"
----
+## 요약
 
 이 항목에서는 adjust의 Android SDK에 대해 설명합니다. adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-<section id='toc-section'></section>
+## 앱 예제
 
+[`example` 디렉터리][example]에 앱 예제가 있습니다. Android 프로젝트를
+열어 adjust SDK를 연동할 수 있는 방법의 예를 확인할 수 있습니다.
 
 ## 기본 설치
 
@@ -18,19 +13,14 @@ description: "adjust Android SDK readme in Korean"
 절차입니다. 여기서는 Android Studio를 Android 개발에
 사용하고 Android API 레벨 9(Gingerbread) 이상을 대상으로 한다고 가정합니다.
 
-[Maven Repository][maven]를 사용하는 경우에는 [3단계](#step3)부터 시작해도 됩니다
+[Maven Repository][maven]를 사용하는 경우에는 [3단계](#step3)부터 시작해도 됩니다.
 
-### <a id='#example-apps'></a>앱 예제
-
-[`example` 디렉터리][example]에 앱 예제가 있습니다. Android 프로젝트를
-열어 adjust SDK를 연동할 수 있는 방법의 예를 확인할 수 있습니다.
-
-### SDK 다운로드 및 설치
+### 1. SDK 다운로드 및 설치
 
 [릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. 압축 파일을
 선택한 폴더에 풉니다.
 
-### Adjust 프로젝트 만들기
+### 2. Adjust 프로젝트 만들기
 
 Android Studio 메뉴에서 `File a†’ Import Module...`을 선택합니다.
 
@@ -47,7 +37,7 @@ Android Studio 메뉴에서 `File a†’ Import Module...`을 선택합니다.
 
 ![][imported_module]
 
-### <a id="step3"></a> 프로젝트에 adjust 라이브러리 추가
+### <a id="step3"></a>3. 프로젝트에 adjust 라이브러리 추가
 
 앱의 `build.gradle` 파일을 열고 `dependencies` 블록을 찾습니다. 다음
 행을 추가합니다.
@@ -61,10 +51,10 @@ compile project(":adjust")
 Maven을 사용하는 경우 다음 행을 대신 추가합니다.
 
 ```
-compile 'com.adjust.sdk:adjust-android:4.10.0'
+compile 'com.adjust.sdk:adjust-android:4.7.0'
 ```
 
-### Google Play 서비스 추가
+### 4. Google Play 서비스 추가
 
 2014년 8월 1일 이후로 Google Play Store의 앱은 [Google 광고 ID]
 [google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. adjust SDK에서
@@ -75,7 +65,7 @@ Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][googl
 추가합니다.
 
     ```
-    compile 'com.google.android.gms:play-services-analytics:9.2.1'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     ```
 
     ![][gradle_gps]
@@ -93,7 +83,7 @@ Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][googl
 
     ![][manifest_gps]
 
-### 권한 추가
+### 5. 권한 추가
 
 Package Explorer에서 Android 프로젝트의 `AndroidManifest.xml`을 엽니다.
 `INTERNET`에 대한 `uses-permission` 태그가 아직 없는 경우 이 태그를 추가합니다.
@@ -143,7 +133,7 @@ Google Play Store가 대상이 *아닌* 경우 `com.google.android.gms` 규칙�
 * `-overloadaggressively`가 필요하지 않은 경우 제거합니다.
 * `-useuniqueclassmembernames` 플래그를 Proguard 파일에 추가합니다.
 
-### <a id="broadcast_receiver"></a> 브로드캐스트 수신기 추가
+### <a id="broadcast_receiver"></a>6. 브로드캐스트 수신기 추가
 
 `AndroidManifest.xml`에서 다음 `receiver` 태그를 `application` 태그에
 추가합니다.
@@ -167,7 +157,7 @@ Google Play Store가 대상이 *아닌* 경우 `com.google.android.gms` 규칙�
 사용 중인 경우 [이 지침][referrer]에 따라 adjust 수신기를
 추가하십시오.
 
-### 앱과 adjust 연동
+### 7. 앱과 adjust 연동
 
 먼저 기본 세션 트래킹을 설정합니다.
 
@@ -183,21 +173,20 @@ SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없�
 3. `android:name` 특성을 추가하고 새 응용 프로그램 클래스 이름으로 설정한 후 이름 앞에 점을 추가합니다.
 
     앱 예제에서는 이름이 `GlobalApplication`인 `Application` 클래스를 사용하므로, 매니페스트 파일은 다음과 같이 구성됩니다.
-
-    <pre>xml
+    ```xml
      <application
        android:name=".GlobalApplication"
        ... >
          ...
     </application>
-    </pre>
+    ```
 
     ![][manifest_application]
 
 4. `Application` 클래스에서 `onCreate` 메서드를 추가하거나 만들고 다음 코드를
 추가하여 adjust SDK를 초기화합니다.
 
-    <pre>java
+    ```java
     import com.adjust.sdk.Adjust;
     import com.adjust.sdk.AdjustConfig;
 
@@ -212,7 +201,7 @@ SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없�
             Adjust.onCreate(config);
         }
     }
-    </pre>
+    ```
 
     ![][application_config]
 
@@ -222,10 +211,10 @@ SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없�
     앱을 테스트에 사용할지 아니면 프로덕션에 사용할 지에 따라 `environment`를
     다음 값 중 하나로 설정해야 합니다.
 
-    <pre>java
+    ```java
     String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
     String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
-    </pre>
+    ```
 
     **중요:** 이 값은 앱을 테스트하는 경우에만
     `AdjustConfig.ENVIRONMENT_SANDBOX`로 설정해야 합니다. 앱을 게시하기 전에
@@ -251,7 +240,7 @@ SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없�
 
 7. adjust SDK가 구성된 `onCreate()` 메서드를 추가하고 `registerActivityLifecycleCallbacks` 호출을 이전에 만든 `ActivityLifecycleCallbacks` 클래스의 인스턴스와 함께 추가합니다.
 
-    <pre>java
+    ```java
     import com.adjust.sdk.Adjust;
     import com.adjust.sdk.AdjustConfig;
 
@@ -282,7 +271,7 @@ SDK를 초기화하는 것이 좋습니다. 앱에 이 클래스가 아직 없�
         }
         //...
     }
-    </pre>
+    ```
 
     ![][activity_lifecycle_register]
 
@@ -300,7 +289,7 @@ config.setLogLevel(LogLevel.ERROR);     // disable warnings as well
 config.setLogLevel(LogLevel.ASSERT);    // disable errors as well
 ```
 
-### 앱 작성
+### 8. 앱 작성
 
 Android 앱을 작성하고 실행합니다. LogCat 뷰어에서 `tag:Adjust` 필터를 설정하여
 다른 모든 로그를 숨길 수 있습니다. 앱이 시작된 후에 다음 adjust 로그가
@@ -308,7 +297,12 @@ Android 앱을 작성하고 실행합니다. LogCat 뷰어에서 `tag:Adjust` �
 
 ![][log_message]
 
-### 사용자 지정 이벤트 트래킹 추가
+## 추가 기능
+
+adjust SDK를 프로젝트와 연동한 후에는 다음 기능을 사용할 수
+있습니다.
+
+### 9. 사용자 지정 이벤트 트래킹 추가
 
 adjust를 사용하여 앱의 모든 이벤트를 트래킹할 수 있습니다. 버튼의 모든 탭을 트래킹하려면 [대시보드]에서 새 이벤트 토큰을 만들어야
 합니다. 이벤트 토큰이 `abc123`일 경우, 버튼의 `onClick`
@@ -322,7 +316,7 @@ Adjust.trackEvent(event);
 이벤트 인스턴스를 사용하여 이벤트를 트래킹하기 전에 더 자세히
 구성할 수 있습니다.
 
-### 콜백 매개변수 추가
+### 10. 콜백 매개변수 추가
 
 [대시보드]에서 이벤트의 콜백 URL을 등록할 수 있습니다. 이벤트가
 트래킹될 때마다 GET 요청이 해당 URL로 전송됩니다. 이 이벤트를 트래킹하기
@@ -357,7 +351,7 @@ http://www.adjust.com/callback?key=value&foo=bar
 [콜백 설명서][callbacks-guide]를 참조하십시오.
 
 
-### 파트너 매개변수
+### 11. 파트너 매개변수
 
 adjust 대시보드에서 활성화된 연동에 대해 네트워크 파트너로 전송할
 매개변수도 추가할 수 있습니다.
@@ -377,7 +371,7 @@ Adjust.trackEvent(event);
 특별 파트너와 해당 파트너와의 연동에 대한 자세한 내용은 [특별 파트너
 설명서][special-partners]를 참조하십시오.
 
-### 매출 트래킹 추가
+### 12. 매출 트래킹 추가
 
 사용자가 광고를 누르거나 인앱 구매를 통해 매출을 발생시킬 수 있는
 경우 이벤트를 사용하여 해당 매출을 트래킹할 수 있습니다. 한 번 누를 때 0.01 유로의
@@ -396,7 +390,7 @@ Adjust.trackEvent(event);
 매출과 이벤트 트래킹에 대한 자세한 내용은 [이벤트 트래킹
 설명서][event-tracking]를 참조하십시오.
 
-### 딥링크 리어트리뷰션 설정
+### 13. 딥링크 리어트리뷰션 설정
 
 앱을 열기 위해 사용하는 딥링크를 처리하도록 adjust SDK를 설정할
 수 있습니다. adjust에서는 특정 adjust 관련 매개변수만 읽습니다. 딥링크를 사용하여
@@ -416,7 +410,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-### 이벤트 버퍼링 사용
+### 14. 이벤트 버퍼링 사용
 
 앱에서 이벤트 트래킹을 많이 사용하는 경우 일부 HTTP 요청을 지연하여 1분마다
 하나의 배치로 보낼 수 있습니다. `AdjustConfig` 인스턴스를 통해
@@ -430,7 +424,7 @@ config.setEventBufferingEnabled(true);
 Adjust.onCreate(config);
 ```
 
-### 백그라운드에서 보내기
+### 15. 백그라운드에서 보내기
 
 adjust SDK는 기본적으로 앱이 백그라운드에서 설정되어 있는 동안 HTTP 요청 보내기를 일시정지합니다.
 이 설정을 `AdjustConfig` 인스턴스에서 변경할 수 있습니다.
@@ -443,7 +437,7 @@ config.setSendInBackground(true);
 Adjust.onCreate(config);
 ```
 
-### <a id="attribution_changed_listener"></a> 어트리뷰션 변경에 대한 수신기 설정
+### <a id="attribution_changed_listener"></a>16. 어트리뷰션 변경에 대한 수신기 설정
 
 트래커 어트리뷰션 변경에 대한 알림을 수신할 수신기를 등록할 수 있습니다. 어트리뷰션에
 대해 다양한 소스가 고려되기 때문에 이 정보는 동시에 제공할 수
@@ -488,7 +482,7 @@ SDK에 최종 어트리뷰션 정보가 수신되면 수신기 함수가
 - `String creative` 현재 설치의 creative 그룹화 기준
 - `String clickLabel` 현재 설치의 클릭 레이블
 
-### 트래킹하는 이벤트 및 세션의 수신기 설정
+### 17. 트래킹하는 이벤트 및 세션의 수신기 설정
 
 이벤트 또는 세션이 트래킹될 때 알림을 수신할 수신기를 등록할 수 있습니다.
 성공적인 이벤트 트래킹 수신기, 실패한 이벤트 트래킹 수신기, 성공적인 세션 트래킹 수신기, 실패한 세션 트래킹 수신기와 같이 4개의 수신기가 있습니다.
@@ -547,7 +541,7 @@ Adjust.onCreate(config);
 
 - `boolean willRetry` 나중에 패키지를 다시 보내려는 시도가 있을 것임을 나타냅니다.
 
-### 지연된 딥링크에 대한 수신기 설정
+### 18. 지연된 딥링크에 대한 수신기 설정
 
 지연된 딥링크가 열리기 전에 알림을 수신할 수신기를 등록한 후 adjust SDK에서 딥링크를 열지 결정할 수 있습니다.
 SDK를 시작하기 전에 `AdjustConfig` 인스턴스를 사용하여 익명 수신기를 추가합니다.
@@ -575,7 +569,7 @@ Adjust.onCreate(config);
 수신기 함수를 통해 딥링크에 액세스할 수 있으며, 반환하는 부울식에 따라 SDK에서 딥싱크를 실행할지 여부가 결정됩니다.
 예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
 
-### 트래킹 사용 중지
+### 19. 트래킹 사용 중지
 
 `setEnabled`를 `false` 매개변수로 설정한 상태로 호출하면 adjust SDK에서 현재 장치의 모든 작업을 트래킹하지 않도록 할 수 있습니다. 이 설정은
 세션 간에 기억됩니다.
@@ -586,7 +580,7 @@ Adjust.setEnabled(false);
 
 `isEnabled` 함수를 호출하여 adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 매개변수가 `true`로 설정된 `setEnabled`를 호출하면 adjust SDK를 언제든지 활성화할 수 있습니다.
 
-### 오프라인 모드
+### 20. 오프라인 모드
 
 adjust SDK를 오프라인 모드로 전환하여 adjust 서버로 전송하는 작업을 일시 중단하고 트래킹된 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로 오프라인 모드에서 너무 많은 이벤트가 트리거되지 않도록 주의하십시오.
 
@@ -603,7 +597,7 @@ adjust SDK를 다시 온라인 모드로 전환하면 저장된 정보가 모두
 않습니다.* 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는
 항상 온라인 모드로 시작됩니다.
 
-### 장치 ID
+### 21. 장치 ID
 
 Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 장치 ID와 클라이언트 ID를 조정해야 합니다.
 
@@ -749,4 +743,3 @@ http://www.adjust.com
 
 소프트웨어는 상품성, 특정 용도에 대한 적합성 및 비침해에 대한 보증 등을 비롯한 어떤 종류의 명시적이거나 암묵적인 보증 없이 "있는 그대로" 제공됩니다. 어떤 경우에도 저작자나 저작권 보유자는 소프트웨어와 소프트웨어의 사용 또는 기타 취급에서 비롯되거나 그에 기인하거나 그와 관련하여 발생하는 계약 이행 또는 불법 행위 등에 관한 배상 청구, 피해 또는 기타 채무에 대해 책임지지 않습니다.
 --END--
-
