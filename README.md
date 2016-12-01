@@ -11,6 +11,7 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [adjust SDK for Marmalade][marmalade]
 * [adjust SDK for Xamarin][xamarin]
 * [adjust SDK for Cocos2d-x][cocos2dx]
+* [adjust SDK for React Native][react]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
@@ -21,3 +22,4 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [marmalade]: https://github.com/adjust/marmalade_sdk
 [xamarin]: https://github.com/adjust/xamarin_sdk
 [cocos2dx]: https://github.com/adjust/cocos2dx_sdk
+[react]: https://github.com/adjust/react_native_sdk/
