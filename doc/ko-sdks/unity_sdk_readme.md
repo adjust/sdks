@@ -1,207 +1,372 @@
-﻿## 요약
+## 요약
 
-이 항목에서는 adjust의 Unity3d SDK에 대해 설명합니다. 이 SDK는 iOS, Android, Windows 8.1 및 Windows phone 8.1 대상을 지원합니다. adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
+이 항목에서는 Adjust™의 Unity SDK에 대해 설명합니다. 이 SDK는 iOS, 안드로이드, Windows 8.1 및 Windows phone 8.1 대상을 지원합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-## 기본 설치
+## 목차
 
-다음은 adjust SDK를 Unity3d 프로젝트와 연동하기 위해 최소한으로 수행해야 하는 절차입니다.
+* [기본 연동](#basic-integration)
+   * [SDK 받기](#sdk-get)
+   * [프로젝트에 SDK 추가](#sdk-add)
+   * [앱에 SDK 연동](#sdk-integrate)
+   * [Adjust 로그 기록(logging)](#sdk-logging)
+   * [Google Play 서비스](#google-play-services)
+   * [빌드 후 프로세스](#post-build-process)
+      * [iOS 빌드 후 프로세스](#post-build-ios)   
+      * [안드로이드 빌드 후 프로세스](#post-build-android)
+* [부가 기능](#additional-features)
+   * [이벤트 추적](#event-tracking)
+      * [수익 추적](#revenue-tracking)
+      * [수익 중복 제거](#revenue-deduplication)
+      * [인앱 구매 검증](#iap-verification)
+      * [콜백 파라미터](#callback-parameters)
+      * [파트너 파라미터](#partner-parameters)
+    * [세션 파라미터](#session-parameters)
+      * [세션 콜백 파라미터](#session-callback-parameters)
+      * [세션 파트너 파라미터](#session-partner-parameters)
+      * [예약 시작(delay start)](#delay-start)
+    * [속성 콜백](#attribution-callback)
+    * [세션 및 이벤트 콜백](#session-event-callbacks)
+    * [추적 사용 중지](#disable-tracking)
+    * [오프라인 모드](#offline-mode)
+    * [이벤트 버퍼링(buffering)](#event-buffering)
+    * [배경 추적](#background-tracking)
+    * [장치 ID](#device-ids)
+      * [iOS 광고 식별자(identifier)](#di-idfa) 
+      * [Google Play Services 광고 식별자](#di-gps-adid)
+      * [Adjust 장치 식별자](#di-adid)
+    * [사용자 속성](#user-attribution)
+    * [푸시 토큰(push token)](#push-token)
+    * [사전 설치 트래커(pre-installed trackers)](#pre-installed-trackers)
+    * [딥링크](#deeplinking)
+        * [기본 딥링크](#deeplinking-standard)
+        * [거치(deferred) 딥링크](#deeplinking-deferred)
+        * [안드로이드 앱 용 딥링크](#deeplinking-android)
+* [문제 해결](#troubleshooting)
+    * [iOS 정보 디버깅](#ts-debug-ios)
+    * [빌드 스크립트 수행 실패](#ts-build-script-fail) 
+* [라이선스](#license)
 
-### 1. SDK 다운로드 및 설치
+## 기본 연동
 
-[릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. Unity 패키지 압축 파일을 원하는 폴더에 풉니다.
+다음은 Adjust SDK를 Unity3d 프로젝트와 연동하기 위해 최소한으로 수행해야 하는 절차입니다.
 
-### 2. 프로젝트에 추가
+### SDK 받기
+
+[릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. 페이지에는 Unity 패키지 두 가지가 있습니다.
+
+    * Adjust_v4.11.2_Unity_4.unitypackage - Unity IDE version 4를 사용하면 이 패키지를 다운로드하십시오.
+    * Adjust_v4.11.2_Unity_5.unitypackage - Unity IDE version 5를 사용하면 이 패키지를 다운로드하십시오.
+
+### 프로젝트에 SDK 추가
 
 프로젝트를 Unity Editor에서 열고 `Assets a†’ Import Package a†’ Custom Package`로 이동하여 다운로드한 Unity 패키지 파일을 선택합니다.
 
 ![][import_package]
 
-### 3. adjust를 앱과 연동
+### 앱에 SDK 연동
 
 `Assets/Adjust/Adjust.prefab`에 있는 prefab을 첫 번째 화면에 추가합니다.
 
-추가한 prefab의 Inspector 메뉴에서 Adjust 스크립트의 매개변수를 편집합니다.
+추가한 prefab의 Inspector 메뉴에서 Adjust 스크립트의 파라미터를 편집합니다.
 
 ![][adjust_editor]
 
-`{YourAppToken}`을 앱 토큰으로 변경합니다. 앱 토큰은 [대시보드]에서 찾을 수 있습니다.
+Adjust prefab에서는 다음 옵션을 설정할 수 있습니다.
 
-`Log Level` 값을 다음 중 하나로 변경하여 표시되는 로그 수량을 늘리거나 줄일 수 있습니다.
+    * [수동으로 시작 (Start Manually)](#start-manually)
+    * [이벤트 버퍼링 (Event Buffering)](#event-buffering)
+    * [인쇄 속성 (Print Attribution)](#attribution-callback)
+    * [Adwords 요청 만들기 (Make Adwords Request)](#adwords-tracking)
+    * [거치 딥링크 구현 (Launch Defered Deep Link)](#deeplinking-deferred-open)]
+    * [앱 토큰 (App Token)](#app-token)
+    * [로그 레벨 (Log Level)](#adjust-logging)
+    * [환경 (Environment)](#environment)
+   
+`{YourAppToken}`을 앱 토큰으로 변경합니다. 앱 토큰은 [대시보드](#adjust.com)에서 찾을 수 있습니다.
 
-- `Verbose` - 모든 로깅 사용
-- `Debug` - 추가 로깅 사용
-- `Info` - 기본값
-- `Warn` - 정보 로깅 사용 중지
-- `Error` - 경고 사용 중지
-- `Assert` - 오류 사용 중지
-
-대상이 windows 기반인 경우 adjust 라이브러리에서 컴파일된 로그를 `released` 모드에서 보려면 로그 출력을 `debug` 모드에서 테스트하는 동안 앱으로 리디렉션해야 합니다.
-
-SDK를 시작하기 전에 `setLogDelegate` 메서드를 `AdjustConfig` 인스턴스에서 호출합니다.
-
-```cs
-//...
-adjustConfig.setLogDelegate(msg => Debug.Log(msg));
-//...
-Adjust.start (adjustConfig);
-```
-
-앱을 테스트에 사용할지 아니면 프로덕션에 사용할 지에 따라 `Environment`를 다음 값 중 하나로 변경해야 합니다.
+앱 빌드가 테스트 용인지 제작 용인지에 따라 `Environment`를 다음 값 중 하나로 변경해야 합니다.
 
 ```
     'Sandbox'
     'Production'
 ```
 
-**중요:** 이 값은 앱을 테스트하는 경우에만 `Sandbox`로 설정해야 합니다. 앱을 게시하기 직전에 environment를 `Production`으로 설정해야 합니다. 테스트를 다시 시작할 때 `Sandbox`로 다시 설정하십시오.
+**중요:** 이 값은 앱을 테스트하는 경우에만 `Sandbox`로 설정해야 합니다. 앱을 게시하기 직전에 environment를 `Production`으로 설정해야 합니다. 다시 테스트할 때 `Sandbox`로 재설정하십시오.
 
-이 environment는 실제 트래픽과 테스트 장치의 테스트 트래픽을 구별하기 위해 사용합니다. 이 값을 항상 의미 있게 유지해야 합니다! 이것은 특히 매출을 트래킹하는 경우에 중요합니다.
+이 environment는 실제 트래픽과 테스트 장치의 테스트 트래픽을 구별하기 위해 사용합니다. 이 값은 항상 유의미하게 유지해야 합니다! 특히 매출 추적 시에 중요합니다.
 
-앱에서 이벤트 트래킹을 많이 사용하는 경우 일부 HTTP 요청을 지연하여 1분마다 하나의 배치로 보낼 수 있습니다. `Event Buffering` 상자를 선택하여 이벤트 버퍼링을 사용할 수 있습니다.
-
-게임의 `Awake` 이벤트에서 adjust SDK를 시작하지 않으려면 `Start Manually` 상자를 선택합니다. 대신 `AdjustConfig` 개체를 매개변수로 사용하여 `Adjust.start` 메서드를 호출하면 adjust SDK를 시작할 수 있습니다.
+앱의 `Awake` 이벤트에서 Adjust SDK를 자동 시작하지 않으려면 `Start Manually` 상자에 체크합니다. 이 옵션을 선택하면 코드 내에서 Adjust ADK를 직접 초기화하고 시작해야 합니다. `AdjustConfig` 개체를 매개변수로 하여 `Adjust.start` 메소드를 호출하면 Adjust SDK를 시작할 수 있습니다.
 
 이 옵션 등이 있는 버튼 메뉴 화면의 예를 보려면 `Assets/Adjust/ExampleGUI/ExampleGUI.unity`에 있는 화면 예제를 여십시오. 이 화면의 원본은 `Assets/Adjust/ExampleGUI/ExampleGUI.cs`에 있습니다.
 
-### 4. Google Play 서비스 추가
+### Adjust 로그 기록
 
-2014년 8월 1일 이후로 Google Play Store의 앱은 [Google 광고 ID][google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. adjust SDK에서 Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][google_play_services]를 연동해야 합니다. 아직 연동하지 않은 경우 `google-play-services_lib` 폴더를 Unity 프로젝트의 `Assets/Plugins/Android` 폴더로 복사해야 합니다. 그러면 앱을 작성한 후 Google Play 서비스가 연동됩니다.
+다음 항목의 `Log Level` 값을 조정하여 로그 기록 분량을 늘이거나 줄일 수 있습니다.
 
-`google-play-services_lib`는 이미 설치했을 수 있는 Android SDK의 일부분입니다.
+    * `Verbose` - 로그 전체 활성화
+    * `Debug` - 더 많은 로그 활성화
+    * `Info` - 디폴트
+    * `Warn` - F 로그 기록 비활성화
+    * `Error` - 경고(warnings) 역시 비활성화
+    * `Assert` - 오류 (errors) 역시 비활성화
+    * `Suppress` - 로그 전체 비활성화
+    * 
+로그 기록 출력 전체를 비활성화하고 Adjust SDK를 코드에서 수동으로 초기화하려면, 로그 레벨을 Suppress에 두고 `AdjustConfig` 개체를 생성자(constructor)로 써야 합니다. 이 개체는 suppress 로그 레벨을 유지할 지 아닐 지를 가리키는 boolean 파라미터를 받습니다. 
 
-Android SDK는 두 가지 방법으로 다운로드할 수 있습니다. `Android SDK Manager`가 있는 도구를 사용하는 경우 `Android SDK Tools`를 다운로드해야 합니다. 설치한 후에 `SDK_FOLDER/extras/google/google_play_services/libproject/` 폴더에서 라이브러리를 찾을 수 있습니다.
+```
+string appToken = "{YourAppToken}";
+string environment = AdjustEnvironment.Sandbox;
+
+AdjustConfig config = new AdjustConfig(appToken, environment, true);
+config.setLogLevel(AdjustLogLevel.Suppress);
+
+Adjust.start(config);
+```
+
+대상이 윈도우 기반일 때 `released` 모드에서 Adjust 라이브러리로부터 모은 로그 기록을 보려면, `debug` 모드에서 테스트하는 동안 로그 출력을 앱으로 재전송해야 합니다. 
+
+SDK를 시작하기 전 `AdjustConfig` 인스턴스에서 `setLogDelegate` 메소드를 호출하세요. 
+
+```cs
+//...
+adjustConfig.setLogDelegate(msg => Debug.Log(msg));
+//...
+Adjust.start(adjustConfig);
+```
+
+### Google Play 서비스
+
+2014년 8월 1일 부로 Google Play Store의 앱은 고유 장치 식별을 위해 [Google 광고 ID][google_ad_id]를 사용해야 합니다. Adjust SDK에서 Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][google_play_services]를 연동해야 합니다. 아직 연동하지 않은 경우 `google-play-services_lib` 폴더를 Unity 프로젝트의 `Assets/Plugins/Android` 폴더로 복사하세요. 그러면 앱을 작성한 후 Google Play 서비스가 연동됩니다.
+
+`google-play-services_lib`는 Android SDK의 일부분으로, 이미 설치했을 수 있습니다.
+
+Android SDK는 두 가지 방법으로 다운로드할 수 있습니다. `Android SDK Manager`가 있는 도구를 사용하는 경우 `Android SDK Tools`를 다운로드해야 합니다. 설치 후 `SDK_FOLDER/extras/google/google_play_services/libproject/` 폴더에서 라이브러리를 찾을 수 있습니다.
 
 ![][android_sdk_location]
 
-Android SDK Manager가 있는 도구를 사용하지 않는 경우 [공식 페이지][android_sdk_download]에서 Android SDK의 단독 실행형 버전을 다운로드해야 합니다. 이 버전을 다운로드하면 Android SDK Tools가 포함되지 않은 기본 Android SDK 버전만 갖게 됩니다. 자세한 내용은 Google에서 제공하는 `SDK Readme.txt` 파일을 참조하십시오. 이 파일은 Android SDK 폴더에 있습니다.
+안드로이드 SDK Manager가 있는 도구를 사용하지 않는 경우 [공식 페이지][android_sdk_download]에서 안드로이드 SDK의 단독 실행형 버전을 다운로드해야 합니다. 이 버전을 다운로드하면 안드로이드 SDK Tools가 포함되지 않은 기본 안드로이드 SDK 버전만 갖게 됩니다. 자세한 내용은 Google에서 제공하는 `SDK Readme.txt` 파일을 참조하십시오. 이 파일은 안드로이드 SDK 폴더에 있습니다.
 
-### 5. 빌드 스크립트
+**업데이트:** 새 안드로이드 SDK 버전을 설치한 상태라면, Google이 SDK 루트 폴더 내의 Google Play Services 폴더 구조를 변경했습니다. 위에 설명한 구조는 이제 아래와 같이 보일 것입니다. 
 
-빌드 프로세스를 쉽게 수행할 수 있도록 Android 및 iOS용 빌드 스크립트를 모두 연동했습니다. 각 빌드 후에 스크립트가 실행되고 `Assets/Editor/AdjustEditor.cs` 파일에 의해 호출됩니다. 스크립트를 사용하려면 `python 2.7` 이상이 설치되어 있어야 합니다.
+![](https://camo.githubusercontent.com/320f019a0afe516c47f9548d5e1e88438d4635b8/68747470733a2f2f7261772e6769746875622e636f6d2f61646a7573742f61646a7573745f73646b2f6d61737465722f5265736f75726365732f756e6974792f76342f616e64726f69645f73646b5f646f776e6c6f61645f6e65772e706e67)
 
-`Assets a†’ Adjust a†’ Change post processing status` 메뉴를 클릭하여 사후 프로세싱을 사용하지 않도록 설정할 수 있습니다.
-사후 프로세싱을 다시 사용하도록 설정하려면 같은 버튼을 누르십시오.
+이제 예전처럼 Google Play 서비스 라이브러리 전체에 대해서가 아니라  개별 부분에만 접근 권한을 가지고 있을 수 있으므로, Google Play 서비스 라이브러리에서 Adjust SDK에게 필요한 basement 부분을 추가하는 게 좋습니다. `Assets/Plugins/Android` 폴더에 `play-services-basement-x.y.z.aar` 파일을 추가하면 Adjust SDK가 Google Play 서비스에서 필요한 부분을 성공적으로 연동할 수 있습니다.
 
-#### iOS
+### 빌드 후 프로세스
 
-iOS 빌드 스크립트는 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildiOS.py`에 있습니다. 이 스크립트는 Unity3d iOS 생성 프로젝트를 다음과 같이 변경합니다.
+빌드 프로세스를 원활하게 만들기 위해, Adjust unity 패키지는 빌드 후 프로세스를 수행하여 SDK가 제대로 작동하도록 해줍니다. `Unity 4`와 `Unity 5`에서 수행하는 프로세스에는 차이가 있습니다.
 
-1. iAd 및 AdSupport 프레임워크를 프로젝트에 추가합니다. 이 작업은 adjust SDK에서 필수입니다. 자세한 내용은 adjust [iOS][ios] 페이지를 참조하십시오.
+`Unity 4`용 패키지를 사용하는 경우, 이 프로세스는 Python 스크립트 수행으로 이루어집니다.
+    
+    * iOS Python 빌드 스크립트는 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildiOS.py`에 있습니다.
+    * 안드로이드 Python 빌드 스크립트는 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildAndroid.py`에 있습니다.  
 
-2. 다른 링커 플래그인 `-ObjC`를 추가합니다. 그러면 빌드 시 adjust Objective-C 카테고리가 인식될 수 있습니다.
+스크립트는 각 빌드가 `Assets/Editor/AdjustEditor.cs`로부터 호출을 받으면 작동합니다. `Python 2.7` 이상이 설치되어 있어야 합니다. 포스트 프로세스를 비활성화하려면 메뉴에서 `Assets → Adjust → Change post processing status`를 클릭하십시오. 같은 버튼을 다시 클릭하면 재활성화됩니다.
 
-Unity3d iOS 생성 프로젝트를 다른 위치에 저장하는 사용자 지정 빌드가 있는 경우, `Assets a†’ Adjust a†’ Set iOS build path` 메뉴를 클릭하고 iOS 프로젝트의 빌드 경로를 선택하여 스크립트에 알리십시오.
+`Unity 5`용 패키지를 사용하는 경우, 이 프로세스는 `AdjustEditor.cs` 안에 있는 `OnPostprocessBuild` 메소드가 수행합니다. iOS 빌드 후 프로세스를 올바로 수행하려면 `Unity 5`에 `iOS build support`가 설치되어 있어야 합니다.
 
-스크립트 실행 후에는 `AdjustPostBuildiOSLog.txt` 로그 파일이 Unity3d 프로젝트의 루트에 실행된 스크립트의 로그 메시지와 함께 기록됩니다.
+`Unity 4`를 실행하면 스크립트는 Unity 프로젝트 루트에서 스크립트 실행 메시지와 함께 `AdjustPostBuildAndroidLog.txt` 로그 파일을 생성합니다. `Unity 5`의 경우 로그 메시지는 전부 Unity IDE 콘솔 출력 윈도우에 작성됩니다.
+ 
+#### iOS 빌드 후 프로세스
 
-#### Android
+iOS 빌드 후 프로세스는 생성된 Xcode 프로젝트를 다음과 같이 변경합니다.
 
-Android 빌드 스크립트는 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildAndroid.py`에 있습니다. 이 스크립트는 `Assets/Plugins/Android/`에 있는 `AndroidManifest.xml` 파일을 변경합니다. 이 방법의 경우 Android 패키지에 빌드 프로세스가 끝나기 전의 매니페스트 파일이 사용된다는 문제가 있습니다.
+1. `iAd` 및 `AdSupport.framework`를 프로젝트에 추가합니다. 이 작업은 Adjust SDK에서 필수입니다. 자세한 내용은 [iOS SDK README](https://github.com/adjust/ios_sdk) 페이지를 참조하십시오.
+2. 다른 링커 플래그인 `-ObjC`를 추가합니다. 그러면 빌드 시 adjust Objective-C 카테고리를 인식할 수 있습니다.
+3. `Objective-C exceptions`를 활성화합니다.
 
-이 문제를 방지하려면 이전 실행에서 만들었거나 변경된 매니페스트를 사용하여 빌드를 다시 실행하거나, `Assets a†’ Adjust a†’ Fix AndroidManifest.xml` 메뉴를 클릭하여 스크립트가 빌드 프로세스 전에 실행될 수 있게 하십시오. 이 단계는 매니페스트 파일과 adjust SDK의 호환성이 계속 유지되는 경우 한 번만 수행하면 됩니다.
+`Unity 4`를 사용하며 Unity iOS 생성 프로젝트를 다른 위치에 저장하는 사용자 지정 빌드가 있는 경우, `Assets → Adjust → Set iOS build path` 메뉴를 클릭하고 iOS 프로젝트의 빌드 경로를 선택하여 스크립트에 알리십시오.
+
+#### 안드로이드 빌드 후 프로세스
+
+Android 빌드 후 프로세스는 `Assets/Plugins/Android/`에 있는 `AndroidManifest.xml` 파일에서 변경사항을 수행합니다. 
+
+`Unity 4` 상에서 사용 시 빌드 프로세스 완결 전에 사용한 것과 동일한 파일을 매니페스트 파일로 사용하게 된다는 문제가 있습니다. 이를 해결하려면 이전 실행에서 만들었거나 변경된 매니페스트를 사용하여 빌드를 다시 실행하거나, `Assets → Adjust → Fix AndroidManifest.xml` 메뉴를 클릭하여 스크립트가 빌드 프로세스 전에 실행될 수 있게 하십시오. 어느 쪽 방법을 쓰든 매니페스트 파일과 Adjust SDK의 호환성이 유지되는 경우 이 단계는 한 번만 수행하면 됩니다.
 
 ![][menu_android]
 
-`Assets/Plugins/Android/`에 `AndroidManifest.xml` 파일이 없으면 adjust의 호환 가능한 매니페스트 파일인 `AdjustAndroidManifest.xml`을 사용하여 복사본을 만드십시오. `AndroidManifest.xml` 파일이 이미 있는 경우 다음 사항을 확인하고 변경하십시오.
+`Unity 5`의 안드로이드 빌드 후 프로세스에서는 이 단계를 수행하지 않아도 됩니다. 
 
-1. 브로드캐스트 수신기를 추가합니다. 자세한 내용은 adjust [Android][android] 페이지를 참조하십시오.
+안드로이드 빌드 후 프로세스에서는 먼저 안드로이드 플러그인 폴더에서 `AndroidManifest.xml` 파일의 존재여부를 확인합니다. `Assets/Plugins/Android/`에 이 파일이 없으면 호환 가능한 매니페스트 파일인 `AdjustAndroidManifest.xml`을 만듭니다. 파일이 이미 있다면 다음 사항을 확인하고 변경합니다.
 
+1. Adjust 브로드캐스트 수신기를 추가합니다. 자세한 내용은 [안드로이드 SDK README](https://github.com/adjust/adjust_sdk) 페이지를 참조하십시오. `INSTALL_REFERRER` 인텐트를 취급하는 **자신의 브로드캐스트 수신기**를 사용하고 있는 경우 매니페스트 파일에 Adjust 브로드캐스트 수신기를 추가하지 않아도 된다는 사실을 명심하십시오. 지워도 무방하지만, [안드로이드 설명서](htpps://github.com/adjust/android_sdk/blob/master/doc/referrer.md)에 설명한 대로 자신의 브로드캐스트 수신기 안에 Adjust 브로드캐스트 수신기에 대한 호출을 추가하십시오.
 2. 인터넷에 연결할 수 있는 권한을 추가합니다.
-
-3. Wi-Fi 네트워크에 대한 정보에 액세스할 수 있는 권한을 추가합니다.
-
-스크립트 실행 후에는 `AdjustPostBuildAndroidLog.txt` 로그 파일이 Unity3d 프로젝트의 루트에 실행된 스크립트의 로그 메시지와 함께 기록됩니다.
+3. Wi-Fi 네트워크 정보에 액세스할 수 있는 권한을 추가합니다.
 
 ## 추가 기능
 
-adjust SDK를 프로젝트에 연동한 후에는 다음 기능을 사용할 수 있습니다.
+Adjust SDK를 프로젝트에 연동한 후에는 다음 기능을 사용할 수 있습니다.
 
-### 6. 사용자 지정 이벤트 트래킹 추가
+### 이벤트 추적
 
-원하는 이벤트에 대해 adjust에 알릴 수 있습니다. 버튼의 모든 탭을 트래킹하려는 경우 [대시보드]에서 새 이벤트 토큰을 만들어야 합니다. 이벤트 토큰이 `abc123`일 경우 버튼의 클릭 핸들러 메서드에 다음 행을 추가하여 클릭을 트래킹할 수 있습니다.
-
-```cs
-AdjustEvent adjustEvent = new AdjustEvent ("abc123");
-Adjust.trackEvent (adjustEvent);
-```
-
-### 7. 매출 트래킹 추가
-
-사용자가 광고를 누르거나 인앱 구매를 하여 매출을 발생시킬 수 있는 경우 이벤트를 사용하여 해당 매출을 트래킹할 수 있습니다. 한 번 누를 때 0.01 유로의 매출이 발생한다고 가정할 경우 매출 이벤트를 다음과 같이 트래킹할 수 있습니다.
+원하는 이벤트를 Adjust에 알릴 수 있습니다. 버튼의 모든 탭을 추적하려는 경우 [대시보드](adjust.com)에서 새 이벤트 토큰을 만들기만 하면 됩니다. 예를 들어 이벤트 토큰이 `abc123`일 경우 버튼의 클릭 핸들러 메소드에 다음 행을 추가하여 클릭을 추적할 수 있습니다.
 
 ```cs
-AdjustEvent adjustEvent = new AdjustEvent ("abc123");
-adjustEvent.setRevenue (0.01, "EUR");
-Adjust.trackEvent (adjustEvent);
+AdjustEvent adjustEvent = new AdjustEvent("abc123");
+Adjust.trackEvent(adjustEvent);
 ```
 
-##### 인앱 구매 유효성 검사
+#### 수익 추적
 
-adjust의 서버 측 수신 확인 도구인 구매 유효성 검사를 사용하여 앱에서 이루어지는 인앱 구매의 유효성을 확인하려면 `Unity3d purchase SDK`를 확인하십시오. 자세한 내용은 [여기][unity-purchase-sdk]를 참조하십시오.
-
-### 8. 콜백 매개변수 추가
-
-[대시보드]에서 해당 이벤트의 콜백 URL을 등록할 수도 있으며, 그러면 이벤트가 트래킹될 때마다 GET 요청이 해당 URL로 전송됩니다. 이 경우 몇 개의 키-값 쌍을 개체에 포함하여 `trackEvent` 메서드에 전달할 수도 있습니다. 그러면 명명된 매개변수들이 콜백 URL에 추가됩니다.
-
-예를 들어 이벤트 토큰 `abc123`을 사용하여 이벤트에 대해 `http://www.adjust.com/callback` URL을 등록하고 다음 행을 실행한다고 가정합니다.
+사용자가 광고를 누르거나 인앱 구매를 하여 수익이 발생할 수 있는 경우 이벤트를 사용하여 해당 매출을 추적할 수 있습니다. 예를 들어 한 번 누를 때 0.01 유로의 수익이 발생할 경우 수익 이벤트를 다음과 같이 추적할 수 있습니다.
 
 ```cs
-AdjustEvent adjustEvent = new AdjustEvent ("abc123");
-
-adjustEvent.addCallbackParameter ("key", "value");
-adjustEvent.addCallbackParameter ("foo", "bar");
-
-Adjust.trackEvent (adjustEvent);
+AdjustEvent adjustEvent = new AdjustEvent("abc123");
+adjustEvent.setRevenue(0.01, "EUR");
+Adjust.trackEvent(adjustEvent);
 ```
 
-이 경우에는 이벤트가 트래킹되고 요청이 다음 주소로 전송됩니다.
+#### 수익 중복 제거
+
+거래 ID를 선택 사항으로 추가하여 수익 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 중복 거래 ID로 이루어진 수익 이벤트는 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
+
+인앱 구매를 추적할 경우, 거래가 완료되고 아이템을 구매했을 때만 `trackEvent`를 호출해야 한다는 사실을 기억하십시오. 그렇게 해야 실제로 발생하지 않은 수익을 추적하는 일을 피할 수 있습니다.
+
+```cs
+AdjustEvent adjustEvent = new AdjustEvent("abc123");
+
+adjustEvent.setRevenue(0.01, "EUR");
+adjustEvent.setTransactionId("transactionId");
+
+Adjust.trackEvent(adjustEvent);
+```  
+
+#### 인앱 구매 검증
+
+Adjust의 서버 측 수신 확인 도구인 구매 검증(Purchase Verification)을 사용하여 앱에서 이루어지는 구매의 유효성을 확인하려면 `Unity3d purchase SDK`를 확인하십시오. 자세한 내용은 [여기][unity-purchase-sdk]를 참조하십시오.
+
+#### 콜백 파라미터
+
+[대시보드](adjust.com)에서 해당 이벤트의 콜백 URL을 등록할 수도 있으며, 그러면 이벤트를 추적할 때마다 GET 요청이 해당 URL로 전송됩니다. 이 경우 몇 개의 키-값 쌍을 개체에 포함하여 `trackEvent` 메소드에 전달할 수도 있습니다. 그러면 명명된 파라미터가 콜백 URL에 추가됩니다.
+
+예를 들어 이벤트 토큰 `abc123`을 사용하여 이벤트에 대해 `http://www.adjust.com/callback` URL을 등록하고 다음 행을 실행한다고 가정해 봅시다.
+
+```cs
+AdjustEvent adjustEvent = new AdjustEvent("abc123");
+
+adjustEvent.addCallbackParameter("key", "value");
+adjustEvent.addCallbackParameter("foo", "bar");
+
+Adjust.trackEvent(adjustEvent);
+```
+
+이 경우에는 이벤트를 추적하기 위해 다음 주소로 요청을 전송합니다.
 
 ```
 http://www.adjust.com/callback?key=value&foo=bar
 ```
 
-iOS의 `{idfa}` 또는 Android의 `{android_id}`처럼 매개변수 값으로 사용할 수 있는 다양한 자리 표시자가 지원됩니다.  결과로 생성된 콜백에서는 iOS의 경우 `{idfa}` 자리 표시자가 현재 장치의 광고주용 ID로 변경되고 Android의 경우 `{android_id}`가 현재 장치의 AndroidID로 변경됩니다. 또한 사용자 지정 매개변수는 저장되지 않고 콜백에만 추가됩니다.  이벤트에 대한 콜백을 등록하지 않은 경우 해당 매개변수는 읽을 수 없습니다.
+iOS의 `{idfa}` 또는 안드로이드의 `{android_id}`처럼 파라미터 값으로 사용할 수 있는 다양한 자리 표시자(placeholder)를 지원합니다. 결과로 생성된 콜백에서는 iOS의 경우 `{idfa}` 자리 표시자가 현재 장치의 광고주 ID로 변경되고 안드로이드의 경우 `{android_id}`가 현재 장치의 안드로이드 Google Play 서비스 ID로 변경됩니다. 또한 사용자 지정 파라미터는 저장되지 않고 콜백에만 추가된다는 사실을 기억해 주십시오. 이벤트 콜백을 등록하지 않은 경우 해당 파라미터는 읽을 수 없습니다.
 
-### 9. 파트너 매개변수
+#### 파트너 파라미터
 
-adjust 대시보드에서 활성화된 연동에 대해 네트워크 파트너로 전송할 매개변수도 추가할 수 있습니다.
+Adjust 대시보드에서 활성화된 연동에서 네트워크 파트너로 전송할 파라미터도 추가할 수 있습니다.
 
-이 매개변수는 위에서 설명한 콜백 매개변수의 경우와 비슷하지만, `AdjustEvent` 인스턴스에서 addPartnerParameter 메서드를 호출해야 추가할 수 있습니다.
+위에서 설명한 콜백 파라미터와 비슷하지만, `AdjustEvent` 인스턴스에서 `addPartnerParameter` 메소드를 호출해야 추가할 수 있습니다.
 
-```cs
-AdjustEvent adjustEvent = new AdjustEvent ("abc123");
+```
+AdjustEvent adjustEvent = new AdjustEvent("abc123");
 
-adjustEvent.addPartnerParameter ("key", "value");
-adjustEvent.addPartnerParameter ("foo", "bar");
+adjustEvent.addPartnerParameter("key", "value");
+adjustEvent.addPartnerParameter("foo", "bar");
 
-Adjust.trackEvent (adjustEvent);
+Adjust.trackEvent(adjustEvent);
 ```
 
-특별 파트너와 해당 파트너와의 연동에 대한 자세한 내용은 [특별 파트너 설명서][special-partners]를 참조하십시오.
+특별 파트너와 그 연동에 대한 자세한 내용은 [특별 파트너 설명서][special-partners]를 참조하십시오.
 
-### 10. 어트리뷰션 변경 콜백 수신
+### 세션 파라미터
 
-트래커 어트리뷰션 변경에 대한 알림을 받기 위한 콜백을 등록할 수 있습니다. 어트리뷰션을 위해 고려되는 다양한 소스로 인해 이 정보는 동시에 제공될 수 없습니다. 콜백(선택 사항)을 응용 프로그램에서 구현하려면 다음 단계를 수행하십시오.
+일부 파라미터는 Adjust SDK 이벤트 및 세션 발생시마다 전송을 위해 저장합니다. 어느 파라미터든 한 번 저장하면 로컬에 바로 저장되므로 매번 새로 추가할 필요가 없습니다. 같은 파라미터를 두 번 저장해도 효력이 없습니다.
 
-[해당 어트리뷰션 데이터 정책][attribution-data]을 고려하십시오.
+이 세션 파라미터는 설치 시에도 전송할 수 있도록 Adjust SDK 런칭 전에도 호출할 수 있습니다. 설치 시에 전송하지만 필요한 값은 런칭 후에야 들어갈 수 있게 하고 싶다면 Adjust SDK 런칭 시 [예약 시작](#delay-start)을 걸 수 있습니다. 
 
-1. `Action<AdjustAttribution>` 위임의 시그너처가 있는 메서드를 만듭니다.
+### 세션 콜백 파라미터
 
-2. `AdjustConfig` 개체를 만든 후 `adjustConfig.setAttributionChangedDelegate`를 이전에 만든 메서드를 사용하여 호출합니다. 시그너처가 같은 lambda도 사용할 수 있습니다.
+[이벤트](#callback-parameters)에 등록한 콜백 파라미터는 Adjust SDK 전체 이벤트 및 세션 시 전송할 목적으로 저장할 수 있습니다.
 
-3. `Adjust.prefab`을 사용하는 대신 `Adjust.cs` 스크립트가 다른 `GameObject`에 추가되었습니다.
-이 `GameObject`의 이름을 `AdjustConfig.setAttributionChangedDelegate`의 두 번째 매개변수로 전달해야 합니다.
+세션 콜백 파라미터는 이벤트 콜백 파라마터와 비슷한 인터페이스를 지녔지만, 이벤트에 키, 값을 추가하는 대신 `Adjust` 인스턴스에 있는 `addSessionCallbackParameter` 메소드를 호출하여 추가합니다.
+
+```
+Adjust.addSessionCallbackParameter("foo", "bar");
+```
+
+세션 콜백 파라미터는 이벤트에 추가된 콜백 파라미터와 합쳐지며, 이벤트에 추가된 콜백 파라미터가 우선권을 지닙니다. 그러나 세션에서와 같은 키로 이벤트에 콜백 파라미터를 추가한 경우 새로 추가한 콜백 파라미터가 우선권을 가집니다.
+
+원하는 키를 `Adjust` 인스턴스의 `removeSessionCallbackParameter` 메소드로 전달하여 특정 세션 콜백 파라미터를 제거할 수 있습니다.
+
+```
+Adjust.removeSessionCallbackParameter("foo");
+```
+
+세션 콜백 파라미터의 키와 값을 전부 없애고 싶다면 `Adjust` 인스턴스의 `resetSessionCallbackParameters` 메소드로 재설정하면 됩니다.
+
+```
+Adjust.resetSessionCallbackParameters();
+```
+
+### 세션 파트너 파라미터
+
+Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 파라미터](#session-callback-parameters)가 있는 것처럼, 세션 파트너 파라미터도 있습니다.
+
+이들 파라미터는 Adjust [대시보드](adjust.com)에서 연동 및 활성화된 네트워크 파트너에게 전송할 수 있습니다.
+
+세션 파트너 파라미터는 이벤트 파트너 파라미터와 인터페이스가 비슷하지만, 이벤트에 키와 값을 추가하는 대신 `Adjust` 인스턴스에서 `addSessionPartnerParameter` 메소드를 호출하여 추가합니다.
+
+```
+Adjust.addSessionPartnerParameter("foo", "bar");
+```
+
+세션 파트너 파라미터는 이벤트에 추가한 파트너 파라미터와 합쳐지며, 이벤트에 추가된 파트너 파라미터가 우선순위를 지닙니다. 그러나 세션에서와 같은 키로 이벤트에 파트너 파라미터를 추가한 경우, 새로 추가한 파트너 파라미터가 우선권을 가집니다.
+
+원하는 키를 `Adjust` 인스턴스의 `removeSessionPartnerParameter` 메소드로 전달하여 특정 세션 파트너 파라미터를 제거할 수 있습니다.
+
+```
+Adjust.removeSessionPartnerParameter("foo");
+```
+
+세션 파트너 파라미터의 키와 값을 전부 없애고 싶다면 `Adjust` 인스턴스의 `resetSessionPartnerParameters` 메소드로 재설정하면 됩니다.
+
+```
+Adjust.resetSessionPartnerParameters();
+```
+
+### 예약 시작
+
+Adjust SDK에 예약 시작을 걸면 앱이 고유 식별자 등의 세션 파라미터를 얻어 인스톨 시에 전송할 시간을 벌 수 있습니다.
+
+`AdjustConfig` 인스턴스의 `setDelayStart` 메소드에서 예약 시작 시각을 초 단위로 설정하세요.
+
+```
+config.setDelayStart(5.5);
+```
+
+이 경우 Adjust SDK는 최초 인스톨 세션 및 생성된 이벤트를 5.5초간 기다렸다가 전송합니다. 이 시간이 지난 후, 또는 그 사이에 `Adjust.sendFirstPackages()`을 호출했을 경우 모든 세션 파라미터가 지연된 인스톨 세션 및 이벤트에 추가되며 Adjust SDK는 원래대로 돌아옵니다.
+
+**Adjust SDK의 최대 지연 예약 시작 시간은 10초입니다**.
+
+### 속성 콜백
+
+트래커 속성 변경 알림을 받기 위해 콜백을 등록할 수 있습니다. 속성에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 다음 단계를 거쳐 어플리케이션에 속성 콜백을 시행하세요.
+
+[해당 속성 데이터 정책][attribution-data]을 반드시 고려하세요.
+
+1. `Action<AdjustAttribution>` 위임 시그니처를 지닌 메소드를 만듭니다.
+
+2. `AdjustConfig` 개체를 만든 후 이전에 만든 메서드를 사용하여`adjustConfig.setAttributionChangedDelegate`를 호출합니다. 시그니처가 같은 lambda도 사용할 수 있습니다.
+
+3. `Adjust.prefab`을 사용하는 대신 `Adjust.cs` 스크립트가 다른 `GameObject`에 추가되었다면, 해당 `GameObject`의 이름을 `AdjustConfig.setAttributionChangedDelegate`의 두 번째 매개변수로 전달해야 합니다.
 
 콜백은 AdjustConfig 인스턴스를 사용하여 구성되므로, `Adjust.start`를 호출하기 전에 `adjustConfig.setAttributionChangedDelegate`를 호출해야 합니다.
 
-SDK에서 최종 어트리뷰션 데이터를 수신하면 콜백 함수가 호출됩니다. 콜백 함수를 통해 `attribution` 매개변수에 액세스할 수 있습니다. 매개변수 속성에 대한 개요는 다음과 같습니다.
+SDK에서 최종 속성 데이터를 수신하면 콜백 함수가 호출됩니다. 콜백 함수를 통해 `attribution` 파라미터에 액세스할 수 있습니다. 매개변수 속성에 대한 개요는 다음과 같습니다.
 
-- `string trackerToken` 현재 설치의 트래커 토큰.
-- `string trackerName` 현재 설치의 트래커 이름.
-- `string network` 현재 설치의 network 그룹화 기준.
-- `string campaign` 현재 설치의 campaign 그룹화 기준.
-- `string adgroup` 현재 설치의 ad group 그룹화 기준.
-- `string creative` 현재 설치의 creative 그룹화 기준.
+- `string trackerToken` 현재 설치된 트래커 토큰.
+- `string trackerName` 현재 설치된 트래커 이름.
+- `string network` 현재 설치된 네트워크 그룹화 기준.
+- `string campaign` 현재 설치된 캠페인 그룹화 기준.
+- `string adgroup` 현재 설치도의 ad group 그룹화 기준.
+- `string creative` 현재 설치의 크리에이티브 그룹화 기준.
 
 ```cs
 using com.adjust.sdk;
@@ -229,11 +394,11 @@ public class ExampleGUI : MonoBehaviour {
 }
 ```
 
-### 11. 트래킹하는 이벤트 및 세션에 대한 콜백 구현
+### 세션 및 이벤트 콜백
 
-콜백을 등록하여 성공 또는 실패 트래킹 대상 이벤트 및/또는 세션에 대한 알림을 받을 수 있습니다.
+콜백을 등록하여 이벤트 및/또는 세션 추적 성공 또는 실패 시 알림을 받을 수 있습니다.
 
-동일한 단계에 따라 성공한 트래킹 이벤트에 대해 다음 콜백 함수를 구현하십시오.
+동일한 단계에 따라 성공한 이벤트 추적에 대해 다음 콜백 함수를 구현하십시오.
 
 ```cs
 // ...
@@ -252,7 +417,7 @@ public void EventSuccessCallback (AdjustEventSuccess eventSuccessData)
 }
 ```
 
-실패한 트래킹 이벤트의 경우 다음 콜백 함수:
+실패 이벤트 추적 시 콜백 함수입니다.
 
 ```cs
 // ...
@@ -271,7 +436,7 @@ public void EventFailureCallback (AdjustEventFailure eventFailureData)
 }
 ```
 
-성공한 트래킹 세션의 경우:
+성공한 세션 추적의 경우입니다.
 
 ```cs
 // ...
@@ -290,7 +455,7 @@ public void SessionSuccessCallback (AdjustSessionSuccess sessionSuccessData)
 }
 ```
 
-그리고 실패한 트래킹 세션의 경우:
+그리고 실패한 세션 추적입니다.
 
 ```cs
 // ...
@@ -313,53 +478,87 @@ public void SessionFailureCallback (AdjustSessionFailure sessionFailureData)
 콜백에서는 콜백 전용 응답 데이터 개체에 액세스할 수 있습니다. 
 세션 응답 데이터 속성에 대한 개요는 다음과 같습니다.
 
-- `string Message` 서버에서 전송된 메시지 또는 SDK에 의해 로깅된 오류.
-- `string Timestamp` 서버에서 전송된 데이터의 타임스탬프.
-- `string Adid` adjust에 의해 제공된 고유 장치 식별자.
-- `Dictionary<string, object> JsonResponse` 서버에서 전송된 응답이 있는 JSON 개체.
+- `string Message` 서버에서 전송한 메시지 또는 SDK에 기록된 오류.
+- `string Timestamp` 서버에서 전송한 데이터의 타임스탬프.
+- `string Adid` Adjust가 제공하는 고유 장치 식별자.
+- `Dictionary<string, object> JsonResponse` 서버에서 전송한 응답이 있는 JSON 개체.
 
-두 개의 이벤트 응답 데이터 개체에는 다음 정보가 포함됩니다.
+두 개의 이벤트 응답 데이터 개체에는 다음 정보가 들어갑니다.
 
-- `string EventToken` 트래킹 패키지가 이벤트인 경우 이벤트 토큰.
+- `string EventToken` 추적한 패키지가 이벤트인 경우 이벤트 토큰.
 
-그리고 이벤트 및 세션 실패 개체에는 모두 다음이 포함됩니다.
+그리고 이벤트 및 세션 실패 개체에는 모두 다음이 들어갑니다.
 
 - `bool WillRetry` 나중에 패키지를 다시 보내려는 시도가 있을 것임을 나타냅니다.
 
-### 12. 트래킹 사용 중지
+### 추적 사용 중지
 
-`false` 매개변수를 사용할 수 있는 `setEnabled` 메서드를 호출하여 adjust SDK에서 트래킹을 사용할 수 없도록 설정할 수 있습니다. 이 설정은 세션 간에 기억되지만, 첫 번째 세션 후에만 활성화할 수 있습니다.
+`false` 매개변수를 사용할 수 있는 `setEnabled` 메소드를 호출하여 Adjust SDK에서 추적 사용을 중지하도록 설정할 수 있습니다. **이 설정은 세션 간에 기억됩니다.** 그러나 첫 번째 세션 후에만 활성화할 수 있습니다.
 
 ```cs
 Adjust.setEnabled(false);
 ```
 
-`isEnabled` 메서드를 사용하여 adjust SDK가 현재 활성화되어 있는지 확인할 수 있습니다. `enabled` 매개변수가 `true`로 설정된 `setEnabled`를 호출하여 adjust SDK를 언제든지 활성화할 수 있습니다.
+`isEnabled` 메소드를 사용하여 Adjust SDK가 현재 활성화되어 있는지 확인할 수 있습니다. `enabled` 매개변수가 `true`로 설정된 `setEnabled`를 호출하여 Adjust SDK를 언제든지 활성화할 수 있습니다.
 
-### 13. 오프라인 모드
+### 오프라인 모드
 
-adjust SDK를 오프라인 모드로 전환하여 adjust 서버로 전송하는 작업을 일시 중단하고 트래킹된 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로 오프라인 모드에서 너무 많은 이벤트가 트리거되지 않도록 주의하십시오.
+Adjust SDK를 오프라인 모드로 전환하여 adjust 서버로 전송하는 작업을 일시 중단하고 추적 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로 오프라인 모드에서 너무 많은 이벤트를 트리거(trigger)하지 않도록 주의하십시오.
 
-`setOfflineMode`를 `true`로 설정된 상태로 호출하면 오프라인 모드를 활성화할 수 있습니다.
+`setOfflineMode`를 `true`로 설정한 상태로 호출하면 오프라인 모드를 활성화할 수 있습니다.
 
 ```cs
 Adjust.setOfflineMode(true);
 ```
 
 반대로 `setOfflineMode`를 `false`로 설정한 상태로 호출하면 오프라인 모드를 비활성화할 수 있습니다.
-adjust SDK를 다시 온라인 모드로 전환하면 저장된 정보가 모두 올바른 시간 정보와 함께 adjust 서버로 전송됩니다.
+Adjust SDK를 다시 온라인 모드로 전환하면 저장된 정보가 모두 올바른 시간 정보와 함께 Adjust 서버로 전송됩니다.
 
-트래킹 사용 중지와 달리 이 설정은 세션 간에 *기억되지 않습니다*. 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는 항상 온라인 모드로 시작됩니다.
+추적 사용 중지와 달리 **이 설정은 세션 간에 기억되지 않습니다**. 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는 항상 온라인 모드로 시작됩니다.
 
-### 14. 장치 ID
+### 이벤트 버퍼링
+
+앱이 이벤트 추적을 많이 사용하는 경우, 매 분마다 배치 하나씩만 보내도록 하기 위해 일부 HTTP 요청을 지연시키고자 할 경우가 있을 수 있습니다. `AdjustConfig` 인스턴스에서 `setEventBufferingEnabled` 메소드를 호출하여 이벤트 버퍼링을 적용할 수 있습니다.
+
+```
+AdjustConfig adjustConfig = new AdjustConfig("{YourAppToken", "{YourEnvironment}");
+
+adjustConfig.setEventBufferingEnabled(true);
+
+Adjust.start(adjustConfig);
+```
+
+여기에 설정한 내용이 없으면 이벤트 버퍼링은 **기본값으로 해제됩니다**.
+
+### 배경 추적
+
+Adjust SDK 기본값 행위는 **앱이 배경에 있을 동안에는 HTTP 요청 전송을 잠시 중지**하는 것입니다. `AdjustConfig` 인스턴스에서 `setSendInBackground` 메소드를 호출하면 이를 바꿀 수 있습니다.
+
+```cpp
+AdjustConfig adjustConfig = new AdjustConfig("{YourAppToken", "{YourEnvironment}");
+
+adjustConfig.setSendInBackground(true);
+
+Adjust.start(adjustConfig);
+```
+
+여기에 설정한 내용이 없으면 배경에서의 전송은 **기본값으로 해제됩니다**.
+
+### 장치 ID
 
 Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 장치 ID와 클라이언트 ID를 조정해야 합니다. 
 
-#### Android
+### iOS 광고 식별자
 
-Google 광고 ID가 필요한 경우 제한 사항으로 인해 백그라운드 스레드에서만 해당 ID를 읽을 수
-있습니다. 
-`Action<string>` 위임이 있는 `getGoogleAdId` 함수를 호출하면 상황에 관계 없이 작동합니다.
+IDFA를 얻으려면 `Adjust` 인스턴스에서 `getIdfa` 함수를 호출합니다.
+
+```cs
+Adjust.getIdfa ()
+```
+
+### Google Play 서비스 광고 식별자
+
+Google 광고 식별자 ID를 얻으려면 백그라운드 스레드에서만 읽을 수 있다는 제한이 있습니다. `Action<string>` 위임을 지닌 `Adjust` 인스턴스의 `getGoogleAdId` 메소드를 호출하면 상황에 관계 없이 작동합니다. 
 
 ```cs
 Adjust.getGoogleAdId((string googleAdId) => {
@@ -367,50 +566,142 @@ Adjust.getGoogleAdId((string googleAdId) => {
 });
 ```
 
-`OnDeviceIdsRead` 인스턴스의 `onGoogleAdIdRead` 메서드를 통해 Google 광고 ID에 `googleAdId` 변수로 액세스할 수 있습니다.
+Google 광고 ID에 `googleAdId` 변수로 액세스할 수 있습니다.
 
-#### iOS
+### Adjust 장치 식별자
 
-IDFA를 얻으려면 `getIdfa` 함수를 호출합니다.
+Adjust 백엔드는 앱을 인스톨한 장치에서 고유한 **Adjust 장치 식별자** (**adid**)를 생성합니다. 이 식별자를 얻으려면 `Adjust` 인스턴스에서 다음 메소드를 호출하면 됩니다.
 
-```cs
-Adjust.getIdfa ()
+```cpp
+String adid = Adjust.getAdid();
 ```
+
+**주의**: **adid** 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적한 후에만 얻을 수 있습니다. 그 순간부터 Adjust SDK는 장치 **adid** 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 앱 인스톨 추적이 성공적으로 이루어지기 전에는 **adid** 억세스가 **불가능합니다**.
+
+### 사용자 속성
+
+[속성 콜백 섹션](#attribution-callback)에서 설명한 바와 같이, 이 콜백은 변동이 있을 때마다 새로운 속성 관련 정보를 전달할 목적으로 촉발됩니다. 사용자의 현재 속성 값 관련 정보를 언제든 억세스하고 싶다면, `Adjust` 인스턴스의 다음 메소드를 호출하면 됩니다.
+
+```cpp
+AdjustAttribution attribution = Adjust.getAttribution();
+```
+
+**주의**: 유저의 현재 속성 값 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적하여 최초 속성 콜백이 촉발된 후에만 얻을 수 있습니다. 그 순간부터 Adjus SDK는 유저 속성 값 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 최초 속성 콜백이 촉발되기 전에는 유저 속성 값 억세스가 **불가능합니다**. 
+
+### 푸시 토큰
+
+푸시 알림 토큰을 전송하려면 **앱에서 토큰을 받거나 업데이트가 있을 때마다** `Adjust` 인스턴스의 `setDeviceToken` 메소드를 호출하세요.
+
+```cpp
+Adjust.setDeviceToken("YourPushNotificationToken");
+```
+
+### 사전 설치 트래커
+
+Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 유저를 인식하고 싶다면 다음 절차를 따르세요.
+
+1. [대시보드](adjust.com)에 새 트래커를 생성합니다.
+2. `AdjustConfig` 인스턴스의 기본값 트래커를 다음과 같이 설정합니다.
+
+    ```cpp
+    AdjustConfig adjustConfig = new AdjustConfig(appToken, environment);
+    adjustConfig.setDefaultTracker("{TrackerToken}");
+    Adjust.start(adjustConfig);
+    ```
+
+  `{TrackerToken}`을 2에서 생성한 트래커 토큰으로 대체합니다. 대시보드에서는 (`http://app.adjust.com/`을 포함하는) 트래커 URL을 표시한다는 사실을 명심하세요. 소스코드에서는 전체 URL을 표시할 수 없으며 6자로 이루어진 토큰만을 명시해야 합니다.
+
+3. 앱 빌드를 실행하세요. 앱 로그 출력 시 다음과 같은 라인을 볼 수 있을 것입니다.
+
+    ```
+    Default tracker: 'abc123'
+    ```
+
+### 딥링크
+
+#### 딥링크는 iOS와 안드로이드 플랫폼에서만 지원합니다.
+
+URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. 기본 딥링크 상황에서 안드로이드는 딥링크 내용에 관한 정보 인출을 기본 지원합니다. 안드로이드는 거치 딥링크를 기본 지원하지 않지만, Adjust SDK는 거치 딥링크 정보를 인출하는 메커니즘을 제공합니다.
+
+생성한 (iOS용) Xcode 프로젝트 및 (안드로이드용) Android Studio / Eclipse 프로젝트에서 딥링크 취급을 앱 내 **기본 레벨**로 설정해야 합니다. 
+
+#### 기본 딥링크
+
+불행히도 이 경우 Unity C# 코드에서 딥링크 정보가 전달되지 않습니다. 앱에서 딥링크 취급을 구동시키면, 딥링크 관련 정보를 기본 레벨로 받게 됩니다. 안드로이드 및 iOS 앱에서 딥링크를 구동하는 법에 관한 자세한 정보는 아래 장에서 확인하세요.
+
+#### 거치 딥링크
+
+거치 딥링크인 경우 URL F를 받으려면, URL 내용을 전달하는 `string` 파라미터를 받는 `AdjustConfig` 객체에 콜백 메소드를 설정해야 합니다. `setDeferredDeeplinkCallback` 메소드를 호출하여 해당 인스턴스에 설정하면 됩니다.
+
+```cpp
+// ...
+
+private void DeferredDeeplinkCallback(string deeplinkURL) {
+   Debug.Log("Deeplink URL: " + deeplinkURL);
+
+   // ...
+}
+
+AdjustConfig adjustConfig = new AdjustConfig("{YourAppToken", "{YourEnvironment}");
+
+adjustConfig.setDeferredDeeplinkDelegate(DeferredDeeplinkCallback);
+
+Adjust.start(adjustConfig);
+```
+
+거치 딥링크에서는 `AdjustConfig` 객체에서 설정이 하나 더 필요합니다. Adjust SDK가 거치 딥링크 정보를 받으면, SDK가 이 URL을 열 것인지를 선택할 수 있습니다. 객체에서 `setLaunchDeferredDeeplink` 메소드를 호출하여 이 옵션을 설정할 수 있습니다.
+
+```cpp
+// ...
+
+private void DeferredDeeplinkCallback(string deeplinkURL) {
+   Debug.Log ("Deeplink URL: " + deeplinkURL);
+
+   // ...
+}
+
+AdjustConfig adjustConfig = new AdjustConfig("{YourAppToken", "{YourEnvironment}");
+
+adjustConfig.setLaunchDeferredDeeplink(true);
+adjustConfig.setDeferredDeeplinkDelegate(DeferredDeeplinkCallback);
+
+Adjust.start(adjustConfig);
+```
+
+설정 내용이 없을 경우 **Adjust SDK는 URL을 언제나 기본값으로 런칭합니다**.
+
+앱에서 딥링크를 활성화하려면, 지원하는 각 플랫폼에서 설정해야 합니다.
+
+**안드로이드 앱에서 딥링크 관리**
+
+**기본 Android Studio / Eclipse 프로젝트에서 수행해야 합니다.**
+
+안드로이드 앱이 딥링크를 기본 수준에서 취급하도록 설정하려면, 공식 안드로이드 SDK README에서 [설명서](#deep-linking) 지침을 따르세요. 
+
+**iOS 앱에서 딥링크 관리**
+
+**기본 Xcode 프로젝트에서 수행해야 합니다.** 
+
+iOS 앱이 딥링크를 기본 수준에서 취급하도록 설정하려면, 공식 iOS SDK README에서 [설명서](#deeplink-reattributions) 지침을 따르세요. 
 
 ## 문제 해결
 
-### iOS
+### iOS 정보 디버깅
+
 사후 빌드 스크립트를 사용해도 프로젝트를 즉시 실행할 수 없는 경우가 있습니다.
 
 필요한 경우 dSYM 파일을 사용하지 않도록 설정하십시오. `Project Navigator`에서 `Unity-iPhone` 프로젝트를 선택합니다. `Build Settings` 탭을 클릭하고 `debug information`을 검색합니다. `Debug Information Format` 또는 `DEBUG_INFORMATION_FORMAT` 옵션이 표시됩니다. 해당 옵션을 `DWARF with dSYM File`에서 `DWARF`로 변경합니다.
 
-### 빌드 스크립트
+### 빌드 스크립트 수행 실패
 
-사후 빌드 스크립트를 실행하려면 실행 권한이 필요합니다. 빌드 프로세스가 마지막에 중지되어 스크립트 파일 중 하나가 열리는 경우 스크립트가 기본적으로 실행될 수 없도록 시스템이 구성된 것이 원인일 수 있습니다. 이 경우 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildiOS.py` 및 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildAndroid.py`에 모두 있는 `chmod` 도구를 사용하여 실행 권한을 추가하십시오.
-
-
-[adjust.com]:           http://adjust.com
-[dashboard]:            http://adjust.com
-[releases]:             https://github.com/adjust/adjust_unity_sdk/releases
-[import_package]:       https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/import_package.png
-[adjust_editor]:        https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/adjust_editor.png
-[menu_android]:         https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/menu_android.png
-[ios]:                  https://github.com/adjust/ios_sdk
-[android]:              https://github.com/adjust/android_sdk
-[attribution_data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
-[special-partners]:     https://docs.adjust.com/en/special-partners
-[unity-purchase-sdk]:   https://github.com/adjust/unity_purchase_sdk
-[google_ad_id]:         https://developer.android.com/google/play-services/id.html
-[google_play_services]: http://developer.android.com/google/play-services/setup.html
-[android_sdk_download]: https://developer.android.com/sdk/index.html#Other
-[android_sdk_location]: https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/android_sdk_download.png
+빌드 후 스크립트에는 실행 권한이 필요합니다. 빌드 프로세스가 마지막에 중지되어 스크립트 파일 중 하나가 열리는 경우 스크립트가 기본적으로 실행될 수 없도록 시스템이 구성된 것이 원인일 수 있습니다. 이 경우 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildiOS.py` 및 `Assets/Editor/PostprocessBuildPlayer_AdjustPostBuildAndroid.py`에 모두 있는 `chmod` 도구를 사용하여 실행 권한을 추가하십시오.
 
 ## 라이선스
 
 mod_pbxproj.py 파일은 Apache License 2.0 버전(이하 "라이선스")에 따라 사용이 허가되며, 이 파일을 라이선스를 준수하지 않고 사용해서는 안 됩니다.
 라이선스의 복사본은 http://www.apache.org/licenses/LICENSE-2.0에서 다운로드할 수 있습니다.
 
-adjust SDK는 MIT 라이선스에 따라 사용이 허가됩니다.
+Adjust SDK는 MIT 라이선스에 따라 사용이 허가됩니다.
 
 Copyright (c) 2012-2015 adjust GmbH, http://www.adjust.com
 
