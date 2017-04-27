@@ -2,7 +2,7 @@
 
 이 항목에서는 Adjust™의 iOS SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서](https://github.com/adjust/ios_sdk/blob/master/doc/web_views.md)를 참조하십시오. 
+web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서][ios-web-views-guide]를 참조하십시오. 
 
 ## 목차
 
@@ -54,22 +54,22 @@ web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용
     * [Adjust 대시보드에 잘못된 수익 데이터가 표시됩니다](#ts-wrong-revenue-amount)
 * [라이선스](#license)
 
-## 앱 예제
+## <a id="example-apps"></a>앱 예제
 
 [`examples` 디렉토리][examples]에
 [`iOS (Objective-C)`][example-ios-objc], [`iOS (Swift)`][example-ios-swift], 
 [`tvOS`][example-tvos] 및 [`Apple Watch`][example-iwatch] 앱 예제가 있습니다. Xcode 프로젝트를 열어 Adjust SDK 연동 방법 예를 확인할 수 있습니다.
 
-## 기본 연동
+## <a id="basic-integration">기본 연동
 
 이 항목에서는 Adjust SDK를 iOS 프로젝트에 연동하는 절차에 대해 설명합니다. 여기서는 iOS 개발에 Xcode를 사용한다고 가정합니다.
 
 
-### SDK 얻기
+### <a id="sdk-get"></a>SDK 얻기
 
 [릴리스 페이지][releases]에서 최신 버전 SDK를 다운로드합니다. 압축 파일을 선택한 디렉토리에 풉니다.
 
-### 프로젝트에 SDK 추가
+### <a id="sdk-add">프로젝트에 SDK 추가
 
 Adjust SDK을 추가하려면 소스 파일 전체를 앱에 추가하기만 하면 됩니다. Xcode의 Project Navigator에서 `Supporting Files` 그룹(또는 기타 원하는 그룹)을 찾습니다. Finder에서 `Adjust` 하위 디렉토리를 Xcode의 `Supporting Files` 그룹으로 드래그합니다.
 
@@ -112,14 +112,14 @@ Apple은 iOS 8 출시 이후 동적 프레임워크(임베디드 프레임워크
 
 Adjust SDK를 연동할 방법을 선택했으면 [프레임워크 추가 단계](#sdk-frameworks)로 계속 진행할 수 있습니다. Adjust SDK 소스 파일을 프로젝트에 추가하려면 [SDK 얻기 단계](#sdk-get)부터 진행합니다.
 
-### AdSupport 및 iAd 프레임워크 추가
+### <a id="sdk-frameworks"></a>AdSupport 및 iAd 프레임워크 추가
 
 Project Navigator에서 프로젝트를 선택합니다. 기본 뷰의 왼쪽에서 대상을 선택합니다. `Build Phases` 탭에서 `Link
 Binary with Libraries` 그룹을 폅니다. 해당 섹션 하단에서 `+` 버튼을 클릭합니다. `AdSupport.framework`를 선택한 후 `Add` 버튼을 클릭합니다. tvOS를 사용하지 않는 경우 동일한 절차를 반복하여 `iAd.framework`를 추가합니다. 두 프레임워크에서 모두 `Status`를 `Optional`로 변경합니다.
 
 ![][framework]
 
-### 앱에 SDK 연동
+### <a id="sdk-integrate"></a>앱에 SDK 연동
 
 Adjust SDK를 소스에서 추가했다면 다음 import 문을 사용해야 합니다. 
 
@@ -147,7 +147,7 @@ tvOS 앱으로 Adjust SDK를 사용하고 있다면 다음 import 문을 사용�
 
 그 다음 기본 세션 추적을 설정합니다.
 
-#### 기본 설정
+#### <a id="basic-setup">기본 설정
 
 Project Navigator에서 Application Delegate의 소스 파일을 엽니다. `import` 문을 파일 맨 위에 추가한 후 App Delegate의 `didFinishLaunching` 또는 `didFinishLaunchingWithOptions` 메소드에서 다음 호출을 `Adjust`에 추가합니다.
 
@@ -182,7 +182,7 @@ NSString *environment = ADJEnvironmentProduction;
 
 이 환경은 실제 트래픽과 테스트 장치의 테스트 트래픽을 구별하기 위해 사용합니다. 이 값은 항상 유의미하게 유지해야 합니다! 수익 추적 시 특히 중요합니다.
 
-#### Adjust 로그 기록
+#### <a id="adjust-logging">Adjust 로그 기록
 
 다음 매개변수 중 하나를 사용하여 `ADJConfig` 인스턴스에서 `setLogLevel:`을 호출하면 테스트에 표시되는 로그의 양을 늘리거나 줄일 수 있습니다.
 
@@ -197,7 +197,7 @@ NSString *environment = ADJEnvironmentProduction;
 
 앱 제작 시 Adjust SDK 로그를 표시하고 싶지 않다면 `ADJLogLevelSuppress`를 선택하고 다른 생성자로 `ADJConfig` 개체를 초기화하여 로그 레벨 억제 모드를 활성화해야 합니다.
 
-```
+```objc
 #import "Adjust.h"
 // or #import <Adjust/Adjust.h>
 // or #import <AdjustSdk/Adjust.h>
@@ -214,17 +214,17 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 [Adjust appDidLaunch:adjustConfig];
 ```
 
-### 앱 빌드
+### <a id="build-the-app">앱 빌드
 
 앱을 작성하고 실행합니다. 빌드에 성공하면 콘솔에서 SDK 로그를 주의깊게 읽어야 합니다. 앱을 처음 런칭한 후에는 `Install tracked` 정보 로그를 확인해야 합니다.
 
 ![][run]
 
-## 추가 기능
+## <a id="additional-feature">추가 기능
 
 Adjust SDK를 프로젝트에 연동한 후에는 다음 기능을 사용할 수 있습니다.
 
-### 이벤트 추적
+### <a id="event-tracking">이벤트 추적
 
 Adjust로 이벤트를 추적할 수 있습니다. 특정 버튼의 모든 탭을 추적하려는 경우 `abc123`와 같은 관련 이벤트 토큰이 있는 새 이벤트 토큰을 [대시보드](adjust.com)에서 만듭니다. 그런 다음 버튼의 `buttonDown` 메소드에 다음 행을 추가하여 클릭을 추적할 수 있습니다.
 
@@ -237,23 +237,25 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 이벤트 인스턴스를 사용하여 이벤트를 추적하기 전에 더 자세히 구성할 수 있습니다.
 
-### 수익 추적
+### <a id="revenue-tracking">수익 추적
 
 사용자가 광고를 누르거나 인앱 구매를 통해 수익을 발생시킬 수 있는 경우 이벤트를 사용하여 해당 수익을 추적할 수 있습니다. 한 번 누를 때 0.01 유로의 수익이 발생한다고 가정할 경우 수익 이벤트를 다음과 같이 추적할 수 있습니다.
 
 ```objc
 ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
+
 [event setRevenue:0.01 currency:@"EUR"];
+
 [Adjust trackEvent:event];
 ```
 
 이것을 콜백 파라미터와 결합할 수도 있습니다.
 
-통화 토큰을 설정하면 들어오는 수익을 Adjust가 자동으로 미리 지정한 보고용 통화로 전환해 줍니다. 통화 전환에 관한 자세한 내용은 [여기](#tracking-purchases-in-different-currencies)에서 확인하세요.
+통화 토큰을 설정하면 들어오는 수익을 Adjust가 자동으로 미리 지정한 보고용 통화로 전환해 줍니다. 통화 전환에 관한 자세한 내용은 [여기][currency-conversion]에서 확인하세요.
 
-수익 및 이벤트 트래킹에 대한 자세한 내용은 [이벤트 추적 설명서][https://docs.adjust.com/en/event-tracking/#reference-tracking-purchases-and-revenues]를 참조하십시오.
+수익 및 이벤트 트래킹에 대한 자세한 내용은 [이벤트 추적 설명서][https://docs.adjust.com/ko/event-tracking/#part-5]를 참조하십시오.
 
-### 수익 중복 제거
+### <a id="revenue-deduplication"></a>수익 중복 제거
 
 거래 ID를 선택 사항으로 추가하여 수익 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 중복 거래 ID로 이루어진 수익 이벤트는 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
 
@@ -278,11 +280,11 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 }
 ```
 
-### 인앱 구매 검증
+### ### <a id="iap-verification">인앱 구매 검증
 
 Adjust의 서버 측 수신 확인 도구인 구매 검증(Purchase Verification)을 사용하여 앱에서 이루어지는 구매의 유효성을 확인하려면 iOS 구매 SDK를 확인하십시오. 자세한 내용은 [여기][ios-purchase-verification]에서 확인할 수 있습니다.
 
-### 콜백 파라미터
+### <a id="callback-parameters">콜백 파라미터
 
 [대시보드](adjust.com)에서 이벤트 콜백 URL을 등록할 수 있습니다. 이벤트를 추적할 때마다 GET 요청이 해당 URL로 전송됩니다. 이벤트를 추적하기 전에 이벤트 인스턴스에서 `addCallbackParameter`를 호출하여 콜백 파라미터를 해당 이벤트에 추가할 수 있습니다. 그러면 해당 파라미터가 콜백 URL에 추가됩니다.
 
@@ -305,7 +307,7 @@ http://www.mydomain.com/callback?key=value&foo=bar
 
 사용 가능한 값의 전체 목록을 포함한 URL 콜백 사용에 대한 자세한 내용은 [콜백 설명서][callbacks-guide]를 참조하십시오.
 
-### 파트너 파라미터
+### <a id="partner-parameters">파트너 파라미터
 
 Adjust 대시보드에서 활성화된 연동에 대해 네트워크 파트너로 전송할
 매개변수도 추가할 수 있습니다.
@@ -321,19 +323,19 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 특별 파트너와 해당 파트너와의 연동에 대한 자세한 내용은 [특별 파트너 설명서][special-partners]를 참조하십시오.
 
-### 세션 파라미터 
+### <a id="session-parameters">세션 파라미터 
 
 일부 파라미터는 Adjust SDK 이벤트 및 세션 발생시마다 전송을 위해 저장합니다. 어느 파라미터든 한 번 저장하면 로컬에 바로 저장되므로 매번 새로 추가할 필요가 없습니다. 같은 파라미터를 두 번 저장해도 효력이 없습니다.
 
 이 세션 파라미터는 설치 시에도 전송할 수 있도록 Adjust SDK 런칭 전에도 호출할 수 있습니다. 설치 시에 전송하지만 필요한 값은 런칭 후에야 들어갈 수 있게 하고 싶다면 Adjust SDK 런칭 시 [예약 시작](#delay-start)을 걸 수 있습니다. 
 
-### 세션 콜백 파라미터
+### <a id="session-callback-parameters">세션 콜백 파라미터
 
 [이벤트](#callback-parameters)에 등록한 콜백 파라미터는 Adjust SDK 전체 이벤트 및 세션 시 전송할 목적으로 저장할 수 있습니다.
 
 세션 콜백 파라미터는 이벤트 콜백 파라마터와 비슷한 인터페이스를 지녔지만, 이벤트에 키, 값을 추가하는 대신 `Adjust` 인스턴스에 있는 `addSessionCallbackParameter` 메소드를 호출하여 추가합니다.
 
-```
+```objc
 [Adjust addSessionCallbackParameter:@"foo" value:@"bar"];
 ```
 
@@ -341,17 +343,17 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 원하는 키를 `Adjust` 인스턴스의 `removeSessionCallbackParameter` 메소드로 전달하여 특정 세션 콜백 파라미터를 제거할 수 있습니다.
 
-```
+```objc
 [Adjust removeSessionCallbackParameter:@"foo"];
 ```
 
 세션 콜백 파라미터의 키와 값을 전부 없애고 싶다면 `Adjust` 인스턴스의 `resetSessionCallbackParameters` 메소드로 재설정하면 됩니다.
 
-```
+```objc
 [Adjust resetSessionCallbackParameters];
 ```
 
-### 세션 파트너 파라미터
+### <a id="session-partner-parameters">세션 파트너 파라미터
 
 Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 파라미터](#session-callback-parameters)가 있는 것처럼, 세션 파트너 파라미터도 있습니다.
 
@@ -359,7 +361,7 @@ Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 파
 
 세션 파트너 파라미터는 이벤트 파트너 파라미터와 인터페이스가 비슷하지만, 이벤트에 키와 값을 추가하는 대신 `Adjust` 인스턴스에서 `addSessionPartnerParameter` 메소드를 호출하여 추가합니다.
 
-```
+```objc
 [Adjust addSessionPartnerParameter:@"foo" value:@"bar"];
 ```
 
@@ -367,23 +369,23 @@ Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 파
 
 원하는 키를 `Adjust` 인스턴스의 `removeSessionPartnerParameter` 메소드로 전달하여 특정 세션 파트너 파라미터를 제거할 수 있습니다.
 
-```
+```objc
 [Adjust removeSessionPartnerParameter:@"foo"];
 ```
 
 세션 파트너 파라미터의 키와 값을 전부 없애고 싶다면 `Adjust` 인스턴스의 `resetSessionPartnerParameters` 메소드로 재설정하면 됩니다.
 
-```
+```objc
 [Adjust resetSessionPartnerParameters];
 ```
 
-### 예약 시작
+### <a id="delay-start">예약 시작
 
 Adjust SDK에 예약 시작을 걸면 앱이 고유 식별자 등의 세션 파라미터를 얻어 인스톨 시에 전송할 시간을 벌 수 있습니다.
 
 `ADJConfig` 인스턴스의 `setDelayStart` 메소드에서 예약 시작 시각을 초 단위로 설정하세요.
 
-```
+```objc
 [adjustConfig setDelayStart:5.5];
 ```
 
@@ -391,7 +393,7 @@ Adjust SDK에 예약 시작을 걸면 앱이 고유 식별자 등의 세션 파�
 
 **Adjust SDK의 최대 지연 예약 시작 시간은 10초입니다**.
 
-### 속성 콜백
+### <a id="attribution-callback">속성 콜백
 
 위임 콜백을 등록하여 트래커 속성 변경에 대한 알림을 받을 수 있습니다. 속성에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 앱 delegate에서 위임 프로토콜(선택 사항)을 구현하려면 다음 단계를 수행하십시오.
 
@@ -431,7 +433,7 @@ SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
 - `NSString clickLabel` 현재 설치의 클릭 레이블.
 - `NSString adid` Adjust 장치 식별자.
 
-### 세션 및 이벤트 콜백
+### <a id="event-session-callbacks">세션 및 이벤트 콜백
 
 위임 콜백을 등록하여 성공 또는 실패한 추적 대상 이벤트 및/또는 세션에 대한 알림을 받을 수 있습니다.
 
@@ -480,7 +482,7 @@ SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
 
 - `BOOL willRetry` 나중에 패키지 재전송 시도가 있을 것임을 나타냅니다.
 
-### 추적 사용 중지
+### <a id="disable-tracking">추적 사용 중지
 
 `setEnabled`를 `No` 파라미터로 설정한 상태로 호출하면 Adjust SDK에서 현재 장치의 모든 작업 추적을 중지할 수 있습니다. **이 설정은 세션 간에 기억되지만**, 첫 번째 세션 후에만 활성화할 수 있습니다.
 
@@ -490,7 +492,7 @@ SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
 
 `isEnabled` 함수를 호출하여 Adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 매개변수가 `YES`로 설정된 `setEnabled`를 호출하면 Adjust SDK를 언제든지 활성화할 수 있습니다.
 
-### 오프라인 모드
+### <a id="offline-mode">오프라인 모드
 
 Adjust SDK를 오프라인 모드로 전환하여 Adjust 서버로 전송하는 작업을 일시 중단하고 트래킹된 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로 오프라인 모드에서 너무 많은 이벤트를 촉발하지 않도록 주의하십시오.
 
@@ -504,61 +506,61 @@ Adjust SDK를 오프라인 모드로 전환하여 Adjust 서버로 전송하는 
 
 트래킹 사용 중지와 달리 이 설정은 세션 간에 **기억되지 않습니다.** 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는 항상 온라인 모드로 시작됩니다.
 
-### 이벤트 버퍼링
+### <a id="event-buffering">이벤트 버퍼링
 
 앱이 이벤트 추적을 많이 사용하는 경우, 매 분마다 배치 하나씩만 보내도록 하기 위해 일부 HTTP 요청을 지연시키고자 할 경우가 있을 수 있습니다. `ADJConfig` 인스턴스로 이벤트 버퍼링을 적용할 수 있습니다.
 
-```
+```objc
 [adjustConfig setEventBufferingEnabled:YES];
 ```
 
 설정한 내용이 없으면 이벤트 버퍼링은 **기본값으로 비활성화됩니다**.
 
-### 배경 추적
+### <a id="background-tracking">배경 추적
 
 Adjust SDK 기본값 행위는 앱이 배경에 있을 동안에는 HTTP 요청 전송을 잠시 중지하는 것입니다. `AdjustConfig` 인스턴스에서 이를 바꿀 수 있습니다.
 
-```
+```objc
 [adjustConfig setSendInBackground:YES];
 ```
 
 설정한 내용이 없으면 배경 추적은 **기본값으로 비활성화됩니다**.
 
-### 장치 ID
+### <a id="device-ids">장치 ID
 
 Adjust SDK로 장치 식별자 몇 가지를 획득할 수 있습니다.
 
-### iOS 광고 식별자
+### <a id="di-idfa">iOS 광고 식별자
 
 Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 장치 ID와 클라이언트 ID를 조정해야 합니다.
 
 장치 식별자 IDFA를 얻으려면 `idfa` 함수를 호출하세요.
 
-```
+```objc
 NSString *idfa = [Adjust idfa];
 ```
 
-### Adjust 장치 식별자
+### <a id="di-adid"></a>Adjust 장치 식별자
 
 Adjust 백엔드는 앱을 인스톨한 장치에서 고유한 **Adjust 장치 식별자** (**adid**)를 생성합니다. 이 식별자를 얻으려면 `Adjust` 인스턴스에서 다음 메소드를 호출하면 됩니다.
 
-```
+```objc
 NSString *adid = [Adjust adid];
 ```
 
 **주의**: **adid** 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적한 후에만 얻을 수 있습니다. 그 순간부터 Adjust SDK는 장치 **adid** 정보를 갖게 되며 이 메소드로 액세스할 수 있습니다. 따라서 SDK가 초기화되고 앱 인스톨 추적이 성공적으로 이루어지기 전에는 **adid** 액세스가 **불가능합니다**.
 
-### 사용자 속성
+### <a id="user-attribution"></a>사용자 속성
 
 [속성 콜백 섹션](#attribution-callback)에서 설명한 바와 같이, 이 콜백은 변동이 있을 때마다 새로운 속성 관련 정보를 전달할 목적으로 촉발됩니다. 사용자의 현재 속성 값 관련 정보를 언제든 억세스하고 싶다면, `Adjust` 인스턴스의 다음 메소드를 호출하면 됩니다.
 
-```
+```objc
 ADJAttribution *attribution = [Adjust attribution];
 ```
 
 **주의**: 사용자의 현재 속성 값 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적하여 최초 속성 콜백이 촉발된 후에만 얻을 수 있습니다. 그 순간부터 Adjus SDK는 유저 속성 값 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 최초 속성 콜백이 촉발되기 전에는 유저 속성 값 액세스가 **불가능합니다**. 
 
-### 푸시 토큰
+### <a id="push-token">푸시 토큰
 
 Adjust로 푸시 알림 토큰을 보내려면 app delegate의 `didRegisterForRemoteNotificationsWithDeviceToken`에서 다음 호출을 `Adjust`에 추가합니다.
 
@@ -568,7 +570,7 @@ Adjust로 푸시 알림 토큰을 보내려면 app delegate의 `didRegisterForRe
 }
 ```
 
-### 사전 설치 트래커
+### <a id="pre-installed-trackers">사전 설치 트래커
 
 Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를 인식하고 싶다면 다음 절차를 따르세요.
 
@@ -589,19 +591,19 @@ Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를
     Default tracker: 'abc123'
     ```
 
-### 딥링크
+### <a id="deeplinking">딥링크
 
 URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. Adjust SDK는 두 가지 상황을 모두 지원하며, 어느 상황이든 트래커 URL을 클릭하여 앱이 시작되는 경우 딥링크 URL을 제공합니다. 지원합니다. 앱에서 이 기능을 사용하려면 올바로 설정해야 합니다.
 
-#### 기본 딥링크
+#### <a id="deeplinking-standard">기본 딥링크
 
 사용자가 앱을 설치하고 딥링크 정보가 들어간 트래커 URL을 클릭할 경우, 앱이 열리고 딥링크 내용이 앱으로 전달되어 이를 분석하고 다음 행동을 결정하게 됩니다. Apple은 iOS 9를 런칭하면서 앱에서의 딥링크 취급 방식을 바꿨습니다. 앱에 어떤 상황을 사용하고자 하는지에 따라 (또는 다양한 장치를 지원하기 위해 두 가지 다 사용하려 할 경우) 앱이 다음 상황 중 하나 또는 두 가지 다 취급할 수 있도록 설정해야 합니다. 
 
-#### iOS 8 이하 버전 딥링크
+#### <a id="deeplinking-setup-old">iOS 8 이하 버전 딥링크
 
 iOS 8 이하 버전 장치에서 딥링크는 사용자 설정 URL 스킴 설정을 사용하여 이루어집니다. 따라서 앱이 여는 사용자 설정 URL 스킴명을 지정해야 합니다. 이 스킴명은 `deep_link` 파라미터의 일부분인 Adjust 트래커 URL에서도 사용합니다. 앱에서 설정하려면 `Info.plist` 파일을 열고 `UR types` 열을 새로 추가합니다. 그 다음 `URL identifier`가 앱 번들 ID을 작성할 때 `URL schemes`에서 앱이 취급할 스킴명을 추가하면 됩니다. 아래 예시에서는 앱이 `adjustExample` 스킴명을 취급하도록 설정하였습니다.
 
-![](https://camo.githubusercontent.com/ea2d71981795a66f1152456c26bf05496df88cfe/68747470733a2f2f7261772e6769746875622e636f6d2f61646a7573742f73646b732f6d61737465722f5265736f75726365732f696f732f637573746f6d2d75726c2d736368656d652e706e67)
+![][custom-url-scheme]
 
 이 설정을 마치면, 선택한 스킴명이 들어있는 `deep_link` 파라미터가 들어간 Adjust 트래커 URL을 클릭 시 앱이 열립니다. 앱이 열리고 나면 `AppDelegate` 클래스의 `openURL` 메소드가 촉발되어 트래커 URL의 `deep_link` 파라미터 내용이 들어간 장소를 전송합니다. 딥링크 내용에 액세스하려면 아래 메소드를 재정의하세요.
 
@@ -615,21 +617,21 @@ iOS 8 이하 버전 장치에서 딥링크는 사용자 설정 URL 스킴 설정
     // or
     // return NO;
 }
-``` 
+```
 
 이렇게 하면 iOS 8 이하 버전용 딥링크를 성공적으로 설정할 수 있습니다.  
 
-#### iOS 9 이상 버전 딥링크
+#### <a id="deeplinking-setup-new">iOS 9 이상 버전 딥링크
 
-iOS 9 이상 버전 장치에서 딥링크를 설정하려면 앱이 Apple universal link를 취급하도록 해야 합니다. Universal link 및 관련 설정에 대한 자세한 정보는 [여기](https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html)를 참조하십시오.
+iOS 9 이상 버전 장치에서 딥링크를 설정하려면 앱이 Apple universal link를 취급하도록 해야 합니다. Universal link 및 관련 설정에 대한 자세한 정보는 [여기][universal-links]를 참조하십시오.
 
-Adjust는 universal link 관련 다양한 내용을 취급합니다. 그러나 Adjust로 universal link를 지원하려면 대시보드에서 약간의 설정이 필요합니다. 설정 절차에 관한 자세한 내용은 다음 [문서](https://docs.adjust.com/en/universal-links/)를 참조하십시오.
+Adjust는 universal link 관련 다양한 내용을 취급합니다. 그러나 Adjust로 universal link를 지원하려면 대시보드에서 약간의 설정이 필요합니다. 설정 절차에 관한 자세한 내용은 다음 [문서][universal-links-guide]를 참조하십시오.
 
 대시보드에서 Universal link 기능을 성공적으로 활성화하면 앱에서 다음 절차를 수행해야 합니다.
 
 Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이를 앱 Xcode 프로젝트에서도 똑같이 수행해야 합니다. `Associated Domains` 활성화를 마치고 나면, Adjust 대시보드에 생성한 universal link를 `applinks` 접두어를 사용하여 `Domains` 섹션에 추가합니다. Universal link에서 `http(s)` 부분을 삭제하는 걸 잊지 마세요.
 
-![](https://camo.githubusercontent.com/231d7c87c6914e28f74adb2d5901ea8362f7f250/68747470733a2f2f7261772e6769746875622e636f6d2f61646a7573742f73646b732f6d61737465722f5265736f75726365732f696f732f6173736f6369617465642d646f6d61696e732d6170706c696e6b732e706e67)
+![][associated-domains-applinks]
 
 이 설정을 마치고 나면, Adjust universal link를 클릭 시 앱이 열립니다. 앱이 열리면 `AppDelegate` 클래스의 `continueUserActivity` 메소드가 촉발되어 universal link URL 내용이 들어간 장소를 전송합니다. 딥링크 내용에 액세스하려면 아래 메소드를 재정의하세요.
 
@@ -647,7 +649,7 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
     // or
     // return NO;
 }
-``` 
+```
 
 이렇게 하면 iOS 9 이상 버전용 딥링크를 성공적으로 설정할 수 있습니다.  
 
@@ -667,9 +669,9 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
     // or
     // return NO;
 }
-``` 
+```
 
-#### 거치 딥링크 
+#### <a id="deeplinking-deferred">거치 딥링크 
 
 거치 딥링크가 열리기 전에 알림을 받을 위임 콜백을 등록하고 Adjust SDK에서 딥링크를 열도록 할 것인지 결정할 수 있습니다. [속성 콜백](#attribution-callback) 및 [이벤트 및 세션 콜백](#event-session-callbacks)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다
 
@@ -690,9 +692,9 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
 
 콜백을 실행하지 않을 경우, **Adjust SDK는 항상 기본값으로 딥링크를 엽니다**.
 
-#### 딥링크를 통한 재어트리뷰션
+#### <a id="deeplinking-reattribution">딥링크를 통한 재어트리뷰션
 
-Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-engagement)를 수행할 수 있게 해줍니다. 이에 대한 자세한 정보는 [관련 문서](https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link)를 참조하세요. 
+Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-engagement)를 수행할 수 있게 해줍니다. 이에 대한 자세한 정보는 [관련 문서][reattribution-with-deeplinks]를 참조하세요. 
 
 이 기능을 사용 중이라면, 사용자를 올바로 리어트리뷰트하기 위해 앱에서 호출을 하나 더 수행해야 합니다.
 
@@ -730,9 +732,9 @@ Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-en
 }
 ```
 
-## 문제 해결
+## <a id="troubleshooting">문제 해결
 
-### 지연된 SDK 초기화의 문제
+### <a id="ts-delayed-init">지연된 SDK 초기화의 문제
 
 [기본 설정 단계](#basic-setup)의 설명처럼 Adjust SDK를 앱 delegate의 `didFinishLaunching` 또는 `didFinishLaunchingWithOptions` 메소드에서 초기화하는 것이 좋습니다. SDK의 모든 기능을 사용할 수 있도록 최대한 빨리 adjust SDK를 초기화하는 것이 중요합니다.
 
@@ -786,17 +788,17 @@ SDK가 초기화되기 전에 이 호출을 수행하면 사용자가 클릭하�
 
 따라서 이 설명서의 내용을 준수하고 Adjust SDK를 앱 delegate의 `didFinishLaunching` 또는 `didFinishLaunchingWithOptions` 메소드에서 초기화하십시오.
 
-### "Adjust requires ARC" 오류가 나타납니다
+### <a id="ts-arc">"Adjust requires ARC" 오류가 나타납니다
 
 빌드 시 `Adjust requires ARC` 오류가 발생할 경우 프로젝트에서 [ARC][arc]를 사용하지 않은 것이 원인일 수 있습니다. 이 경우 [ARC를 사용하도록 프로젝트를 전환][transition]하는 것이 좋습니다. ARC를 사용하지 않으려면 대상의 빌드 단계에서 Adjust의 모든 소스 파일에 ARC를 사용하도록 설정해야 합니다.
 
 `Compile Sources` 그룹을 펼쳐 모든 Adjust 파일을 선택한 다음 `Compiler Flags`를 `-fobjc-arc`로 변경합니다. (모두 선택 후 `Return` 키를 눌러 동시에 변경)
 
-### "[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" 오류가 나타납니다
+### <a id="ts-categories">"[UIDevice adjTrackingEnabled]: unrecognized selector sent to instance" 오류가 나타납니다
 
 이 오류는 Adjust SDK 프레임워크를 앱에 추가하는 경우 발생할 수 있습니다. Adjust SDK의 소스 파일에는 `categories`가 포함되어 있기 때문에 이 SDK 연동 방법을 선택한 경우 Xcode 프로젝트 설정에서 `-ObjC` 플래그를 `Other Linker Flags`에 추가해야 합니다. 이 플래그를 추가하면 오류가 해결됩니다.
 
-### "Session failed (Ignoring too frequent session.)" 오류가 나타납니다
+### <a id="ts-session-failed">"Session failed (Ignoring too frequent session.)" 오류가 나타납니다
 
 이 오류는 일반적으로 설치를 테스트할 때 발생합니다. 앱을 제거하고 다시 설치해도 새 설치를 촉발시킬 수 없습니다. 서버에서는 SDK가 로컬에서 집계된 세션 데이터를 유실했다고 판단하며 서버에 제공된 장치 관련 정보에 따라 오류 메시지를 무시합니다.
 
@@ -820,7 +822,7 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 
 장치가 메모리에서 삭제되면 링크에서 `Forgot device`만 반환됩니다. 장치가 이미 메모리에서 삭제되었거나 값이 올바르지 않으면 `Device not found`가 반환됩니다.
 
-### 로그에 "Install tracked"가 표시되지 않습니다
+### <a id="ts-install-tracked">로그에 "Install tracked"가 표시되지 않습니다
 
 테스트 장치에서 앱 설치 시나리오를 시뮬레이션하려는 경우 이미 앱이 설치되어 있는 테스트 장치의 Xcode에서 앱을 다시 실행하는 것만으로는 충분하지 않습니다. Xcode에서 앱을 다시 실행하면 앱 데이터가 모두 삭제되지 않고 Adjust SDK가 앱에 보관하는 모든 내부 파일이 유지되므로, Adjust SDK는 해당 파일을 확인한 후 앱이 이미 설치되어 있고 SDK가 앱에서 이미 시작되었지만 처음 열린 게 아니라 한 번 더 열렸을 뿐이라고 인식합니다.
 
@@ -830,7 +832,7 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 * [위](#forget-device) 문제에서 설명한 대로 테스트 장치를 Adjust 백엔드에서 삭제합니다.
 * 테스트 장치의 Xcode에서 앱을 실행하면 "Install tracked" 로그 메시지가 표시됩니다.
 
-### "Unattributable SDK click ignored" 메시지가 표시됩니다.
+### <a id="ts-iad-sdk-click">"Unattributable SDK click ignored" 메시지가 표시됩니다.
 
 앱을 `sandbox` 환경에서 테스트하는 중에 이 메시지가 표시될 수 있습니다. 이 메시지는 Apple이 `iAd.framework` 버전 3에서 변경한 내용과 관련이 있습니다. 사용자가 iAd 배너를 클릭하면 앱으로 이동될 수 있으며, 이로 인해 Adjust SDK에서 `sdk_click` 패키지를 Adjust 백엔드로 보내 클릭된 URL의 내용에 대해 알릴 수 있습니다. Apple은 iAd 배너를 클릭하지 않았는데 앱이 열릴 경우 임의의 값을 사용하여 iAd 배너 URL 클릭을 인위적으로 생성하기로 했습니다. Adjust SDK는 iAd 배너 클릭이 진짜인지 인위적으로 생성된 것인지 구별할 수 없으므로 모든 경우에 `sdk_click` 패키지를 Adjust 백엔드로 보냅니다. 로그 레벨을 `verbose` 레벨로 설정한 경우 이 `sdk_click` 패키지는 다음과 같이 표시됩니다.
 
@@ -858,7 +860,7 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&idfa={idfaValue}
 
 따라서 이 메시지는 SDK 연동에 문제가 있다는 뜻이 아니며, Adjust 백엔드에서 사용자가 인위적으로 생성된 `sdk_click`을 무시함으로써 어트리뷰션/재어트리뷰션이 잘못 이루어되는 결과를 초래했을 가능성이 있음을 알려줄 뿐입니다.
 
-### Adjust 대시보드에 잘못된 수익 데이터가 있습니다
+### <a id="ts-wrong-revenue-amount">Adjust 대시보드에 잘못된 수익 데이터가 있습니다
 
 Adjust SDK는 지정한 대상만 추적합니다. 수익을 이벤트에 연결하는 경우, 금액으로 작성하는 숫자만 Adjust 백엔드에 도달하며 대시보드에 표시되는 유일한 금액이 됩니다. Adjust SDK는 금액 값을 조작하지 않으며 Adjust 백엔드도 마찬가지입니다. 따라서 추적 금액이 틀렸다면 Adjust SDK에서 해당 금액을 추적하도록 지시받았기 때문입니다.
 
@@ -896,11 +898,59 @@ Adjust SDK는 지정한 대상만 추적합니다. 수익을 이벤트에 연결
 
 추적하도록 지정한 값이 아닌 다른 값이 대시보드에 보일 경우 **금액 값을 결정하는 로직을 확인하십시오**.
 
-## 라이선스
 
-adjust SDK는 MIT 라이선스에 따라 사용이 허가됩니다.
+[dashboard]:   http://adjust.com
+[adjust.com]:  http://adjust.com
 
-Copyright (c) 2012-2016 adjust GmbH, http://www.adjust.com
+[arc]:         http://en.wikipedia.org/wiki/Automatic_Reference_Counting
+[examples]:    http://github.com/adjust/ios_sdk/tree/master/examples
+[carthage]:    https://github.com/Carthage/Carthage
+[releases]:    https://github.com/adjust/ios_sdk/releases
+[cocoapods]:   http://cocoapods.org
+[transition]:  http://developer.apple.com/library/mac/#releasenotes/ObjectiveC/RN-TransitioningToARC/Introduction/Introduction.html
+
+[example-tvos]:      http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-tvOS
+[AEPriceMatrix]:     https://github.com/adjust/AEPriceMatrix
+[event-tracking]:    https://docs.adjust.com/ko/event-tracking
+[example-iwatch]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iWatch
+[callbacks-guide]:   https://docs.adjust.com/ko/callbacks
+[universal-links]:   https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html
+
+[special-partners]:     https://docs.adjust.com/ko/special-partners
+[attribution-data]:     https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
+[example-ios-objc]:     http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-iOS
+[example-ios-swift]:    http://github.com/adjust/ios_sdk/tree/master/examples/AdjustExample-Swift
+[ios-web-views-guide]:  https://github.com/adjust/ios_sdk/tree/master/doc/web_views.md
+[currency-conversion]:  https://docs.adjust.com/ko/event-tracking/#part-7
+
+[universal-links-guide]:      https://docs.adjust.com/ko/universal-links/
+[adjust-universal-links]:     https://docs.adjust.com/ko/universal-links/
+[universal-links-testing]:    https://docs.adjust.com/ko/universal-links/#part-4
+[reattribution-deeplinks]:    https://docs.adjust.com/ko/deeplinking/#part-6-1
+[ios-purchase-verification]:  https://github.com/adjust/ios_purchase_sdk
+
+[reattribution-with-deeplinks]:   https://docs.adjust.com/ko/deeplinking/#part-6-1
+
+[run]:         https://raw.github.com/adjust/sdks/master/Resources/ios/run5.png
+[add]:         https://raw.github.com/adjust/sdks/master/Resources/ios/add5.png
+[drag]:        https://raw.github.com/adjust/sdks/master/Resources/ios/drag5.png
+[delegate]:    https://raw.github.com/adjust/sdks/master/Resources/ios/delegate5.png
+[framework]:   https://raw.github.com/adjust/sdks/master/Resources/ios/framework5.png
+
+[adc-ios-team-id]:            https://raw.github.com/adjust/sdks/master/Resources/ios/adc-ios-team-id5.png
+[custom-url-scheme]:          https://raw.github.com/adjust/sdks/master/Resources/ios/custom-url-scheme.png
+[adc-associated-domains]:     https://raw.github.com/adjust/sdks/master/Resources/ios/adc-associated-domains5.png
+[xcode-associated-domains]:   https://raw.github.com/adjust/sdks/master/Resources/ios/xcode-associated-domains5.png
+[universal-links-dashboard]:  https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard5.png
+
+[associated-domains-applinks]:          https://raw.github.com/adjust/sdks/master/Resources/ios/associated-domains-applinks.png
+[universal-links-dashboard-values]: https://raw.github.com/adjust/sdks/master/Resources/ios/universal-links-dashboard-values5.png
+
+## <a id="license">라이선스
+
+Adjust SDK는 MIT 라이선스에 따라 사용이 허가됩니다.
+
+Copyright (c) 2012-2017 adjust GmbH, http://www.adjust.com
 
 이로써 본 소프트웨어와 관련 문서 파일(이하 "소프트웨어")의 복사본을 받는 사람에게는 아래 조건에 따라 소프트웨어를 제한 없이 다룰 수 있는 권한이 무료로 부여됩니다. 이 권한에는 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여할 권리와 소프트웨어를 제공 받은 사람이 소프트웨어를 사용, 복사, 수정, 병합, 출판, 배포 및/또는 판매하거나 2차 사용권을 부여하는 것을 허가할 수 있는 권리가 제한 없이 포함됩니다.
 
