@@ -71,7 +71,7 @@ web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
 
 ### <a id="sdk-import"></a>Adjust 모듈 들여오기
 
-Android Studio 메뉴에서 `File a†’ Import Module...`을 선택합니다.
+Android Studio 메뉴에서 `File → Import Module...`을 선택합니다.
 
 ![][import_module]
 
@@ -984,18 +984,18 @@ Adjust SDK는 이 때 초기화가 준비되지만 실제로 시작되지는 않
 [releases]:                       https://github.com/adjust/adjust_android_sdk/releases
 [referrer]:                       https://github.com/adjust/sdks/blob/master/doc/ko-sdks/referrer.md
 [google_ad_id]:                   https://support.google.com/googleplay/android-developer/answer/6048248?hl=en
-[event-tracking]:                 https://docs.adjust.com/en/event-tracking
-[callbacks-guide]:                https://docs.adjust.com/en/callbacks
+[event-tracking]:                 https://docs.adjust.com/ko/event-tracking
+[callbacks-guide]:                https://docs.adjust.com/ko/callbacks
 [application_name]:               http://developer.android.com/guide/topics/manifest/application-element.html#nm
-[special-partners]:               https://docs.adjust.com/en/special-partners
+[special-partners]:               https://docs.adjust.com/ko/special-partners
 [attribution-data]:               https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [android-dashboard]:              http://developer.android.com/about/dashboards/index.html
-[currency-conversion]:            https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
+[currency-conversion]:            https://docs.adjust.com/ko/event-tracking/#part-7
 [android_application]:            http://developer.android.com/reference/android/app/Application.html
 [android-launch-modes]:           https://developer.android.com/guide/topics/manifest/activity-element.html
 [google_play_services]:           http://developer.android.com/google/play-services/setup.html
 [activity_resume_pause]:          doc/activity_resume_pause.md
-[reattribution-with-deeplinks]:   https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
+[reattribution-with-deeplinks]:   https://docs.adjust.com/ko/deeplinking/#part-6-1
 [android-purchase-verification]:  https://github.com/adjust/android_purchase_sdk
 
 [activity]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/14_activity.png
@@ -1016,7 +1016,7 @@ Adjust SDK는 이 때 초기화가 준비되지만 실제로 시작되지는 않
 [activity_lifecycle_methods]:   https://raw.github.com/adjust/sdks/master/Resources/android/v4/17_activity_lifecycle_methods.png
 [activity_lifecycle_register]:  https://raw.github.com/adjust/sdks/master/Resources/android/v4/18_activity_lifecycle_register.png
 
-## 라이선스
+## <a id="license"></a>라이선스
 
 adjust SDK는 MIT 라이선스에 따라 사용이 허가되었습니다.
 
