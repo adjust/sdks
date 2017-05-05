@@ -27,7 +27,7 @@ web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용
         * [세션 파트너 파라미터](#session-partner-parameters)
         * [예약 시작(delay start)](#delay-start)
     * [속성 콜백](#attribution-callback)
-    * [세션 및 이벤트 콜백](#session-event-callbacks)
+    * [세션 및 이벤트 콜백](#event-session-callbacks)
     * [추적 사용 중지](#disable-tracking)
     * [오프라인 모드](#offline-mode)
     * [이벤트 버퍼링(buffering)](#event-buffering)
@@ -220,7 +220,7 @@ ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken
 
 ![][run]
 
-## <a id="additional-feature">추가 기능
+## <a id="additional-features">추가 기능
 
 Adjust SDK를 프로젝트에 연동한 후에는 다음 기능을 사용할 수 있습니다.
 
@@ -280,7 +280,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 }
 ```
 
-### ### <a id="iap-verification">인앱 구매 검증
+### <a id="iap-verification">인앱 구매 검증
 
 Adjust의 서버 측 수신 확인 도구인 구매 검증(Purchase Verification)을 사용하여 앱에서 이루어지는 구매의 유효성을 확인하려면 iOS 구매 SDK를 확인하십시오. 자세한 내용은 [여기][ios-purchase-verification]에서 확인할 수 있습니다.
 
