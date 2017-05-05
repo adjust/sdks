@@ -100,7 +100,7 @@ Maven을 사용하는 경우 다음 라인을 대신 추가합니다.
 compile 'com.adjust.sdk:adjust-android:4.7.0'
 ```
 
-### <a id="google-play-services>"></a>Google Play 서비스 추가
+### <a id="google-play-services"></a>Google Play 서비스 추가
 
 2014년 8월 1일 자로 Google Play Store의 앱은 [Google 광고 ID]
 [google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. adjust SDK에서 Google 광고 ID를 사용할 수 있게 하려면 [Google Play 서비스][google_play_services]를 연동해야 합니다. 이 작업을 아직 수행하지 않은 경우 다음 단계를 수행하십시오.
