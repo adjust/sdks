@@ -8,7 +8,7 @@
    * [SDK 받기](#sdk-get)
    * [프로젝트에 SDK 추가](#sdk-add)
    * [앱에 SDK 연동](#sdk-integrate)
-   * [Adjust 로그 기록(logging)](#sdk-logging)
+   * [Adjust 로그 기록(logging)](#adjust-logging)
    * [Google Play 서비스](#google-play-services)
    * [빌드 후 프로세스](#post-build-process)
       * [iOS 빌드 후 프로세스](#post-build-ios)   
@@ -41,6 +41,7 @@
         * [기본 딥링크](#deeplinking-standard)
         * [거치(deferred) 딥링크](#deeplinking-deferred)
         * [안드로이드 앱 용 딥링크](#deeplinking-android)
+        * [iOS 앱에서 딥링크 관리](#deeplinking-ios)
 * [문제 해결](#troubleshooting)
     * [iOS 정보 디버깅](#ts-debug-ios)
     * [빌드 스크립트 수행 실패](#ts-build-script-fail) 
@@ -672,13 +673,13 @@ Adjust.start(adjustConfig);
 
 앱에서 딥링크를 활성화하려면, 지원하는 각 플랫폼에서 설정해야 합니다.
 
-#### <a id="deeplinking-app-android">안드로이드 앱에서 딥링크 관리
+#### <a id="deeplinking-android">안드로이드 앱에서 딥링크 관리
 
 **기본 Android Studio / Eclipse 프로젝트에서 수행해야 합니다.**
 
 안드로이드 앱이 딥링크를 기본 수준에서 취급하도록 설정하려면, 공식 안드로이드 SDK README에서 [설명서][android-deeplinking] 지침을 따르세요. 
 
-#### <a id="deeplinking-app-ios">iOS 앱에서 딥링크 관리
+#### <a id="deeplinking-ios">iOS 앱에서 딥링크 관리
 
 **기본 Xcode 프로젝트에서 수행해야 합니다.** 
 
@@ -718,7 +719,7 @@ iOS 앱이 딥링크를 기본 수준에서 취급하도록 설정하려면, 공
 [android_sdk_location]:     https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/android_sdk_download.png
 [android_sdk_location_new]: https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/android_sdk_download_new.png
 
-## 라이선스
+## <a id="license"></a>라이선스
 
 mod_pbxproj.py 파일은 Apache License 2.0 버전(이하 "라이선스")에 따라 사용이 허가되며, 이 파일을 라이선스를 준수하지 않고 사용해서는 안 됩니다.
 라이선스의 복사본은 http://www.apache.org/licenses/LICENSE-2.0에서 다운로드할 수 있습니다.
