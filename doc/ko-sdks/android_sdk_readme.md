@@ -275,7 +275,7 @@ Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가합니�
 
   3. adjust SDK가 구성된 `onCreate()` 메소드를 추가하고 `registerActivityLifecycleCallbacks` 호출을 이전에 만든 `ActivityLifecycleCallbacks` 클래스의 인스턴스와 함께 추가합니다.
 
-    ```java
+    ```
     import com.adjust.sdk.Adjust;
     import com.adjust.sdk.AdjustConfig;
 
