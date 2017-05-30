@@ -2,16 +2,17 @@
 
 We currently provide the adjust™ SDK for the following platforms. Click on a link to find the respective downloads and installation instructions.
 
-* [adjust SDK for iOS][ios]
-* [adjust SDK for Android][android]
-* [adjust SDK for Windows][windows]
-* [adjust SDK for Adobe Air][air]
-* [adjust SDK for Unity][unity]
-* [adjust SDK for Cordova][cordova]
-* [adjust SDK for Marmalade][marmalade]
-* [adjust SDK for Xamarin][xamarin]
-* [adjust SDK for Cocos2d-x][cocos2dx]
-* [adjust SDK for React Native][react]
+* [Adjust SDK for iOS][ios]
+* [Adjust SDK for Android][android]
+* [Adjust SDK for Windows][windows]
+* [Adjust SDK for Adobe Air][air]
+* [Adjust SDK for Unity][unity]
+* [Adjust SDK for Cordova][cordova]
+* [Adjust SDK for Marmalade][marmalade]
+* [Adjust SDK for Xamarin][xamarin]
+* [Adjust SDK for Cocos2d-x][cocos2dx]
+* [Adjust SDK for React Native][react]
+* [Adjust SDK for Titanium][titanium]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
@@ -22,4 +23,5 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [marmalade]: https://github.com/adjust/marmalade_sdk
 [xamarin]: https://github.com/adjust/xamarin_sdk
 [cocos2dx]: https://github.com/adjust/cocos2dx_sdk
-[react]: https://github.com/adjust/react_native_sdk/
+[react]: https://github.com/adjust/react_native_sdk
+[titanium]: https://github.com/adjust/titanium_sdk
