@@ -644,7 +644,7 @@ Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를
 
     ```
     Default tracker: 'abc123'
-```
+    ```
 
 ### <a id="deeplinking">딥링크
 
@@ -749,7 +749,7 @@ var app = {
 
 이 단계를 전부 마치면 iOS 9 이상 버전에서 딥링크에 필요한 지원을 성공적으로 추가한 것입니다. 
 
-### <a id="deeplinking-deferred">거치 딥링크
+#### <a id="deeplinking-deferred">거치 딥링크
 
 안드로이드와 iOS에서는 거치 딥링크를 바로 지원하지 않지만, Adjust SDK를 사용하면 가능합니다.
  
