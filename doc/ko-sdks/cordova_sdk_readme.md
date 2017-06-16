@@ -1,56 +1,5 @@
 ﻿## 요약
 
-이 항목에서는 adjust의 Cordova SDK에 대해 설명합니다. adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
-
-참고: 현재 Cordova용 SDK 4.3.0에서는 Android 플랫폼 버전 `4.0.0` 이상과 iOS 플랫폼 버전 `3.0.0` 이상을 지원합니다.
-
-## 목차
-
-* [앱 예제](#example-app)
-* [기본 설치](#basic-integration)
-   * [SDK 다운로드 및 설치](#sdk-get)
-   * [프로젝트에 SDK 추가](#sdk-add)
-   * [앱에 SDK 연동](#sdk-integrate)
-   * [Adjust 로그](#adjust-logging)
-   * [Adjust 프로젝트 설정](#adjust-project-settings)
-     * [안드로이드 권한](#android-permissions)
-     * [Google Play Services](#android-gps)
-     * [안드로이드 설치 참조 수신기](#android-broadcast-receiver)
-     * [iOS 프레임워크](#android-permissions)
-* [부가 기능](#additional-features)
-   * [이벤트 추적](#event-tracking)
-     * [수익 추적](#revenue-tracking)
-     * [수익 중복 제거](#revenue-deduplication)
-     * [인앱 구매 검증](#iap-verification)
-     * [콜백 매개변수](#callback-parameters)
-     * [파트너 매개변수](#partner-parameters)
-   * [세션 매개변수](#session-parameters)
-     * [세션 콜백 매개변수](#session-callback-parameters)      
-     * [세션 파트너 매개변수](#session-partner-parameters)
-     * [예약 시작(delay start)](#delay-start)
-   * [속성 콜백](#attribution-callback)
-   * [세션 및 이벤트 콜백](#session-event-callbacks)
-   * [추적 사용 중지](#disable-tracking)
-   * [오프라인 모드](#offline-mode)
-   * [이벤트 버퍼링](#event-buffering)
-   * [배경 추적](#background-tracking)
-   * [기기 ID](#device-ids)a
-     * [iOS 광고 식별자](#di-idfa)
-     * [Google Play Service 광고 식별자](#di-gps-adid)
-     * [Adjust 기기 식별자](#di-adid)
-   * [사용자 속성](#user-attribution)
-   * [푸시 토큰(push token)](#push-token)
-   * [사전 설치 트래커(pre-installed trackers)](#pre-installed-trackers)
-   * [딥링크](#deeplinking)
-     * [기본 딥링크](#deeplinking-standard)
-     * [Android & iOS 8 이하 버전 딥링크](#deeplinking-android-ios-old)
-     * [iOS 9 이상 버전 딥링크](#deeplinking-ios-new)
-     * [거치(deferred) 딥링크](#deeplinking-deferred)
-     * [딥링크를 통한 재어트리뷰션](#deeplinking-reattribution)
-* [라이선스](#license)
-
-## 요약
-
 이 항목에서는 Adjust의 Cordova SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
 참고: 현재 Cordova용 SDK 4.3.0에서는 Android 플랫폼 버전 `4.0.0` 이상과 iOS 플랫폼 버전 `3.0.0` 이상을 지원합니다.
@@ -99,7 +48,7 @@
      * [딥링크를 통한 재어트리뷰션](#deeplinking-reattribution)
 * [라이선스](#license)
 
-## 앱 예제
+## <a id="example-app"></a>앱 예제 
 
 Adjust SDK를 앱에 연동하는 방법의 예시를 [`예제` 디렉토리][example]에서 확인할 수 있습니다. 크기 문제 때문에 업로드된 앱 예제에는 플랫폼이 붙어있지 않습니다. 따라서 앱을 다운로드한 다음에는 원하는 플랫폼에서 앱을 만들 수 있도록 ‘script’ 폴더에서 알맞은 스크립트를 구동해 주시기 바랍니다.
 
@@ -110,15 +59,15 @@ sh cordova-test-android.sh
 
 **참고**: iOS 플랫폼에서 앱 예제를 처음 만들어 본 다음에는 코드 사인 오류가 발생하므로 앱을Xcode 프로젝트에서 열어 설정 내 ‘Signing’ 부분에서 ‘Team’을 선택해야 한다는 사실을 기억해 주십시오. 이 작업이 끝나면 Xcode에서 앱을 구동하거나 빌드 스크립트를 재구동하세요.  
 
-## 기본 설치
+## <a id="basic-integration">기본 설치
 
 다음은 Adjust SDK를 Cordova 프로젝트와 연동하기 위해 최소한으로 수행해야 하는 절차입니다.
 
-### SDK 다운로드 및 설치
+### <a id="sdk-get">SDK 다운로드 및 설치
 
 `npm` [리포지토리][npm-repo]나 [릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. 
 
-### 프로젝트에 SDK 추가
+### <a id="sdk-add">프로젝트에 SDK 추가
 
 Adjust SDK를 `npm` [리포지토리][npm-repo]에서 직접 플러그인으로 다운로드할 수 있습니다. 이렇게 하려면 프로젝트 폴더에서 다음 명령을 실행합니다.
 
@@ -139,7 +88,7 @@ Installing "com.adjust.sdk" for ios
 
 <a id="sdk-cocoon">**참고:** **Adjust SDK v4.10.2**에서 시작할 경우, `npm` 플러그인과 `master` 브랜치는 `cocoon.io`와 호환이 가능합니다. 따라서 SDK를 반드시 `cocoon` 브랜치에서 사용하지 않아도 됩니다.
 
-### 앱에 SDK 연동
+### <a id="sdk-integrate">앱에 SDK 연동
 
 Adjust 플러그인은 Cordova 이벤트 `deviceready`, `resume` 및 `pause`에 자동으로 등록됩니다.
 
@@ -164,7 +113,7 @@ AdjustConfig.EnvironmentProduction
 
 이 environment는 실제 트래픽과 테스트 장치의 테스트 트래픽을 구별하기 위해 사용합니다. 이 값은 항상 의미 있게 유지해야 합니다! 수익을 추적할 때 특히 중요합니다.
 
-### Adjust 로그
+### <a id="sdk-logging">Adjust 로그
 
 다음 매개변수 중 하나를 사용하여 `AdjustConfig` 인스턴스에서 `setLogLevel`을 호출하면 테스트에 표시되는 로그의 양을 늘리거나 줄일 수 있습니다.
 
@@ -178,11 +127,11 @@ adjustConfig.setLogLevel(AdjustConfig.LogLevelAssert);    // 오류 역시 비�
 adjustConfig.setLogLevel(AdjustConfig.LogLevelSuppress);  // 모든 로그 비활성
 ```
 
-### Adjust 프로젝트 설정
+### <a id="adjust-project-settings">Adjust 프로젝트 설정
 
 Adjust SDK를 앱에 추가하고 나면 Adjust SDK가 제대로 작동할 수 있도록 몇 가지 수정 작업이 수행됩니다. 이 과정에서 수행하는 모든 작업은 Adjust SDK 플러그인 내 `plugin.xml` 파일에 기록됩니다. Adjust SDK를 앱에 추가한 후 추가로 수행하는 작업을 아래에 설명해 놓았습니다.
 
-#### 안드로이드 권한
+#### <a id="android-permissions">안드로이드 권한
 
 Adjust SDK는 안드로이드 매니페스트(manifest) 파일에 `INTERNET`과 `ACCESS_WIFI_STATE`이라는 두 가지 권한을 추가합니다. 이 설정은 Adjust SDK 플러그인 내 `plugin.xml` 파일에서 확인할 수 있습니다.
 
@@ -195,7 +144,7 @@ Adjust SDK는 안드로이드 매니페스트(manifest) 파일에 `INTERNET`과 
 
 `INTERNET` 권한은 SDK가 언제든 필요로 할 가능성이 있습니다. `ACCESS_WIFI_STATE` 권한은 앱이 Google Play Store를 대상으로 하지 않으며 Google Play Services를 사용하지 않을 때 필요합니다. Google Play Store를 대상으로 하며 Google Play Services를 사용하는 경우 Adjust SDK는 이 권한을 필요로 하지 않으며, 앱에서 필요하지 않다면 제거할 수 있습니다. 
 
-#### Google Play Services
+#### <a id="android-gps"Google Play Services
 
 2014년 8월 1일 이후로 Google Play Store에 있는 앱은 [Google 광고 ID][google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. Adjust SDK에서 Google 광고 ID를 사용할 수 있게 하려면 [Google Play Services][google_play_services]를 연동해야 합니다.
 
@@ -209,7 +158,7 @@ Adjust SDK 플러그인은 Google Play Services를 앱에 기본적으로 추가
 
 Google Play Services 라이브러리의 애널리틱스가 제대로 앱에 추가되어 Adjust SDK가 올바로 읽어들일 수 있는 상태인지 확인하려면, SDK를 ‘sandbox’ 모드에 놓은 채로 앱을 작동하여 로그를 ‘verbose’ 레벨에 놓아야 합니다. 그런 다음 앱에서 세션이나 이벤트를 추적하여 이 때 verbose 로그에 등장하는 매개변수 목록을 살펴봅니다. `gps_adid`라는 매개변수가 보인다면, 앱에 Google Play Services 라이브러리의 애널리틱스를 제대로 추가하여 SDK가 필요한 정보를 읽어들이고 있다는 뜻입니다.
 
-#### Proguard 설정
+#### <a id="android-proguard">Proguard 설정
 
 Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가하십시오.
 
@@ -241,7 +190,7 @@ Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가하십�
 }
 ```
 
-#### 안드로이드 설치 참조 수신기
+#### <a id="android-broadcast-receiver">안드로이드 설치 참조 수신기
 
 Adjust 설치 참조 수신기는 앱에 기본으로 추가됩니다. 더 자세한 정보는 기본 [안드로이드 SDK README][broadcast-receiver]를 참고하십시오. 이 설정은 Adjust SDK 플러그인 내 `plugin.xml` 파일에서 찾아볼 수 있습니다.
 
@@ -259,7 +208,7 @@ Adjust 설치 참조 수신기는 앱에 기본으로 추가됩니다. 더 자�
 
 사용자가 INSTALL_REFERRER 인텐트를 사용하는 자신의 수신기를 가지고 있을 경우 Adjust 브로드캐스트 수신기를 매니페스트 파일에 추가하지 않아도 된다는 사실을 기억해 주십시오. 제거해도 상관없습니다. 그러나 [안드로이드 설명서][broadcast-receiver-custom]에 나온 대로 Adjust 브로드캐스트 수신기에 대한 호출을 자신의 수신기에 추가해 주십시오.
 
-#### iOS 프레임워크
+#### <a id="ios-frameworks">iOS 프레임워크
 
 Adjust SDK 플러그인은 생성된 Xcode 프로젝트에 3개의 iOS 프레임워크를 추가합니다.
 
@@ -277,11 +226,11 @@ Adjust SDK 플러그인은 생성된 Xcode 프로젝트에 3개의 iOS 프레임
 
 iAd 캠페인을 구동하지 않는 경우 `iAd.framework` 의존성을 임의로 제거해도 됩니다.
 
-## 추가 기능
+## <a id="additional-features">추가 기능
 
 adjust SDK를 프로젝트와 연동한 후에는 다음 기능을 사용할 수 있습니다.
 
-### 이벤트 추적
+### <a id="event-tracking">이벤트 추적
 
 Adjust를 사용하여 앱의 모든 이벤트를 추적할 수 있습니다. 버튼의 모든 탭을 추적하려면 [대시보드]에서 새 이벤트 토큰을 만들어야 합니다. 예를 들어 이벤트 토큰이 `abc123`일 경우, 버튼의 클릭 핸들러 메소드에 다음 라인을 추가하여 클릭을 추적할 수 있습니다.
 
@@ -290,7 +239,7 @@ var adjustEvent = new AdjustEvent("abc123");
 Adjust.trackEvent(adjustEvent);
 ```
 
-#### 수익 추적
+#### <a id="revenue-tracking">수익 추적
 
 사용자가 광고를 누르거나 인앱 구매를 통해 매출을 발생시킬 수 있는 경우 이벤트를 사용하여 해당 매출을 추적할 수 있습니다. 한 번 누를 때 0.01 유로의 매출이 발생한다고 가정할 경우 수익 이벤트는 다음과 같이 추적하면 됩니다.
 
@@ -304,7 +253,7 @@ Adjust.trackEvent(adjustEvent);
 
 통화 토큰을 설정하면 adjust에 수신되는 매출이 선택한 보고 매출으로 자동 변환됩니다. 통화 변환에 대한 [자세한 내용은 여기][currency-conversion]를 참조하십시오.
 
-#### 수익 중복 제거
+#### <a id="revenue-deduplication"></a>수익 중복 제거
 
 거래 ID를 선택 사항으로 추가하여 수익 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 중복 거래 ID로 이루어진 수익 이벤트는 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
 
@@ -321,11 +270,11 @@ Adjust.trackEvent(adjustEvent);
 
 **주의**: 거래 ID는 iOS 용어이며, 성공적으로 완결된 안드로이드 인앱 구매 용 고유 식별자는 **주문 ID(Order ID)**입니다.
 
-#### 인앱 구매 검증
+#### <a id="iap-verification">인앱 구매 검증
 
 인앱 구매의 유효성을 확인하려면 Adjust의 서버 측 수신 확인 도구인 구매 검증(Purchase Verification)을 사용해 보세요. Cordova 구매 SDK에 대한 자세한 사항은 [여기][cordova-purchase-sdk]에서 확인할 수 있습니다.
 
-#### 콜백 매개변수
+#### <a id="callback-parameters">콜백 매개변수
 
 You can also register a callback URL for that event in your [dashboard][dashboard] and we will send a GET request to that URL whenever the event gets tracked. In that case you can also put some key-value pairs in an object and pass it to the `trackEvent` method. We will then append these named parameters to your callback URL.
 [대시보드][dashboard]에서 이벤트 콜백 URL을 등록할 수 있습니다. 이벤트를 추적할 때마다 GET 요청이 해당 URL로 전송됩니다. 키-값 쌍을 오브젝트에 삽입하여 `trackEvent` 메소드로 전달할 수도 있게 됩니다. 그러면 해당 매개변수가 콜백 URL에 추가됩니다.
@@ -351,7 +300,7 @@ Adjust는 매개변수 값으로 사용하는 iOS 용의 `{idfa}`나 안드로�
 
 가능한 전체 값 목록을 비롯하여 자세한 URL 콜백 사용법은 [콜백 지침][callbacks-guide]에서 확인하세요.
 
-#### 파트너 매개변수
+#### <a id="partner-parameters">파트너 매개변수
 
 위에 설명한 콜백 매개변수와 마찬가지로, 선택한 네트워크 파트너에게 전송할 매개변수도 추가할 수 있습니다. 
 
@@ -368,13 +317,13 @@ Adjust.trackEvent(adjustEvent);
 
 특별 파트너 및 네트워크에 대한 자세한 내용은 [특별 파트너 설명서][special-partners]를 참조하십시오.
 
-### 세션 매개변수
+### <a id="session-parameters">세션 매개변수
 
 일부 매개변수는 Adjust SDK 이벤트 및 세션 발생시마다 전송을 위해 저장합니다. 어느 매개변수이든 한 번 저장하면 로컬에 바로 저장되므로 매번 새로 추가할 필요가 없습니다. 같은 매개변수를 두 번 저장해도 효력이 없습니다.
 
 이 세션 매개변수는 설치 시에도 전송할 수 있도록 Adjust SDK 런칭 전에도 호출할 수 있습니다. 설치 시에 전송하지만 필요한 값은 런칭 후에야 들어갈 수 있게 하고 싶다면 Adjust SDK 런칭 시 [예약 시작](#delay-start)을 걸 수 있습니다.
 
-#### 세션 콜백 매개변수
+#### <a id="session-callback-parameters">세션 콜백 매개변수
 
 [이벤트](#callback-parameters)에 등록한 콜백 매개변수는, Adjust SDK 전체 이벤트 및 세션 시 전송할 목적으로 저장할 수도 있습니다.
 
@@ -398,7 +347,7 @@ Adjust.removeSessionCallbackParameter("foo");
 Adjust.resetSessionCallbackParameters();
 ```
 
-#### 세션 파트너 매개변수
+#### <a id="session-partner-parameters">세션 파트너 매개변수
 
 Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 매개변수](#session-callback-parameters)가 있는 것처럼, 세션 파트너 매개변수도 있습니다.
 
@@ -438,7 +387,7 @@ adjustConfig.setDelayStart(5.5);
 
 **Adjust SDK의 최대 지연 예약 시작 시간은 10초입니다.**
 
-### 속성 콜백
+### <a id="attribution-callback">속성 콜백
 
 수신기를 등록하여 트래커 속성 변경 알림을 받을 수 있습니다. 속성에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 가장 간단한 방법은 익명의 단일 수신기를 생성하여 **사용자 속성값이 바뀔 때마다** 호출되도록 하는 것입니다.
 
@@ -476,7 +425,7 @@ Adjust.create(adjustConfig);
 
 [해당 속성 데이터 정책][attribution-data]을 반드시 고려하세요.
 
-### 세션 및 이벤트 콜백
+### <a id="session-event-callbacks">세션 및 이벤트 콜백
 
 콜백을 등록하여 이벤트나 세션 추적 시 알림을 받을 수 있습니다. 
 
@@ -567,7 +516,7 @@ Adjust.create(adjustConfig);
 
 - `var willRetry` 나중에 패키지 재전송 시도가 있을 것임을 나타냅니다.
 
-### 추적 사용 중지
+### <a id="disable-tracking">추적 사용 중지
 
 ‘Adjust’ 인스탄스의 `setEnabled` 메소드를 `false` 매개변수로 설정한 상태로 호출하면 Adjust SDK에서 현재 장치의 모든 작업 추적을 중지할 수 있습니다. **이 설정은 세션과 세션 사이에 기억됩니다**. 하지만 첫 번째 세션 후에만 적용할 수 있습니다.
 
@@ -577,7 +526,7 @@ Adjust.setEnabled(false);
 
 ‘Adjust’ 인스턴스의 `isEnabled` 메소드로 Adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 매개변수가 `true`로 설정된 `setEnabled`를 호출하면 Adjust SDK를 언제든지 활성화할 수 있습니다.
 
-### 오프라인 모드
+### <a id="offline-mode">오프라인 모드
 
 Adjust SDK를 오프라인 모드로 전환하여 서버로 전송하는 작업을 일시 중단하고 추적 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로, 너무 많은 이벤트가 촉발되지 않도록 주의하십시오.
 
@@ -591,7 +540,7 @@ Adjust.setOfflineMode(true);
 
 추적 사용 중지와 달리 이 설정은 세션 간에 **기억되지 않습니다.** 따라서 앱을 오프라인 모드에서 종료한 경우에도 SDK는 항상 온라인 모드로 시작됩니다.
 
-### 이벤트 버퍼링
+### <a id="event-buffering">이벤트 버퍼링
 
 앱이 이벤트 추적을 많이 사용하는 경우, 매 분마다 배치 하나씩만 보내도록 하기 위해 일부 HTTP 요청을 지연시키고자 할 경우가 있을 수 있습니다. `setEventBufferingEnabled` 메소드를 호출하면 `AdjustConfig` 인스턴스로 이벤트 버퍼링을 적용할 수 있습니다.
 
@@ -603,7 +552,7 @@ adjustConfig.setEventBufferingEnabled(true);
 Adjust.create(adjustConfig);
 ```
 
-### 배경 추적
+### <a id="background-tracking">배경 추적
 
 Adjust SDK 기본값 행위는 **앱이 배경에 있을 동안에는 HTTP 요청 전송을 잠시 중지**하는 것입니다. `setSendInBackground` 메소드를 호출하면 `AdjustConfig` 인스턴스에서 이를 바꿀 수 있습니다.
 
@@ -617,11 +566,11 @@ Adjust.create(adjustConfig);
 
 여기에 설정한 내용이 없으면 배경에서의 전송은 **기본값으로 해제됩니다**.
 
-### 기기 ID
+### <a id="device-ids">기기 ID
 
 Google Analytics 등 일부 기기의 경우 중복 보고를 막기 위해 기기 및 클라이언트 ID를 조정해야 합니다.
 
-### iOS 광고 식별자
+### <a id="di-idfa">iOS 광고 식별자
 
 IDFA를 얻으려면 `Adjust` 인스턴스에서 `getIdfa` 메소드를 호출하세요. 값을 얻으려면 해당 메소드에 콜백을 전달해야 합니다.
 
@@ -631,7 +580,7 @@ Adjust.getIdfa(function(idfa) {
 });
 ```
 
-### Google Play Services 광고 식별자
+### <a id="di-gps-adid">Google Play Services 광고 식별자
 
 Google Advertising ID를 얻으려면 ‘Adjust’ 인스턴스의 `getGoogleAdId` 메소드를 호출하세요. 값을 얻으려면 해당 메소드에 콜백을 전달해야 합니다.
 
@@ -643,7 +592,7 @@ Adjust.getGoogleAdId(function(googleAdId) {
 
 콜백 메소드에서는 `googleAdId` 변수로 Google Advertising ID에 억세스할 수 있습니다.
 
-### Adjust 장치 식별자
+### <a id="di-adid"></a>Adjust 장치 식별자
 
 Adjust 백엔드는 앱을 인스톨한 장치에서 고유한 **Adjust 장치 식별자** (**adid**)를 생성합니다. 이 식별자를 얻으려면 `Adjust` 인스턴스에서 `getAdid` 메소드를 호출하세요. 값을 얻으려면 해당 메소드에 콜백을 전달해야 합니다.
 
@@ -654,7 +603,7 @@ Adjust.getAdid(function(adid) {
 ```
 **주의**: **adid** 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적한 후에만 얻을 수 있습니다. 그 순간부터 Adjust SDK는 장치 **adid** 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 앱 인스톨 추적이 성공적으로 이루어지기 전에는 **adid** 억세스가 **불가능합니다**.
 
-### 사용자 속성
+### <a id="user-attribution"></a>사용자 속성
 
 [속성 콜백 섹션](#attribution-callback)에서 설명한 대로, 이 콜백은 변동이 있을 때마다 새로운 속성 관련 정보를 전달할 목적으로 촉발됩니다. 사용자의 현재 속성 값 관련 정보에 언제든 억세스하고 싶다면, `Adjust` 인스턴스의 `getAttribution` 메소드를 호출하면 됩니다.
 
@@ -666,7 +615,7 @@ Adjust.getAttribution(function(attribution) {
 
 **주의**: 유저의 현재 속성 값 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적하여 최초 속성 콜백이 촉발된 후에만 얻을 수 있습니다. 그 순간부터 Adjus SDK는 유저 속성 값 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 최초 속성 콜백이 촉발되기 전에는 유저 속성 값 억세스가 **불가능합니다**. 
 
-### 푸시 토큰
+### <a id="push-token">푸시 토큰
 
 푸시 알림 토큰을 전송하려면 **앱에서 토큰을 받거나 값 변화가 있을 때마다** 아래와 같이 Adjust에 대한 호출을 추가하세요.
 
@@ -674,7 +623,7 @@ Adjust.getAttribution(function(attribution) {
 Adjust.setDeviceToken("YourPushNotificationToken");
 ```
 
-### 사전 설치 트래커
+### <a id="pre-installed-trackers">사전 설치 트래커
 
 Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를 인식하게 하고 싶다면 다음 절차를 따르세요.
 
@@ -697,17 +646,17 @@ Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를
     Default tracker: 'abc123'
 ```
 
-### 딥링크
+### <a id="deeplinking">딥링크
 
 URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. 
 
-#### 기본 딥링크
+#### <a id="deeplinking-standard">기본 딥링크
 
 기본 딥링크는 플랫폼에 따라 달라지는 기능이며, 지원하려면 앱에 몇 가지 설정을 추가해야 합니다. 사용자가 앱을 이미 설치한 상태에서 트래커 URL을 열면 앱이 열리며 딥링크 내용이 앱에 전송되어 이를 분석하고 다음에 어떤 행동을 취할 지 결정할 수 있습니다. 
 
 **iOS 관련 알림**: iOS 9가 출시되면서 Apple이 앱 내 딥링크 취급 방식을 바꿨습니다. 둘 중 어떤 딥링크를 앱에 사용하려는 가에 따라 (또는 더 다양한 장치를 지원하기 위해 양쪽을 다 사용할 경우에) 앱에서 그에 맞춰 설정을 다시 해줘야 합니다. 
 
-#### 안드로이드 및 iOS 8 이하 버전 딥링크
+#### <a id="deeplinking-android-ios-old">안드로이드 및 iOS 8 이하 버전 딥링크
 
 앱에서 안드로이드 및 iOS 8 이하 버전용 딥링크를 지원하려면, ‘개인 맞춤 URL 스킴’ 플러그인을 사용하면 됩니다. [여기][custom-url-scheme]에서 찾을 수 있습니다.
 
@@ -723,7 +672,7 @@ function handleOpenURL(url) {
 
 이 플러그인 연동을 완료하면 **안드로이드 및 iOS 8 이하 버전**에서 딥링크를 취급할 수 있습니다. 
 
-#### iOS 9 이상 버전 딥링크
+#### <a id="deeplinking-ios-new">iOS 9 이상 버전 딥링크
 
 **iOS 9** 출시와 더불어 Apple는 위에서 설명한 기존 개인 맞춤 URL 스킴 방식의 딥링크에 대한 지원을 줄이고 ‘유니버설 링크’를 더 지원하겠다고 밝혔습니다. 앱이 iOS 9 이상 버전 용 딥링크를 지원하게 만들고 싶다면 유니버설 링크 취급에 지원을 추가해야 합니다.
 
@@ -800,7 +749,7 @@ var app = {
 
 이 단계를 전부 마치면 iOS 9 이상 버전에서 딥링크에 필요한 지원을 성공적으로 추가한 것입니다. 
 
-#### 거치 딥링크
+### <a id="deeplinking-deferred">거치 딥링크
 
 안드로이드와 iOS에서는 거치 딥링크를 바로 지원하지 않지만, Adjust SDK를 사용하면 가능합니다.
  
@@ -833,7 +782,7 @@ Adjust.create(adjustConfig);
 
 설정한 내용이 없을 경우 **Adjust SDK는 항상 URL 런칭을 기본값으로 선택합니다**.
 
-#### 딥링크를 통한 재어트리뷰션
+#### <a id="deeplinking-reattribution">딥링크를 통한 재어트리뷰션
 
 Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-engagement)를 수행할 수 있게 해줍니다. 이에 대한 자세한 정보는 [관련 문서][reattribution-with-deeplinks]를 참조하세요.
 
@@ -904,7 +853,7 @@ var app = {
 [broadcast-receiver-custom]:    https://github.com/adjust/android_sdk/blob/master/doc/english/referrer.md
 [reattribution-with-deeplinks]: https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link
 
-## 라이선스
+## <a id="license">라이선스
 
 Adjust SDK는 MIT 라이선스에 따라 사용이 허가되었습니다.
 
