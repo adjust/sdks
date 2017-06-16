@@ -144,7 +144,7 @@ Adjust SDK는 안드로이드 매니페스트(manifest) 파일에 `INTERNET`과 
 
 `INTERNET` 권한은 SDK가 언제든 필요로 할 가능성이 있습니다. `ACCESS_WIFI_STATE` 권한은 앱이 Google Play Store를 대상으로 하지 않으며 Google Play Services를 사용하지 않을 때 필요합니다. Google Play Store를 대상으로 하며 Google Play Services를 사용하는 경우 Adjust SDK는 이 권한을 필요로 하지 않으며, 앱에서 필요하지 않다면 제거할 수 있습니다. 
 
-#### <a id="android-gps"Google Play Services
+#### <a id="android-gps">Google Play Services
 
 2014년 8월 1일 이후로 Google Play Store에 있는 앱은 [Google 광고 ID][google_ad_id]를 사용하여 장치를 고유하게 식별해야 합니다. Adjust SDK에서 Google 광고 ID를 사용할 수 있게 하려면 [Google Play Services][google_play_services]를 연동해야 합니다.
 
