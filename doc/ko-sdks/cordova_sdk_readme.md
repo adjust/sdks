@@ -644,7 +644,7 @@ Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를
 
     ```
     Default tracker: 'abc123'
-```
+    ```
 
 ### <a id="deeplinking">딥링크
 
