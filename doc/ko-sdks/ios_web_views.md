@@ -34,7 +34,7 @@ WebView를 사용하는 iOS 앱을 위한 Adjust.com™의 iOS SDK 설명서입�
 
 ### <a id="native-add">기본 Adjust iOS SDK 추가
 
-WebView에서 Adjust SDK를 사용하려면 Adjust의 네이티브 iOS SDK를 앱에 추가해야 합니다. 네이티브 안드로이드 SDK를 설치하려면 [iOS SDK README][https://github.com/adjust/sdks/blob/master/doc/ko-sdks/ios_sdk_readme.md#basic-integration]에서 `기본 연동` 부분을 참조하십시오.
+WebView에서 Adjust SDK를 사용하려면 Adjust의 네이티브 iOS SDK를 앱에 추가해야 합니다. 네이티브 안드로이드 SDK를 설치하려면 [iOS SDK README](https://github.com/adjust/sdks/blob/master/doc/ko-sdks/ios_sdk_readme.md#basic-integration)에서 `기본 연동` 부분을 참조하십시오.
 
 ### <a id="bridge-add">프로젝트에 AdjustBridge 추가
 
