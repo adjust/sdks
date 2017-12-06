@@ -223,8 +223,6 @@ Adjust.trackEvent(adjustEvent)
 Adjust는 파라미터 값으로 사용하는 `{idfa}` 등의 다양한 플레이스홀더(placeholder)를 지원합니다. 이 플레이스홀더는 결과 콜백 시에 현재 기기 광고자 ID로 대체됩니다. Adjust는 고객 파라미터를 저장하지 않으며 콜백에 덧붙일 뿐임을 기억해 주십시오. 이벤트 콜백을 등록하지 않았다면 이들 파라미터는 아예 읽히지 않습니다.  
 
 가능한 전체 값 목록을 비롯하여 자세한 URL 콜백 사용법은 [콜백 설명서][callbacks-guide]에서 확인하세요.
- 
-[callbacks guide][callbacks-guide].
 
 #### <a id="partner-parameters">파트너 파라미터
 
