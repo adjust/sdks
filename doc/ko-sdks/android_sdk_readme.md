@@ -85,7 +85,7 @@ implementation 'com.android.installreferrer:installreferrer:1.0'
 
 이는 Google Play Services 의존 파일(dependency)을 `build.gradle`에 추가할 때 적용됩니다.
 
-Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [release][release] 페이지에서 찾을 수 있습니다.
+Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [releases][releases] 페이지에서 찾을 수 있습니다.
 
 ### <a id="google-play-services"></a>Google Play 서비스 추가
 
@@ -1013,7 +1013,7 @@ Adjust SDK는 이 때 초기화가 준비되지만 실제로 시작되지는 않
 
 따라서 응용 프로그램 시작 시 이벤트를 촉발시키면 추적하는 설치 및 세션 수가 부정확해집니다.
 
-설치 후에 이벤트를 촉발시키려면 [어트리뷰션 콜백](#attribution-callback)를 사용하십시오.
+설치 후에 이벤트를 촉발시키려면 [어트리뷰션 콜백](#attribution-callback)을 사용하십시오.
 
 앱이 시작될 때 이벤트를 촉발시키려면 시작된 작업의 `onCreate` 메서드를 사용하십시오.
 
