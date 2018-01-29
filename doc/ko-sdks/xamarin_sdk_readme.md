@@ -16,8 +16,8 @@ adjust Windows SDK는 모든 교차 플랫폼 Xamarin 프로젝트와 호환됩�
 [Windows 8.1 및 Windows Phone 8.1][windows_universal_81], [Windows Phone 8.0][windows_phone_80], [Windows 10][windows_universal_10] 앱 예제도 볼 수 있습니다. 앱 예제에서는 [공유 프로젝트][shared_lib] 및 [Portable Class Library][pcl_lib]와 [Xamarin Android][android_demo] 및 [Xamarin iOs][ios_demo]에서 사용되는 [Xamarin 양식][forms_lib]도 사용합니다.
 
 [adjust.com]: http://adjust.com
-[xamarin_ios]: doc/ios/ios.md
-[xamarin_android]: doc/android/android.md
+[xamarin_ios]: https://github.com/adjust/xamarin_sdk/blob/master/doc/ios/ios.md
+[xamarin_android]: https://github.com/adjust/xamarin_sdk/blob/master/doc/android/android.md
 [windows_guide]: https://github.com/adjust/windows_sdk
 [windows_universal_81]: AdjustDemoWindowsUniversal_8_1
 [windows_phone_80]: AdjustDemoWindowsPhone_8_0
