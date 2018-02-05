@@ -1,8 +1,8 @@
 ## 요약
 
-이 항목에서는 adjust의 Android SDK에 대해 설명합니다. adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
+이 항목에서는 Adjust의 Android SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하고자 할 경우 안드로이드 [web views SDK 설명서](web_views.md)를 참조해 주십시오.
+Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하고자 할 경우 안드로이드 [web views SDK 설명서](doc/english/web_views.md)를 참조해 주십시오.
 
 ## 목차
 
@@ -12,7 +12,7 @@ web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
    * [Google Play 서비스 추가](#sdk-gps)
    * [권한 추가](#sdk-permissions)
    * [Proguard 설정](#sdk-proguard)
-   * [참조자 설치](#install-referrer)
+   * [설치 참조자](#install-referrer)
       * [Google Play 참조자 API](#gpr-api)
       * [Google Play Store 인텐트](#gps-intent)
    * [앱에 SDK 연동](#sdk-integrate)
@@ -38,6 +38,7 @@ web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
     * [추적 사용 중지](#disable-tracking)
     * [오프라인 모드](#offline-mode)
     * [이벤트 버퍼링(buffering)](#event-buffering)
+    * [SDK 서명](#sdk-signature)
     * [백그라운드 추적](#background-tracking)
     * [기기 ID](#device-ids)
       * [Google Play 서비스 광고 식별자](#di-gps-adid)
@@ -50,7 +51,7 @@ web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
     * [딥링크](#deeplinking)
         * [기본 딥링크](#deeplinking-standard)
         * [거치(deferred) 딥링크](#deeplinking-deferred)
-        * [딥링크를 통한 재어트리뷰션](#deeplinking-reattribution)
+        * [딥링크를 통한 리어트리뷰션](#deeplinking-reattribution)
 * [문제해결](#troubleshooting)
     * ["Session failed (Ignoring too frequent session. ...)" 오류가 나타납니다.](#ts-session-failed)
     * [브로드캐스트 수신기가 설치 참조 페이지를 제대로 캡처하고 있나요?](#ts-broadcast-receiver)
@@ -85,7 +86,7 @@ implementation 'com.android.installreferrer:installreferrer:1.0'
 
 이는 Google Play Services 의존 파일(dependency)을 `build.gradle`에 추가할 때 적용됩니다.
 
-Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [releases][releases] 페이지에서 찾을 수 있습니다.
+Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [release][release] 페이지에서 찾을 수 있습니다.
 
 ### <a id="google-play-services"></a>Google Play 서비스 추가
 
@@ -159,7 +160,7 @@ Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가합니�
 
 **Google Play Store가 대상이 아닌** 경우 `com.google.android.gms` 규칙을 제거할 수 있습니다.
 
-### <a id="install-referrer"></a>참조자 설치
+### <a id="install-referrer"></a>설치 참조자
 
 Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **설치 참조자** 관련 정보를 필요로 합니다. 이 정보는 **Google Play 참조자 API**를 사용하거나 브로드캐스트 수신기로 **Google Play Store 인텐트**를 잡아 얻을 수 있습니다. 
 
@@ -269,7 +270,7 @@ Adjust는 이 브로드캐스트 수신기를 사용하여 설치 참조자를 �
 
 #### <a id="session-tracking-api14"></a>API 레벨 14 이상
 
-  1. `ActivityLifecycleCallbacks` 인터페이스를 구현하는 비공개 클래스를 추가합니다. 이 인터페이스에 액세스할 권한이 없다면, 앱의 대상 Android api 레벨이 14보다 낮기 때문입니다. 이 [지침](#session-tracking-api9) 따라 각 작업을 수동으로 업데이트해야 합니다. 이전에 앱의 각 작업에 대한 `Adjust.onResume` 및 `Adjust.onPause` 호출이 있었을 경우 각 호출을 제거해야 합니다.
+  1. `ActivityLifecycleCallbacks` 인터페이스를 구현하는 비공개 클래스를 추가합니다. 이 인터페이스에 액세스할 권한이 없다면, 앱의 대상 Android api 레벨이 14보다 낮기 때문입니다. 이 [지침](#session-tracking-api9)에 따라 각 작업을 수동으로 업데이트해야 합니다. 이전에 앱의 각 작업에 대한 `Adjust.onResume` 및 `Adjust.onPause` 호출이 있었을 경우 각 호출을 제거해야 합니다.
 
     ![][activity_lifecycle_class]
 
@@ -449,7 +450,7 @@ Adjust.trackEvent(event);
 http://www.adjust.com/callback?key=value&foo=bar
 ```
 
-파라미터 값으로 사용할 수 있는 `{gps_adid}`와 같은 다양한 자리 표시자(placeholder)를 지원합니다. 결과로 생성한 콜백에서 이 자리 표시자는 현재 장치의 Google Play 서비스 ID로 대체됩니다. 사용자 지정 파라미터는 저장되지 않으며 콜백에만 추가됩니다. 이벤트에 대한 콜백을 등록하지 않은 경우 해당 파라미터는 읽을 수 없습니다.
+파라미터 값으로 사용할 수 있는 `{gps_adid}`와 같은 다양한 자리 표시자(placeholder)를 지원합니다. 그 결과로 생성한 콜백에서 이 자리 표시자는 현재 기기의 Google Play 서비스 ID로 대체됩니다. 사용자 지정 파라미터는 저장되지 않으며 콜백에만 추가됩니다. 이벤트에 대한 콜백을 등록하지 않은 경우 해당 파라미터는 읽을 수 없습니다.
 
 사용 가능한 값의 전체 목록을 포함한 URL 콜백 사용에 대한 자세한 내용은 [콜백 설명서][callbacks-guide]를 참조하십시오.
 
@@ -504,7 +505,7 @@ Adjust.resetSessionCallbackParameters();
 
 Adjust SDK 내 모든 이벤트 및 세션에서 전송되는 [세션 콜백 파라미터](#session-callback-parameters)가 있는 것처럼, 세션 파트너 파라미터도 있습니다.
 
-이들 파라미터는 Adjust [대시보드][adjust.com]에서 연동 및 활성화된 네트워크 파트너에게 전송할 수 있습니다.
+이들 파라미터는 Adjust [대시보드](adjust.com)에서 연동을 활성화한 네트워크 파트너에게 전송할 수 있습니다.
 
 세션 파트너 파라미터는 이벤트 파트너 파라미터와 인터페이스가 비슷하지만, 이벤트에 키, 값을 추가하는 대신 `Adjust.addSessionPartnerParameter(String key, String value)` 메서드를 호출하여 추가합니다.
 
@@ -578,13 +579,13 @@ Adjust.onCreate(config);
 - `string adgroup` 현재 설치된 광고 그룹 그룹화 기준.
 - `string creative` 현재 설치된 크리에이티브 그룹화 기준.
 - `string clickLabel` 현재 설치된 클릭 레이블.
-- `string adid` Adjust 장치 식별자.
+- `string adid` Adjust 기기 식별자.
 
 값을 사용할 수 없을 경우 `null`로 기본 설정됩니다.
 
 ### <a id="session-event-callbacks"></a>세션 및 이벤트 콜백
 
-수신기를 등록하여 이벤트나 세션 추적 시 알림을 받을 수 있습니다. 수신기에는 4가지가 있습니다. 이벤트 성공 추적, 이벤트 실패 추적, 세션 성공 추적, 그리고 세션 실패 추적입니다. `AdjustConfig` 개체를 생성한 후 수신기를 원하는 만큼 추가할 수 있습니다. 
+수신기를 등록하여 이벤트나 세션 추적 시 알림을 받을 수 있습니다. 수신기에는 4가지가 있습니다. 이벤트 추적 성공, 이벤트 추적 실패, 세션 추적 성공, 그리고 세션 추적 실패입니다. `AdjustConfig` 개체를 생성한 후 수신기를 원하는 만큼 추가할 수 있습니다. 
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -628,7 +629,7 @@ Adjust.onCreate(config);
 
 - `String message` 서버에서 전송한 메시지 또는 SDK가 기록한 오류
 - `String timestamp` 서버에서 전송한 데이터의 타임스탬프
-- `String adid` Adjust가 제공하는 고유 장치 식별자
+- `String adid` Adjust가 제공하는 고유 기기 식별자
 - `JSONObject jsonResponse` 서버로부터의 응답이 있는 JSON 개체
 
 이벤트 응답 데이터 개체 두 가지에는 다음 정보가 포함됩니다.
@@ -649,13 +650,13 @@ Adjust.onCreate(config);
 Adjust.setEnabled(false);
 ```
 
-`isEnabled` 함수를 호출하여 Adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 매개변수가 `true`로 설정된 `setEnabled`를 호출하면 Adjust SDK를 언제든 활성화할 수 있습니다.
+`isEnabled` 함수를 호출하여 Adjust SDK가 현재 사용 가능한지 확인할 수 있습니다. 파라미터가 `true`로 설정된 `setEnabled`를 호출하면 Adjust SDK를 언제든 활성화할 수 있습니다.
 
 ### <a id="offline-mode"></a>오프라인 모드
 
-Adjust SDK를 오프라인 모드로 전환하여 서버로 전송하는 작업을 일시 중단하고 추적 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로, 너무 많은 이벤트가 촉발되지 않도록 주의하십시오.
+Adjust SDK를 오프라인 모드로 전환하여 서버로 전송하는 작업을 일시 중단하고 추적 데이터를 보관하여 나중에 보낼 수 있습니다. 오프라인 모드일 때는 모든 정보가 파일에 저장되므로, 너무 많은 이벤트를 촉발(trigger)하지 않도록 주의하십시오.
 
-`setOfflineMode`를 `true` 매개변수로 설정한 상태로 호출하면 오프라인 모드를 활성화할 수 있습니다.
+`setOfflineMode`를 `true`로 설정하여 호출하면 오프라인 모드를 활성화할 수 있습니다.
 
 ```java
 Adjust.setOfflineMode(true);
@@ -677,6 +678,22 @@ config.setEventBufferingEnabled(true);
 Adjust.onCreate(config);
 ```
 
+### <a id="sdk-signature"></a>SDK 서명
+
+계정 매니저가 Adjust SDK 서명을 활성화해야 합니다. 이 기능을 사용해 보고자 할 경우 Adjust 지원 팀<a href="mailto:support@adjust.com">(support@adjust.com)</a>으로 연락해 주십시오.
+
+SDK 서명이 계정에서 이미 사용 가능 상태로 Adjust 대시보드에서 App Secret에 억세스할 수 있는 상태라면, 아래 매서드를 사용하여 SDK 서명을 앱에 연동하십시오. 
+
+`AdjustConfig` 인스턴스에서 `setAppSecret`를 호출하면 App Secret이 설정됩니다.
+
+```cpp
+AdjustConfig config = new AdjustConfig(this, appToken, environment);
+
+config.setAppSecret(secretId, info1, info2, info3, info4);
+
+Adjust.onCreate(config);
+```
+
 ### <a id="background-tracking"></a>백그라운드 추적
 
 Adjust SDK 기본값 행위는 **앱이 백그라운드에 있을 동안에는 HTTP 요청 전송을 잠시 중지**하는 것입니다. `AdjustConfig` 인스턴스에서 이 설정을 바꿀 수 있습니다.
@@ -689,13 +706,13 @@ config.setSendInBackground(true);
 Adjust.onCreate(config);
 ```
 
-### <a id="device-ids"></a>장치 ID
+### <a id="device-ids"></a>기기 ID
 
-Adjust SDK로 장치 식별자 몇 가지를 획득할 수 있습니다.
+Adjust SDK로 기기 식별자 몇 가지를 획득할 수 있습니다.
 
 ### <a id="di-gps-adid"></a>Google Play 서비스 광고 식별자
 
-Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 장치 ID와 클라이언트 ID를 조정해야 합니다.
+Google Analytics와 같은 서비스를 사용하려면 중복 보고가 발생하지 않도록 기기 ID와 클라이언트 ID를 조정해야 합니다.
 
 Google 광고 ID가 필요한 경우 제한 사항으로 인해 백그라운드 스레드에서만 ID를 읽을 수 있습니다. `getGoogleAdId` 함수를 컨텍스트 및 `OnDeviceIdsRead` 인스턴스와 함께 호출하면 상황에 관계 없이 작동합니다.
 
@@ -718,9 +735,9 @@ Amazon 광고 ID를 얻으려면 `Adjust` 인스턴스에서 다음 메서드를
 String amazonAdId = Adjust.getAmazonAdId(context);
 ```
 
-### <a id="di-adid"></a>Adjust 장치 식별자
+### <a id="di-adid"></a>Adjust 기기 식별자
 
-Adjust 백엔드는 앱을 인스톨한 장치에서 고유한 **Adjust 장치 식별자** (**adid**)를 생성합니다. 이 식별자를 얻으려면 `Adjust` 인스턴스에서 다음 메서드를 호출하면 됩니다.
+Adjust 백엔드는 앱을 인스톨한 장치에서 고유한 **Adjust 기기 식별자** (**adid**)를 생성합니다. 이 식별자를 얻으려면 `Adjust` 인스턴스에서 다음 메서드를 호출하면 됩니다.
 
 ```cpp
 String adid = Adjust.getAdid();
@@ -728,7 +745,7 @@ String adid = Adjust.getAdid();
 
 **주의**: 이 호출은 Adjust SDK v4.11.0 이상 버전에서만 수행할 수 있습니다.
 
-**주의**: **adid** 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적한 후에만 얻을 수 있습니다. 그 순간부터 Adjust SDK는 장치 **adid** 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 앱 인스톨 추적이 성공적으로 이루어지기 전에는 **adid** 억세스가 **불가능합니다**.
+**주의**: **adid** 관련 정보는 Adjust 백엔드가 앱 설치를 추적한 후에만 얻을 수 있습니다. 그 순간부터 Adjust SDK는 기기 **adid** 정보를 갖게 되며 이 메서드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 앱 설치 추적이 성공적으로 이루어지기 전에는 **adid** 억세스가 **불가능합니다**.
 
 ### <a id="user-attribution"></a>사용자 어트리뷰션
 
@@ -740,7 +757,7 @@ AdjustAttribution attribution = Adjust.getAttribution();
 
 **주의**: 이 호출은 Adjust SDK v4.11.0 이상 버전에서만 수행할 수 있습니다.
 
-**주의**: 유저의 현재 어트리뷰션 값 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적하여 최초 어트리뷰션 콜백이 촉발된 후에만 얻을 수 있습니다. 그 순간부터 Adjus SDK는 유저 어트리뷰션 값 정보를 갖게 되며 이 메소드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 최초 어트리뷰션 콜백이 촉발되기 전에는 유저 어트리뷰션 값 억세스가 **불가능합니다**. 
+**주의**: 사용자의 현재 어트리뷰션 관련 정보는 Adjust 백엔드가 앱 인스톨을 추적하여 최초 어트리뷰션 콜백이 촉발된 후에만 얻을 수 있습니다. 그 순간부터 Adjus SDK는 사용자 어트리뷰션 정보를 갖게 되며 이 메서드로 억세스할 수 있습니다. 따라서 SDK가 초기화되고 최초 어트리뷰션 콜백이 촉발되기 전에는 사용자 어트리뷰션 값 억세스가 **불가능합니다**. 
 
 ### <a id="push-token"></a>푸시 토큰
 
@@ -749,27 +766,27 @@ AdjustAttribution attribution = Adjust.getAttribution();
 ```java
 Adjust.setPushToken(pushNotificationsToken, context);
 ```
-`context`를 추가하여 업데이트된 이 시그니처로 SDK가 더욱 다양한 상황에서 푸시 토큰을 전송할 수 있으므로 가능하면 이를 사용할 것을 권장합니다.
+`context`를 추가하여 업데이트된 이 서명을 사용하여 SDK가 더욱 다양한 상황에서 푸시 토큰을 전송할 수 있으므로, 가능하면 이를 사용할 것을 권장합니다.
 
-동일한 메서드에 대해 이전 버전의 아래 시그니처도 여전히 지원합니다.
+동일한 메서드에 대해 이전 버전의 아래 서명도 여전히 지원합니다.
 
 ```java
 Adjust.setPushToken(pushNotificationsToken);
 ```
 
-푸시 토큰은 Audience Builder와 클라이언트 콜백에 사용되며, 향후 등장할 언인스톨 추적 기능에도 필요합니다.
+푸시 토큰은 Audience Builder와 클라이언트 콜백에 사용되며, 향후 선보일 설치 취소(uninstall) 추적 기능에도 필요합니다.
 
 ### <a id="track-additional-ids">기타 기기 식별자 추적
 
 **Google Play Store** 이외의 안드로이드 앱 스토어에서 앱을 배포 중이며 기타 기기 식별자(IMEI 및 MEID)를 추적하고자 할 경우 Adjust SDK에 해당 명령을 내려야 합니다. `AdjustConfig` 인스턴스 내 `setReadMobileEquipmentIdentity` 메서드를 아래와 같이 호출하여 `true` 파라미터를 전달하면 됩니다. **Adjust SDK는 이들 식별자를 기본값으로 수집하지 않습니다**.
 
-    ```objc
-    AdjustConfig config = new AdjustConfig(this, appToken, environment);
-    
-    config.setReadMobileEquipmentIdentity(true);
-    
-    Adjust.onCreate(config);
-    ```
+```objc
+AdjustConfig config = new AdjustConfig(this, appToken, environment);
+
+config.setReadMobileEquipmentIdentity(true);
+
+Adjust.onCreate(config);
+```
 
 그리고 `AndroidManifest.xml` 파일에 `READ_PHONE_STATE` 권한을 추가해야 합니다.
 
@@ -777,7 +794,7 @@ Adjust.setPushToken(pushNotificationsToken);
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 ```
  
-이 기능을 사용하려면 Adjust 대시보드에서 추가 단계가 필요합니다. 자세한 사항을 알아 보려면 계정 매니저에게 연락하거나 [support@adjust.com][support@adjust.com]으로 메일을 보내 주십시오.
+이 기능을 사용하려면 Adjust 대시보드에서 추가 단계를 거쳐야 합니다. 자세한 사항을 알아 보려면 계정 매니저에게 연락하거나 [support@adjust.com][support@adjust.com]으로 메일을 보내 주십시오.
 
 ### <a id="pre-installed-trackers">사전 설치 트래커
 
@@ -787,19 +804,19 @@ Adjust SDK를 사용하여 앱이 사전 설치된 장치를 지닌 사용자를
 
 2. 앱 델리게이트를 열고 `AdjustConfig` 인스턴스의 기본값 트래커를 다음과 같이 설정합니다.
 
-    ```objc
-    AdjustConfig config = new AdjustConfig(this, appToken, environment);
-    config.setDefaultTracker("{TrackerToken}");
-    Adjust.onCreate(config);
-    ```
+```objc
+AdjustConfig config = new AdjustConfig(this, appToken, environment);
+config.setDefaultTracker("{TrackerToken}");
+Adjust.onCreate(config);
+```
 
-  `{TrackerToken}`을 2에서 생성한 트래커 토큰으로 대체합니다. 대시보드에서는 (`http://app.adjust.com/`을 포함하는) 트래커 URL을 표시한다는 사실을 명심하세요. 소스코드에서는 전체 URL을 표시할 수 없으며 6자로 이루어진 토큰만을 명시해야 합니다.
+`{TrackerToken}`을 2에서 생성한 트래커 토큰으로 대체합니다. 대시보드에서는 (`http://app.adjust.com/`을 포함하는) 트래커 URL을 표시한다는 사실을 명심하세요. 소스코드에서는 전체 URL을 표시할 수 없으며 6자로 이루어진 토큰만을 명시해야 합니다.
 
 3. 앱 빌드를 실행하세요. LogCat에서 다음 라인을 볼 수 있을 것입니다.
 
-    ```
-    Default tracker: 'abc123'
-    ```
+``` 
+Default tracker: 'abc123'
+```
 
 ### <a id="deeplinking"></a>딥링크
 
@@ -810,7 +827,7 @@ URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을
 사용자가 앱을 설치하고 `deep_link` 파라미터가 들어간 Adjust 트래커 URL을 클릭 시 런칭하도록 하려 할 경우, 앱에 딥링크를 활성화해야 합니다. 이는 원하는 **고유 스킴명 (scheme name)**을 선택하여 사용자가 링크를 클릭하고 앱이 열릴 때 런칭할 작업을 배정하여 이루어집니다. 이 과정은 `AndroidManifest.xml`에 설정되어 있습니다. `intent-filter` 섹션을 매니페스트 파일 내 원하는 작업 정의에 추가하고 `android:scheme` 어트리뷰션값을 원하는 스킴명과 함께 배정하면 됩니다. 
 
 ```xml
-    <activity
+<activity
     android:name=".MainActivity"
     android:configChanges="orientation|keyboardHidden"
     android:label="@string/app_name"
@@ -830,7 +847,7 @@ URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을
 </activity>
 ```
 
-이 설정이 끝나고, 트래커 URL 클릭 시 앱이 런칭되도록 하려면 배정한 스킴명을 Adjust 트래커 URL의 `deep_link` 파라미터에 사용해야 합니다. 딥링크에 정보가 추가되지 않은 트래커 URL은 아래와 같이 보일 것입니다.
+이 설정이 끝나고 트래커 URL 클릭 시 앱이 런칭되도록 하려면, 배정한 스킴명을 Adjust 트래커 URL의 `deep_link` 파라미터에 사용해야 합니다. 딥링크에 정보가 추가되지 않은 트래커 URL은 아래와 같이 보일 것입니다.
 
 ```
 https://app.adjust.com/abc123?deep_link=adjustExample%3A%2F%2F
@@ -842,7 +859,7 @@ URL 내 `deep_link` 파라미터 값은 **URL 인코딩이 되어야 한다**는
 
 `AndroidManifest.xml` 파일 내 `android:launchMode` 작업 설정에 따라 `deep_link` 파라미터 내용 정보가 작업 파일 내 적절한 위치로 전달됩니다. `android:launchMode` 어트리뷰션 값에 대한 더 자세한 정보는 [안드로이드 문서](https://developer.android.com/guide/topics/manifest/activity-element.html)에서 확인하세요.  
 
-딥링크 내용 정보는 `Intent` 개체를 통해 원하는 작업 내 `onCreate` 메소드 또는 `onNewIntent` 메소드로 전달됩니다. 앱을 런칭하고 두 개 메소드 중 하나가 촉발되면 실제 딥링크가 클릭한 URL 내 `deep_link` 파라미터로 전달되게 할 수 있습니다. 이렇게 하면 이 정보를 사용하여 앱에서 추가적 로직을 수행할 수 있게 됩니다.    
+딥링크 내용 정보는 `Intent` 개체를 통해 원하는 작업 내 `onCreate` 메서드 또는 `onNewIntent` 메서드로 전달됩니다. 앱을 런칭하고 두 개 메서드 중 하나가 촉발되면 실제 딥링크가 클릭한 URL 내 `deep_link` 파라미터로 전달되게 할 수 있습니다. 이렇게 하면 이 정보를 사용하여 앱에서 추가적 로직을 수행할 수 있게 됩니다.    
 
 딥링크 내용은 이들 두 개 메서드에서 다음과 같이 추출할 수 있습니다.
 
@@ -899,13 +916,13 @@ Adjust SDK가 백엔드에서 딥링크 내용 정보를 수신하면 그 내용
 
 리턴값을 `true`로 설정하면 작업이 런칭되어 [기본 딥링크](#deeplinking-standard)에서 설명한 것과 같은 결과를 구현합니다. SDK가 작업을 런칭하기를 원하지 않는다면, 수신기에서 `false`를 리턴하여 딥링크 내용을 토대로 앱에서 다음 작업을 어떻게 실행할 지 스스로 정할 수 있습니다.
 
-#### <a id="deeplinking-reattribution">딥링크를 통한 재어트리뷰션
+#### <a id="deeplinking-reattribution">딥링크를 통한 리어트리뷰션
 
 Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-engagement)를 수행할 수 있게 해줍니다. 이에 대한 자세한 정보는 [관련 문서](https://docs.adjust.com/en/deeplinking/#manually-appending-attribution-data-to-a-deep-link)를 참조하세요. 
 
 이 기능을 사용 중이라면, 사용자를 올바로 리어트리뷰트하기 위해 앱에서 호출을 한 가지 더 수행해야 합니다.
 
-앱에서 딥링크 내용을 수신했다면, `Adjust.appWillOpenUrl` 메서드 호출을 추가하세요. 이 호출이 이루어지면 Adjust SDK는 딥링크 내에 새로운 어트리뷰션 정보가 있는지 확인하고, 새 정보가 있으면 Adjust 백엔드로 송신합니다. 딥링크 정보가 담긴 Adjust 트래커 URL을 클릭한 유저를 리어트리뷰트해야 할 경우 앱에서 해당 사용자의 새 어트리뷰션 정보로 [어트리뷰션 콜백](#attribution-callback)이 촉발되는 것을 확인할 수 있습니다.    
+앱에서 딥링크 내용을 수신했다면, `Adjust.appWillOpenUrl` 메서드 호출을 추가하세요. 이 호출이 이루어지면 Adjust SDK는 딥링크 내에 새로운 어트리뷰션 정보가 있는지 확인하고, 새 정보가 있으면 Adjust 백엔드로 송신합니다. 딥링크 정보가 담긴 Adjust 트래커 URL을 클릭한 사용자를 리어트리뷰트해야 할 경우 앱에서 해당 사용자의 새 어트리뷰션 정보로 [어트리뷰션 콜백](#attribution-callback)이 촉발되는 것을 확인할 수 있습니다.    
 
 `Adjust.appWillOpenUrl` 호출은 다음과 같이 이루어집니다.
 
@@ -975,7 +992,7 @@ adb shell am broadcast -a com.android.vending.INSTALL_REFERRER -n com.your.appid
 
 이미 다른 브로드캐스트 수신기를 `INSTALL_REFERRER` 인텐트 수신용으로 사용 중이면서 이 [설명서][referrer]의 지침을 따른 경우, `com.adjust.sdk.AdjustReferrerReceiver`를 브로드캐스트 수신기로 대체합니다.
 
-`-n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver` 파라미터를 제거하여 장치의 모든 앱에서 `INSTALL_REFERRER` 인텐트를 수신하도록 할 수도 있습니다.
+`-n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver` 파라미터를 제거하여 기기의 모든 앱에서 `INSTALL_REFERRER` 인텐트를 수신하도록 할 수도 있습니다.
 
 로그 레벨을 `verbose`로 설정하면 참조자 확인 시 로그가 보일 것입니다.
 
@@ -1069,3 +1086,4 @@ http://www.adjust.com
 위 저작권 고지문과 본 권한 고지문은 소프트웨어의 모든 복사본이나 주요 부분에 포함되어야 합니다.
 
 소프트웨어는 상품성, 특정 용도에 대한 적합성 및 비침해에 대한 보증 등을 비롯한 어떤 종류의 명시적이거나 암묵적인 보증 없이 "있는 그대로" 제공됩니다. 어떤 경우에도 저작자나 저작권 보유자는 소프트웨어와 소프트웨어의 사용 또는 기타 취급에서 비롯되거나 그에 기인하거나 그와 관련하여 발생하는 계약 이행 또는 불법 행위 등에 관한 배상 청구, 피해 또는 기타 채무에 대해 책임지지 않습니다.
+--END--
