@@ -2,7 +2,7 @@
 
 이 항목에서는 Adjust™의 iOS SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서][ios_web_views.md]를 참조하십시오. 
+web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서](ios_web_views.md)를 참조하십시오. 
 
 ## 목차
 
