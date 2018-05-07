@@ -2,7 +2,7 @@
 
 이 항목에서는 Adjust™의 iOS SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서](ios_web_views.md)를 참조하십시오. 
+web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용하고자 할 경우에는 [iOS web views SDK 설명서][ios-web-views-guide]를 참조하십시오. 
 
 ## 목차
 
@@ -245,7 +245,7 @@ ADJEvent *event = [ADJEvent eventWithEventToken:@"abc123"];
 
 ### <a id="revenue-deduplication"></a>매출 중복 제거
 
-거래 ID를 선택 사항으로 추가하여 수익 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 중복 거래 ID로 이루어진 매출 이벤트는 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
+거래 ID를 선택 사항으로 추가하여 수익 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 똑같은 거래 ID로 이루어진 매출 이벤트는 중복 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
 
 인앱 구매를 추적하려면 상태가 `SKPaymentTransactionStatePurchased`로 변경된 경우에만 `paymentQueue:updatedTransaction`에서 `finishTransaction` 후에 `trackEvent`를 호출해야 합니다. 이렇게 해야 실제로 발생하지 않은 매출을 추적하는 오류를 막을 수 있습니다.
 
@@ -387,7 +387,7 @@ Adjust SDK에 예약 시작을 걸면 앱이 고유 식별자 등의 세션 파�
 
 ### <a id="attribution-callback">어트리뷰션 콜백
 
-위임(delegate) 콜백을 등록하여 트래커 어트리뷰션 변경에 대한 알림을 받을 수 있습니다. 어트리뷰션에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 앱 델리게이트에서 위임 프로토콜(선택 사항)을 구현하려면 다음 단계를 수행하십시오.
+delegate(델리게이트) 콜백을 등록하여 트래커 어트리뷰션 변경에 대한 알림을 받을 수 있습니다. 어트리뷰션에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 앱 델리게이트에서 델리게이트 프로토콜(선택 사항)을 구현하려면 다음 단계를 수행하십시오.
 
 [해당 어트리뷰션 데이터 정책][attribution-data]을 고려하십시오.
 
@@ -397,23 +397,23 @@ Adjust SDK에 예약 시작을 걸면 앱이 고유 식별자 등의 세션 파�
 @interface AppDelegate : UIResponder <UIApplicationDelegate, AdjustDelegate>
 ```
 
-2. `AppDelegate.m`을 열고 다음 위임 호출 함수를 앱 델리게이트 구현에 추가합니다.
+2. `AppDelegate.m`을 열고 다음 델리게이트 호출 함수를 앱 델리게이트 구현에 추가합니다.
 
 ```objc
 - (void)adjustAttributionChanged:(ADJAttribution *)attribution {
     }
 ```
 
-3. `ADJConfig` 인스턴스를 사용하여 위임을 설정합니다.
+3. `ADJConfig` 인스턴스를 사용하여 델리게이트를 설정합니다.
 
 ```objc
 [adjustConfig setDelegate:self];
 ```
     
-위임 콜백은 `ADJConfig` 인스턴스를 써서 구성하므로, `[Adjust appDidLaunch:adjustConfig]`를 호출하기 전에 `setDelegate`를 호출해야 합니다.
+델리게이트 콜백은 `ADJConfig` 인스턴스를 써서 구성하므로, `[Adjust appDidLaunch:adjustConfig]`를 호출하기 전에 `setDelegate`를 호출해야 합니다.
 
-SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
-위임 함수를 통해 `attribution` 파라미터에 액세스할 수 있습니다.
+SDK에 최종 속성 데이터가 수신되면 델리게이트 함수가 호출됩니다.
+델리게이트 함수를 통해 `attribution` 파라미터에 액세스할 수 있습니다.
 각 파라미터 속성에 대한 개요는 다음과 같습니다.
 
 - `NSString trackerToken` 현재 설치의 트래커 토큰.
@@ -429,18 +429,18 @@ SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
 
 ### <a id="event-session-callbacks">세션 및 이벤트 콜백
 
-위임 콜백을 등록하여 성공 또는 실패한 추적 대상 이벤트 및/또는 세션에 대한 알림을 받을 수 있습니다.
+델리게이트 콜백을 등록하여 성공 또는 실패한 추적 대상 이벤트 및/또는 세션에 대한 알림을 받을 수 있습니다.
 
 [어트리뷰션 콜백](#attribution-callback)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다.
 
-동일한 단계에 따라 이벤트 추적 성공 시에 대해 다음 위임 콜백 함수를 구현하십시오.
+동일한 단계에 따라 이벤트 추적 성공 시에 대해 다음 델리게이트 콜백 함수를 구현하십시오.
 
 ```objc
 - (void)adjustEventTrackingSucceeded:(ADJEventSuccess *)eventSuccessResponseData {
 }
 ```
 
-다음은 이벤트 추적 실패 시에 구현하는 위임 콜백 함수입니다.
+다음은 이벤트 추적 실패 시에 구현하는 델리게이트 콜백 함수입니다.
 
 ```objc
 - (void)adjustEventTrackingFailed:(ADJEventFailure *)eventFailureResponseData {
@@ -461,7 +461,7 @@ SDK에 최종 속성 데이터가 수신되면 위임 함수가 호출됩니다.
 }
 ```
 
-위임 함수는 SDK에서 서버로 패키지를 보내려고 시도한 후에 호출됩니다. 위임 콜백에서는 전용 응답 데이터 개체에 액세스할 수 있습니다. 세션 응답 데이터 속성에 대한 개요는 다음과 같습니다.
+델리게이트 함수는 SDK에서 서버로 패키지를 보내려고 시도한 후에 호출됩니다. 델리게이트 콜백에서는 전용 응답 데이터 개체에 액세스할 수 있습니다. 세션 응답 데이터 속성에 대한 개요는 다음과 같습니다.
 
 - `NSString message` 서버에서 전송한 메시지 또는 SDK가 기록한 오류
 - `NSString timeStamp` 서버에서 전송한 데이터의 타임스탬프
@@ -684,9 +684,9 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
 
 #### <a id="deeplinking-deferred">거치 딥링크 
 
-거치 딥링크가 열리기 전에 알림을 받을 위임 콜백을 등록하고 Adjust SDK에서 딥링크를 열도록 할 것인지 결정할 수 있습니다. [속성 콜백](#attribution-callback) 및 [이벤트 및 세션 콜백](#event-session-callbacks)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다
+거치 딥링크가 열리기 전에 알림을 받을 델리게이트 콜백을 등록하고 Adjust SDK에서 딥링크를 열도록 할 것인지 결정할 수 있습니다. [속성 콜백](#attribution-callback) 및 [이벤트 및 세션 콜백](#event-session-callbacks)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다
 
-동일한 단계로 거치 딥링크에 대해 다음 위임 콜백 함수를 구현하십시오.
+동일한 단계로 거치 딥링크에 대해 다음 델리게이트 콜백 함수를 구현하십시오.
 
 ```objc
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
@@ -699,7 +699,7 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
 }
 ```
 
-콜백 함수는 SDK에서 거치 딥링크를 서버로부터 수신한 후 딥링크를 열기 전에 호출됩니다. 콜백 함수에서 딥링크에 액세스할 수 있으며, 부울(boolean) 리턴값에 의해 SDK에서 딥링크를 실행할 것인지 결정합니다. 예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
+콜백 함수는 SDK에서 거치 딥링크를 서버로부터 수신한 후 딥링크를 열기 전에 호출됩니다. 콜백 함수에서 딥링크에 액세스할 수 있으며, boolean 리턴값에 의해 SDK에서 딥링크를 실행할 것인지 결정합니다. 예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
 
 콜백을 실행하지 않을 경우, **Adjust SDK는 항상 기본값으로 딥링크를 엽니다**.
 

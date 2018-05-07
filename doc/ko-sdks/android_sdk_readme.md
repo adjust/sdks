@@ -2,7 +2,7 @@
 
 이 항목에서는 Adjust의 Android SDK에 대해 설명합니다. Adjust에 대한 자세한 내용은 [adjust.com]을 참조하십시오.
 
-Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하고자 할 경우 안드로이드 [web views SDK 설명서](web_views.md)를 참조해 주십시오.
+Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하고자 할 경우 안드로이드 [web views SDK 설명서](doc/english/web_views.md)를 참조해 주십시오.
 
 ## 목차
 
@@ -12,8 +12,8 @@ Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
    * [Google Play 서비스 추가](#sdk-gps)
    * [권한 추가](#sdk-permissions)
    * [Proguard 설정](#sdk-proguard)
-   * [설치 참조자](#install-referrer)
-      * [Google Play 참조자 API](#gpr-api)
+   * [설치 referrer](#install-referrer)
+      * [Google Play referrer API](#gpr-api)
       * [Google Play Store 인텐트](#gps-intent)
    * [앱에 SDK 연동](#sdk-integrate)
    * [기본 설정](#basic-setup)
@@ -54,7 +54,7 @@ Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
         * [딥링크를 통한 리어트리뷰션](#deeplinking-reattribution)
 * [문제해결](#troubleshooting)
     * ["Session failed (Ignoring too frequent session. ...)" 오류가 나타납니다.](#ts-session-failed)
-    * [브로드캐스트 수신기가 설치 참조 페이지를 제대로 캡처하고 있나요?](#ts-broadcast-receiver)
+    * [브로드캐스트 리시버가 설치 참조 페이지를 제대로 캡처하고 있나요?](#ts-broadcast-receiver)
     * [응용 프로그램 런칭 시 이벤트를 촉발할 수 있나요?](#ts-event-at-launch) 
 * [라이선스](#license)
 
@@ -160,15 +160,15 @@ Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가합니�
 
 **Google Play Store가 대상이 아닌** 경우 `com.google.android.gms` 규칙을 제거할 수 있습니다.
 
-### <a id="install-referrer"></a>설치 참조자
+### <a id="install-referrer"></a>설치 referrer
 
-Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **설치 참조자** 관련 정보를 필요로 합니다. 이 정보는 **Google Play 참조자 API**를 사용하거나 브로드캐스트 수신기로 **Google Play Store 인텐트**를 잡아 얻을 수 있습니다. 
+Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **설치 referrer** 관련 정보를 필요로 합니다. 이 정보는 **Google Play Referrer API**를 사용하거나 브로드캐스트 리시버로 **Google Play Store 인텐트**를 잡아 얻을 수 있습니다. 
 
-**중요**: Google Play 참조자 API는 보다 안전하고 믿을만한 설치 참조자 정보 획득 방식을 제공하는 동시에 클릭 인젝션으로부터 어트리뷰션 제공자를 보호할 목적으로 Google이 새롭게 도입한 방식입니다. 따라서 앱에서 지원할 것을 **강력히 권장합니다**. Google Play Store 인텐트는 이보다 좀 덜 안전한 설치 참조자 정보 획득 방식입니다. 당분간은 새로운 Google Play 참조자 API와 공존하지만 향후에는 더 이상 사용하지 않을 예정입니다..
+**중요**: Google Play Referrer API는 보다 안전하고 믿을만한 설치 referrer 정보 획득 방식을 제공하는 동시에 클릭 인젝션으로부터 어트리뷰션 제공자를 보호할 목적으로 Google이 새롭게 도입한 방식입니다. 따라서 앱에서 지원할 것을 **강력히 권장합니다**. Google Play Store 인텐트는 이보다 좀 덜 안전한 설치 referrer 정보 획득 방식입니다. 당분간은 새로운 Google Play referrer API와 공존하지만 향후에는 더 이상 사용하지 않을 예정입니다..
 
-#### <a id="gpr-api"></a>Google Play 참조자 API
+#### <a id="gpr-api"></a>Google Play Referrer API
 
-앱에서 Google Play 참조자 API를 지원하려면, [프로젝트에 SDK 추가](#sdk-add)에 설명한 대로 확실하게 실행한 다음 `build.gradle` 파일에 다음 라인을 추가했는지 확인합니다. 
+앱에서 Google Play Referrer API를 지원하려면, [프로젝트에 SDK 추가](#sdk-add)에 설명한 대로 확실하게 실행한 다음 `build.gradle` 파일에 다음 라인을 추가했는지 확인합니다. 
 
 ```
 compile 'com.android.installreferrer:installreferrer:1.0'
@@ -184,7 +184,7 @@ compile 'com.android.installreferrer:installreferrer:1.0'
 
 #### <a id="gps-intent"></a>Google Play Store 인텐트
 
-브로드캐스트 리시버로 Google Play Store `INSTALL_REFERRER` 인텐트를 캡쳐해야 합니다. `INSTALL_REFERRER` 수신을 위해 **고유 브로드캐스트 수신기를 사용하고 있지 않다면**, `AndroidManifest.xml` 내 `application` 태그에 다음과 같이 `receiver` 태그를 추가하세요.
+브로드캐스트 리시버로 Google Play Store `INSTALL_REFERRER` 인텐트를 캡쳐해야 합니다. `INSTALL_REFERRER` 수신을 위해 **고유 브로드캐스트 리시버를 사용하고 있지 않다면**, `AndroidManifest.xml` 내 `application` 태그에 다음과 같이 `receiver` 태그를 추가하세요.
 
 ```xml
 <receiver
@@ -198,9 +198,9 @@ compile 'com.android.installreferrer:installreferrer:1.0'
 
 ![][receiver]
 
-Adjust는 이 브로드캐스트 수신기를 사용하여 설치 참조자를 검색 후 백엔드에 전달합니다.
+Adjust는 이 브로드캐스트 리시버를 사용하여 설치 referrer를 검색 후 백엔드에 전달합니다.
 
-`INSTALL_REFERRER` 인텐트 수신을 위해 다른 브로드캐스트 수신기를 사용 중이라면 [이 지침][referrer]에 따라 브로드캐스트 수신기를 추가하세요.
+`INSTALL_REFERRER` 인텐트 수신을 위해 다른 브로드캐스트 리시버를 사용 중이라면 [이 지침][referrer]에 따라 브로드캐스트 리시버를 추가하세요.
 
 ### <a id="sdk-integrate"></a>앱에 SDK 연동
 
@@ -363,7 +363,7 @@ config.setLogLevel(LogLevel.ASSERT);    // 오류 역시 비활성화
 config.setLogLevel(LogLevel.SUPRESS);    // 모든 로그 비활성화
 ```
 
-로그 출력 전부를 비활성화하고 싶다면, 로그 레벨을 supress로 설정하는 동시에 `AdjustConfig` 개체에서 생성자를 사용해야 합니다. 이 개체는 supress 로그를 지원할 지 아닐지를 가리키는 부울자료(boolean) 파라미터를 받습니다.  
+로그 출력 전부를 비활성화하고 싶다면, 로그 레벨을 supress로 설정하는 동시에 `AdjustConfig` 개체에서 생성자를 사용해야 합니다. 이 개체는 supress 로그를 지원할 지 아닐지를 가리키는 boolean 파라미터를 받습니다.  
 
 ```java
 String appToken = "{YourAppToken}";
@@ -412,7 +412,7 @@ Adjust.trackEvent(event);
 
 ### <a id="revenue-deduplication">매출 중복 제거
 
-거래 ID를 선택 사항으로 추가하여 매출 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID 10개를 기억하며, 중복 거래 ID로 이루어진 매출 이벤트는 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
+거래 ID를 선택 사항으로 추가하여 매출 중복 추적을 피할 수 있습니다. 가장 최근에 사용한 거래 ID(Order ID) 10개를 기억하며, 똑같은 거래 ID(Order ID)로 이루어진 매출 이벤트는 중복 집계하지 않습니다. 인앱 구매 추적 시 특히 유용합니다. 사용 예는 아래에 나와 있습니다.
 
 인앱 구매를 추적할 경우, 거래가 완료되고 아이템을 구매했을 때만 `trackEvent`를 호출해야 한다는 사실을 기억하십시오. 그렇게 해야 실제로 발생하지 않은 매출을 추적하는 일을 피할 수 있습니다.
 
@@ -543,11 +543,11 @@ config.setDelayStart(5.5);
 
 ### <a id="attribution-callback"></a>어트리뷰션 콜백
 
-수신기(listner)를 등록하여 트래커 어트리뷰션 변경 알림을 받을 수 있습니다. 어트리뷰션에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 가장 간단한 방법은 익명의 단일 수신기를 생성하는 것입니다.
+리스너(listner)를 등록하여 트래커 어트리뷰션 변경 알림을 받을 수 있습니다. 어트리뷰션에서 고려하는 소스가 각각 다르기 때문에 이 정보는 동시간에 제공할 수 없습니다. 가장 간단한 방법은 익명의 단일 리스너를 생성하는 것입니다.
 
 [해당 어트리뷰션 데이터 정책][attribution-data]을 반드시 고려하세요.
 
-SDK를 시작하기 전에 `AdjustConfig`로 익명 수신기를 추가합니다.
+SDK를 시작하기 전에 `AdjustConfig`로 익명 리스너를 추가합니다.
 
 
 ```java
@@ -562,7 +562,7 @@ config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
 Adjust.onCreate(config);
 ```
 
-또는 `Application` 클래스에서 `OnAttributionChangedListener` 인터페이스를 실행하여 수신기로 설정해도 됩니다. 
+또는 `Application` 클래스에서 `OnAttributionChangedListener` 인터페이스를 실행하여 리스너로 설정해도 됩니다. 
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -570,7 +570,7 @@ config.setOnAttributionChangedListener(this);
 Adjust.onCreate(config);
 ```
 
-수신기 함수는 SDK가 최종 어트리뷰션 데이터를 접수한 후 호출됩니다. 수신기 함수에서는 `attribution` 파라미터에 액세스할 수 있습니다. 해당 파라미터에 대한 개요는 다음과 같습니다.
+리스너 함수는 SDK가 최종 어트리뷰션 데이터를 접수한 후 호출됩니다. 리스너 함수에서는 `attribution` 파라미터에 액세스할 수 있습니다. 해당 파라미터에 대한 개요는 다음과 같습니다.
 
 - `string trackerToken` 현재 설치된 트래커 토큰.
 - `string trackerName` 현재 설치된 트래커 이름.
@@ -585,7 +585,7 @@ Adjust.onCreate(config);
 
 ### <a id="session-event-callbacks"></a>세션 및 이벤트 콜백
 
-수신기를 등록하여 이벤트나 세션 추적 시 알림을 받을 수 있습니다. 수신기에는 4가지가 있습니다. 이벤트 추적 성공, 이벤트 추적 실패, 세션 추적 성공, 그리고 세션 추적 실패입니다. `AdjustConfig` 개체를 생성한 후 수신기를 원하는 만큼 추가할 수 있습니다. 
+리스너를 등록하여 이벤트나 세션 추적 시 알림을 받을 수 있습니다. 리스너에는 4가지가 있습니다. 이벤트 추적 성공, 이벤트 추적 실패, 세션 추적 성공, 그리고 세션 추적 실패입니다. `AdjustConfig` 개체를 생성한 후 리스너를 원하는 만큼 추가할 수 있습니다. 
 
 ```java
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -625,7 +625,7 @@ config.setOnSessionTrackingFailedListener(new OnSessionTrackingFailedListener() 
 Adjust.onCreate(config);
 ```
 
-수신기 함수는 SDK가 서버에 패키지 전송을 시도한 후에 호출됩니다. 수신기 함수에서 수신기에 대한 특정 응답 데이터 개체에 액세스할 수 있습니다. 세션 성공 시 응답 데이터 개체 필드 개요는 다음과 같습니다.
+리스너 함수는 SDK가 서버에 패키지 전송을 시도한 후에 호출됩니다. 리스너 함수에서 리스너에 대한 특정 응답 데이터 개체에 액세스할 수 있습니다. 세션 성공 시 응답 데이터 개체 필드 개요는 다음과 같습니다.
 
 - `String message` 서버에서 전송한 메시지 또는 SDK가 기록한 오류
 - `String timestamp` 서버에서 전송한 데이터의 타임스탬프
@@ -891,7 +891,7 @@ protected void onNewIntent(Intent intent) {
 
 거치 딥링크는 사용자가 `deep_link` 파라미터가 들어 있는 Adjust 트래커 URL을 클릭했으나, 그 시점에 장치에 앱을 설치하지 않은 경우 발생합니다. 클릭 후 사용자는 Play Store로 재이동하여 앱을 다운로드하게 됩니다. 링크를 처음 연 후 `deep_link` 파라미터 내용이 앱으로 전달됩니다. 
 
-거치 딥링크에서 `deep_link` 파라미터 내용 정보를 얻으려면 `AdjustConfig` 개체에 수신기를 설치해야 합니다. Adjust SDK가 백엔드에서 딥링크 정보를 얻으면 수신기가 촉발됩니다.
+거치 딥링크에서 `deep_link` 파라미터 내용 정보를 얻으려면 `AdjustConfig` 개체에 리스너를 설치해야 합니다. Adjust SDK가 백엔드에서 딥링크 정보를 얻으면 리스너가 촉발됩니다.
 
 ```
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
@@ -912,9 +912,9 @@ config.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
 Adjust.onCreate(config);
 ```
 
-Adjust SDK가 백엔드에서 딥링크 내용 정보를 수신하면 그 내용이 수신기에 전달되며 `boolean` 리턴값을 요청합니다. 리턴값은 (기본 딥링크에서와 마찬가지로) Adjust SDK가 스킴명을 배정한 작업을 딥링크에서 런칭할 것인지 여부를 표시합니다.    
+Adjust SDK가 백엔드에서 딥링크 내용 정보를 수신하면 그 내용이 리스너에 전달되며 `boolean` 리턴값을 요청합니다. 리턴값은 (기본 딥링크에서와 마찬가지로) Adjust SDK가 스킴명을 배정한 작업을 딥링크에서 런칭할 것인지 여부를 표시합니다.    
 
-리턴값을 `true`로 설정하면 작업이 런칭되어 [기본 딥링크](#deeplinking-standard)에서 설명한 것과 같은 결과를 구현합니다. SDK가 작업을 런칭하기를 원하지 않는다면, 수신기에서 `false`를 리턴하여 딥링크 내용을 토대로 앱에서 다음 작업을 어떻게 실행할 지 스스로 정할 수 있습니다.
+리턴값을 `true`로 설정하면 작업이 런칭되어 [기본 딥링크](#deeplinking-standard)에서 설명한 것과 같은 결과를 구현합니다. SDK가 작업을 런칭하기를 원하지 않는다면, 리스너에서 `false`를 리턴하여 딥링크 내용을 토대로 앱에서 다음 작업을 어떻게 실행할 지 스스로 정할 수 있습니다.
 
 #### <a id="deeplinking-reattribution">딥링크를 통한 리어트리뷰션
 
@@ -980,9 +980,9 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&android_id={android
 
 기기가 메모리에서 삭제되면 링크에서 `Forgot device`만 반환됩니다. 기기가 이미 메모리에서 삭제되었거나 값이 올바르지 않으면 `Device not found` 메시지가 반환됩니다.
 
-### <a id="ts-broadcast-receiver">브로드캐스트 수신기가 설치 참조자를 제대로 캡처하고 있나요?
+### <a id="ts-broadcast-receiver">브로드캐스트 리시버가 설치 referrer를 제대로 캡처하고 있나요?
 
-[설명서](#broadcast-receiver) 지침을 따랐다면 브로드캐스트 수신기는 설치 참조자를 Adjust SDK와 Adjust 서버로 보내도록 구성됩니다.
+[설명서](#broadcast-receiver) 지침을 따랐다면 브로드캐스트 리시버는 설치 referrer를 Adjust SDK와 Adjust 서버로 보내도록 구성됩니다.
 
 테스트 설치 참조 페이지를 수동으로 촉발시켜 이 구성을 테스트할 수 있습니다. `com.your.appid`를 앱 ID로 대체하고 Android Studio와 함께 제공되는 [adb](http://developer.android.com/tools/help/adb.html) 도구를 사용하여 다음 명령을 실행합니다.
 
@@ -990,11 +990,11 @@ http://app.adjust.com/forget_device?app_token={yourAppToken}&android_id={android
 adb shell am broadcast -a com.android.vending.INSTALL_REFERRER -n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver --es "referrer" "adjust_reftag%3Dabc1234%26tracking_id%3D123456789%26utm_source%3Dnetwork%26utm_medium%3Dbanner%26utm_campaign%3Dcampaign"
 ```
 
-이미 다른 브로드캐스트 수신기를 `INSTALL_REFERRER` 인텐트 수신용으로 사용 중이면서 이 [설명서][referrer]의 지침을 따른 경우, `com.adjust.sdk.AdjustReferrerReceiver`를 브로드캐스트 수신기로 대체합니다.
+이미 다른 브로드캐스트 리시버를 `INSTALL_REFERRER` 인텐트 수신용으로 사용 중이면서 이 [설명서][referrer]의 지침을 따른 경우, `com.adjust.sdk.AdjustReferrerReceiver`를 브로드캐스트 리시버로 대체합니다.
 
 `-n com.your.appid/com.adjust.sdk.AdjustReferrerReceiver` 파라미터를 제거하여 기기의 모든 앱에서 `INSTALL_REFERRER` 인텐트를 수신하도록 할 수도 있습니다.
 
-로그 레벨을 `verbose`로 설정하면 참조자 확인 시 로그가 보일 것입니다.
+로그 레벨을 `verbose`로 설정하면 referrer 확인 시 로그가 보일 것입니다.
 
 ```
 V/Adjust: Reading query string (adjust_reftag=abc1234&tracking_id=123456789&utm_source=network&utm_medium=banner&utm_campaign=campaign) from reftag
