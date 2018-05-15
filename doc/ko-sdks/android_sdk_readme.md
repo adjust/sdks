@@ -87,7 +87,7 @@ implementation 'com.android.installreferrer:installreferrer:1.0'
 
 이는 Google Play Services 의존 파일(dependency)을 `build.gradle`에 추가할 때 적용됩니다.
 
-Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [release][release] 페이지에서 찾을 수 있습니다.
+Adjust SDK를 JAR 라이브러리로 프로젝트에 추가할 수도 있습니다. 가장 최근 SDK 버전용 JAR 라이브러리는 [release][releases] 페이지에서 찾을 수 있습니다.
 
 ### <a id="google-play-services"></a>Google Play 서비스 추가
 
