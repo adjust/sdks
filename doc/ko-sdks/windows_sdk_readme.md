@@ -315,7 +315,17 @@ config.setEventBufferingEnabled(true);
 Adjust.ApplicationLaunching(config);
 ```
 
-### 12. 어트리뷰션 변경 수신기 설정
+## 12. GDPR(일반 개인정보 보호법) 상의 잊힐 권리
+
+유럽연합(EU) 일반 개인정보 보호법 제 17조에 의거하여, 사용자가 잊힐 권리를 행사하였을 경우  Adjust에 이를 통보할 수 있습니다. 다음 매서드를 호출하면 Adjust SDK는 사용자가 잊힐 권리를 사용하기로 했음을 Adjust 백엔드에 전달합니다:
+
+```objc
+[Adjust gdprForgetMe];
+```
+
+이 정보를 받는 즉시 Adjust는 사용자의 데이터를 삭제하며 Adjust SDK는 해당 사용자 추적을 중단합니다. 향후 이 기기로부터 어떤 요청도 Adjust에 전송되지 않습니다.
+
+### 13. 어트리뷰션 변경 수신기 설정
 
 트래커 어트리뷰션 변경에 대한 알림을 수신할 수신기를 등록할 수 있습니다. 어트리뷰션에 대해 다양한 소스가 고려되기 때문에 이 정보는 동시에 제공할 수 없습니다. 가장 간단한 방법은 익명 수신기를 하나 만드는 것입니다.
 
@@ -388,7 +398,6 @@ SDK에서 최종 어트리뷰션 정보를 수신하면 위임 함수가 호출�
 [special-partners]:     https://docs.adjust.com/en/special-partners
 [example]:              https://github.com/adjust/windows_sdk/tree/master/Adjust
 [currency-conversion]:  https://docs.adjust.com/en/event-tracking/#tracking-purchases-in-different-currencies
-
 
 ## 라이선스
 
