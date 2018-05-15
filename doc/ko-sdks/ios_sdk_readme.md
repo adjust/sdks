@@ -30,6 +30,7 @@ web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용
     * [추적 사용 중지](#disable-tracking)
     * [오프라인 모드](#offline-mode)
     * [이벤트 버퍼링(buffering)](#event-buffering)
+    * [GDPR(일반 개인정보 보호법) 상의 잊힐 권리](#gdpr-forget-me)
     * [SDK 서명](#sdk-signature)
     * [백그라운드 추적](#background-tracking)
     * [기기 ID](#device-ids)
@@ -511,6 +512,16 @@ Adjust SDK를 오프라인 모드로 전환하여 Adjust 서버로 전송하는 
 ```
 
 설정한 내용이 없으면 이벤트 버퍼링은 **기본값으로 비활성화됩니다**.
+
+### <a id="gdpr-forget-me"></a>GDPR(일반 개인정보 보호법) 상의 잊힐 권리
+
+유럽연합(EU) 일반 개인정보 보호법 제 17조에 의거하여, 사용자가 잊힐 권리를 행사하였을 경우  Adjust에 이를 통보할 수 있습니다. 다음 매서드를 호출하면 Adjust SDK는 사용자가 잊힐 권리를 사용하기로 했음을 Adjust 백엔드에 전달합니다:
+
+```objc
+[Adjust gdprForgetMe];
+```
+
+이 정보를 받는 즉시 Adjust는 사용자의 데이터를 삭제하며 Adjust SDK는 해당 사용자 추적을 중단합니다. 향후 이 기기로부터 어떤 요청도 Adjust에 전송되지 않습니다.
 
 ### <a id="sdk-signature"></a>SDK 서명
 
