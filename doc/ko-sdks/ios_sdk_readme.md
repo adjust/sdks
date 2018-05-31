@@ -43,7 +43,7 @@ web views를 사용하는 앱에서 Javascript 코드로 Adjust 추적을 사용
         * [기본 딥링크](#deeplinking-standard)
         * [iOS 8 이하 버전 딥링크](#deeplinking-setup-old)
         * [iOS 9 이상 버전 딥링크](#deeplinking-setup-new)
-        * [거치(deferred) 딥링크](#deeplinking-deferred)
+        * [지연된(deferred) 딥링크](#deeplinking-deferred)
         * [딥링크를 통한 리어트리뷰션](#deeplinking-reattribution)
 * [문제 해결](#troubleshooting)
     * [SDK 초기화 지연 문제](#ts-delayed-init)
@@ -615,7 +615,7 @@ Default tracker: 'abc123'
 
 ### <a id="deeplinking">딥링크
 
-URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. Adjust SDK는 두 가지 상황을 모두 지원하며, 어느 상황이든 트래커 URL을 클릭하여 앱이 시작되는 경우 딥링크 URL을 제공합니다. 지원합니다. 앱에서 이 기능을 사용하려면 올바로 설정해야 합니다.
+URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(지연된 딥링크)일 수도 있습니다. Adjust SDK는 두 가지 상황을 모두 지원하며, 어느 상황이든 트래커 URL을 클릭하여 앱이 시작되는 경우 딥링크 URL을 제공합니다. 지원합니다. 앱에서 이 기능을 사용하려면 올바로 설정해야 합니다.
 
 #### <a id="deeplinking-standard">기본 딥링크
 
@@ -693,11 +693,11 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
 }
 ```
 
-#### <a id="deeplinking-deferred">거치 딥링크 
+#### <a id="deeplinking-deferred">지연된 딥링크 (Deferred deep linking)
 
-거치 딥링크가 열리기 전에 알림을 받을 델리게이트 콜백을 등록하고 Adjust SDK에서 딥링크를 열도록 할 것인지 결정할 수 있습니다. [속성 콜백](#attribution-callback) 및 [이벤트 및 세션 콜백](#event-session-callbacks)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다
+지연된 딥링크가 열리기 전에 알림을 받을 델리게이트 콜백을 등록하고 Adjust SDK에서 딥링크를 열도록 할 것인지 결정할 수 있습니다. [속성 콜백](#attribution-callback) 및 [이벤트 및 세션 콜백](#event-session-callbacks)에 사용되는 것과 동일한 선택적 프로토콜인 `AdjustDelegate`가 사용됩니다
 
-동일한 단계로 거치 딥링크에 대해 다음 델리게이트 콜백 함수를 구현하십시오.
+동일한 단계로 지연된 딥링크에 대해 다음 델리게이트 콜백 함수를 구현하십시오.
 
 ```objc
 - (BOOL)adjustDeeplinkResponse:(NSURL *)deeplink {
@@ -710,7 +710,7 @@ Apple Developer Portal에서 앱 `Associated Domains`를 활성화한 후, 이�
 }
 ```
 
-콜백 함수는 SDK에서 거치 딥링크를 서버로부터 수신한 후 딥링크를 열기 전에 호출됩니다. 콜백 함수에서 딥링크에 액세스할 수 있으며, boolean 리턴값에 의해 SDK에서 딥링크를 실행할 것인지 결정합니다. 예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
+콜백 함수는 SDK에서 지연된 딥링크를 서버로부터 수신한 후 딥링크를 열기 전에 호출됩니다. 콜백 함수에서 딥링크에 액세스할 수 있으며, boolean 리턴값에 의해 SDK에서 딥링크를 실행할 것인지 결정합니다. 예를 들어 딥링크를 SDK에서 지금 열지 않고 딥링크를 저장한 후 나중에 직접 열도록 할 수 있습니다.
 
 콜백을 실행하지 않을 경우, **Adjust SDK는 항상 기본값으로 딥링크를 엽니다**.
 
