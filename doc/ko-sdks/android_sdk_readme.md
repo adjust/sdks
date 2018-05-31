@@ -51,7 +51,7 @@ Web views를 쓰는 앱이며 Javascript 코드에서 Adjust 추적을 사용하
     * [사전 설치 트래커(pre-installed trackers)](#pre-installed-trackers)
     * [딥링크](#deeplinking)
         * [기본 딥링크](#deeplinking-standard)
-        * [거치(deferred) 딥링크](#deeplinking-deferred)
+        * [지연된(deferred) 딥링크](#deeplinking-deferred)
         * [딥링크를 통한 리어트리뷰션](#deeplinking-reattribution)
 * [문제해결](#troubleshooting)
     * ["Session failed (Ignoring too frequent session. ...)" 오류가 나타납니다.](#ts-session-failed)
@@ -831,7 +831,7 @@ Default tracker: 'abc123'
 
 ### <a id="deeplinking"></a>딥링크
 
-URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. 기본 딥링크 상황에서 안드로이드는 딥링크 내용에 관한 정보 인출을 기본 지원합니다. 안드로이드는 거치 딥링크를 기본 지원하지 않지만, Adjust SDK는 거치 딥링크 정보를 인출하는 메커니즘을 제공합니다.
+URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(지연된 딥링크)일 수도 있습니다. 기본 딥링크 상황에서 안드로이드는 딥링크 내용에 관한 정보 인출을 기본 지원합니다. 안드로이드는 지연된 딥링크를 기본 지원하지 않지만, Adjust SDK는 지연된 딥링크 정보를 인출하는 메커니즘을 제공합니다.
 
 #### <a id="deeplinking-standard">기본 딥링크
 
@@ -898,11 +898,11 @@ protected void onNewIntent(Intent intent) {
 }
 ```
 
-#### <a id="deeplinking-deferred">거치 딥링크
+#### <a id="deeplinking-deferred">지연된 딥링크 (Deferred deep linking)
 
-거치 딥링크는 사용자가 `deep_link` 파라미터가 들어 있는 Adjust 트래커 URL을 클릭했으나, 그 시점에 장치에 앱을 설치하지 않은 경우 발생합니다. 클릭 후 사용자는 Play Store로 재이동하여 앱을 다운로드하게 됩니다. 링크를 처음 연 후 `deep_link` 파라미터 내용이 앱으로 전달됩니다. 
+지연된 딥링크는 사용자가 `deep_link` 파라미터가 들어 있는 Adjust 트래커 URL을 클릭했으나, 그 시점에 장치에 앱을 설치하지 않은 경우 발생합니다. 클릭 후 사용자는 Play Store로 재이동하여 앱을 다운로드하게 됩니다. 링크를 처음 연 후 `deep_link` 파라미터 내용이 앱으로 전달됩니다. 
 
-거치 딥링크에서 `deep_link` 파라미터 내용 정보를 얻으려면 `AdjustConfig` 개체에 리스너를 설치해야 합니다. Adjust SDK가 백엔드에서 딥링크 정보를 얻으면 리스너가 촉발됩니다.
+ 딥링크에서 `deep_link` 파라미터 내용 정보를 얻으려면 `AdjustConfig` 개체에 리스너를 설치해야 합니다. Adjust SDK가 백엔드에서 딥링크 정보를 얻으면 리스너가 촉발됩니다.
 
 ```
 AdjustConfig config = new AdjustConfig(this, appToken, environment);
