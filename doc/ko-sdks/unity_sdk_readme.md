@@ -787,11 +787,11 @@ iOS 앱이 딥링크를 네이티브 수준에서 취급하도록 설정하려�
 [android]:                 https://github.com/adjust/android_sdk
 [releases]:                https://github.com/adjust/adjust_unity_sdk/releases
 [google_ad_id]:            https://developer.android.com/google/play-services/id.html
-[ios-deeplinking]:         https://github.com/adjust/ios_sdk/#deeplink-reattributions
+[ios-deeplinking]:         https://github.com/adjust/sdks/blob/master/doc/ko-sdks/ios_sdk_readme.md#deeplinking
 [attribution_data]:        https://github.com/adjust/sdks/blob/master/doc/attribution-data.md
 [special-partners]:        https://docs.adjust.com/en/special-partners
 [unity-purchase-sdk]:      https://github.com/adjust/unity_purchase_sdk
-[android-deeplinking]:     https://github.com/adjust/android_sdk#deep-linking
+[android-deeplinking]:     https://github.com/adjust/sdks/blob/master/doc/ko-sdks/android_sdk_readme.md#deeplinking
 [google_play_services]:    http://developer.android.com/google/play-services/setup.html
 [android_sdk_download]:    https://developer.android.com/sdk/index.html#Other
 [android-custom-receiver]: https://github.com/adjust/android_sdk/blob/master/doc/referrer.md
