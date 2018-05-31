@@ -948,7 +948,7 @@ Adjust SDK는 지정한 대상만 추적합니다. 매출을 이벤트에 연결
 [adjust-universal-links]:     https://docs.adjust.com/ko/universal-links/
 [universal-links-testing]:    https://docs.adjust.com/ko/universal-links/#part-4
 [reattribution-deeplinks]:    https://docs.adjust.com/ko/deeplinking/#part-6-1
-[ios-purchase-verification]:  https://github.com/adjust/ios_purchase_sdk
+[ios-purchase-verification]:  https://github.com/adjust/ios_purchase_sdk/tree/master/doc/korean
 
 [reattribution-with-deeplinks]:   https://docs.adjust.com/ko/deeplinking/#part-6-1
 
