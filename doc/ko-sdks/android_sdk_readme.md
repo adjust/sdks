@@ -1065,7 +1065,7 @@ Adjust SDK는 이 때 초기화가 준비되지만 실제로 시작되지는 않
 [google_play_services]:           http://developer.android.com/google/play-services/setup.html
 [activity_resume_pause]:          doc/activity_resume_pause.md
 [reattribution-with-deeplinks]:   https://docs.adjust.com/ko/deeplinking/#part-6-1
-[android-purchase-verification]:  https://github.com/adjust/android_purchase_sdk
+[android-purchase-verification]:  https://github.com/adjust/android_purchase_sdk/tree/master/doc/korean
 
 [activity]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/14_activity.png
 [proguard]:                     https://raw.github.com/adjust/sdks/master/Resources/android/v4/08_proguard_new.png
