@@ -47,7 +47,7 @@
     * [사전 설치 트래커(pre-installed trackers)](#pre-installed-trackers)
     * [딥링크](#deeplinking)
         * [기본 딥링크](#deeplinking-standard)
-        * [거치(deferred) 딥링크](#deeplinking-deferred)
+        * [지연된(deferred) 딥링크](#deeplinking-deferred)
         * [안드로이드 앱 용 딥링크](#deeplinking-android)
         * [iOS 앱에서 딥링크 관리](#deeplinking-ios)
 * [문제 해결](#troubleshooting)
@@ -85,7 +85,7 @@ Adjust prefab에서는 다음 옵션을 설정할 수 있습니다.
  * [이벤트 버퍼링 (Event Buffering)](#event-buffering)
  * [어트리뷰션 인쇄 (Print Attribution)](#attribution-callback)
  * [Adwords 요청 만들기 (Make Adwords Request)](#adwords-tracking)
- * [거치 딥링크 구현 (Launch Defered Deep Link)](#deeplinking-deferred-open)]
+ * [지연된 딥링크 구현 (Launch Defered Deep Link)](#deeplinking-deferred-open)]
  * [앱 토큰 (App Token)](#app-token)
  * [로그 레벨 (Log Level)](#adjust-logging)
  * [환경 (Environment)](#environment)
@@ -717,7 +717,7 @@ URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을
 
 #### <a id="deeplinking-deferred">거치 딥링크
 
-거치 딥링크인 경우 URL 내용 정보를 받으려면, 이를 전달하는 파라미터인 `string`을 받는 `AdjustConfig` 객체에 콜백 메서드를 설정해야 합니다. `setDeferredDeeplinkDelegate` 메서드를 호출하여 설정하면 됩니다.
+지연된 딥링크(Deferred deep linking)인 경우 URL 내용 정보를 받으려면, 이를 전달하는 파라미터인 `string`을 받는 `AdjustConfig` 객체에 콜백 메서드를 설정해야 합니다. `setDeferredDeeplinkDelegate` 메서드를 호출하여 설정하면 됩니다.
 
 ```cs
 // ...
@@ -735,7 +735,7 @@ adjustConfig.setDeferredDeeplinkDelegate(DeferredDeeplinkCallback);
 Adjust.start(adjustConfig);
 ```
 
-거치 딥링크에서는 `AdjustConfig` 객체에서 설정이 하나 더 필요합니다. Adjust SDK가 거치 딥링크 정보를 받으면, SDK가 이 URL을 열 것인지를 선택할 수 있습니다. 이 옵션은 객체에서 `setLaunchDeferredDeeplink` 메서드를 호출하여 설정할 수 있습니다.
+지연된 딥링크에서는 `AdjustConfig` 객체에서 설정이 하나 더 필요합니다. Adjust SDK가 거치 딥링크 정보를 받으면, SDK가 이 URL을 열 것인지를 선택할 수 있습니다. 이 옵션은 객체에서 `setLaunchDeferredDeeplink` 메서드를 호출하여 설정할 수 있습니다.
 
 ```cs
 // ...
