@@ -707,7 +707,7 @@ Default tracker: 'abc123'
 
 **딥링크는 iOS와 안드로이드 플랫폼에서만 지원합니다.**
 
-URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(거치 딥링크)일 수도 있습니다. 기본 딥링크 상황에서 안드로이드는 딥링크 내용에 관한 정보 인출을 기본 지원합니다. 안드로이드는 거치 딥링크를 기본 지원하지 않지만, Adjust SDK는 거치 딥링크 정보를 인출하는 메커니즘을 제공합니다.
+URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을 사용하고 있다면, 딥링크 URL과 그 내용 관련 정보를 얻을 가능성이 있습니다. 해당 URL 클릭 시 사용자가 이미 앱을 설치한 상태(기본 딥링크)일 수도, 앱을 설치하지 않은 상태(지연된 딥링크)일 수도 있습니다. 기본 딥링크 상황에서 안드로이드는 딥링크 내용에 관한 정보 인출을 기본 지원합니다. 안드로이드는 지연된 딥링크를 기본 지원하지 않지만, Adjust SDK는 지연된 딥링크 정보를 인출하는 메커니즘을 제공합니다.
 
 생성한 (iOS용) Xcode 프로젝트 및 (안드로이드용) Android Studio / Eclipse 프로젝트에서 딥링크 취급을 앱 내 **네이티브(native) 레벨**로 설정해야 합니다. 
 
@@ -715,7 +715,7 @@ URL에서 앱으로 딥링크를 거는 옵션이 있는 Adjust 트래커 URL을
 
 아쉽게도 이 경우 Unity C# 코드에서 딥링크 정보가 전달되지 않습니다. 앱에서 딥링크 취급을 구동시키면, 딥링크 관련 정보를 네이티브 레벨로 받게 됩니다. 안드로이드 및 iOS 앱에서 딥링크를 구동하는 법에 관한 자세한 정보는 아래 장에서 확인하세요.
 
-#### <a id="deeplinking-deferred">거치 딥링크
+#### <a id="deeplinking-deferred">지연된 딥링크
 
 지연된 딥링크(Deferred deep linking)인 경우 URL 내용 정보를 받으려면, 이를 전달하는 파라미터인 `string`을 받는 `AdjustConfig` 객체에 콜백 메서드를 설정해야 합니다. `setDeferredDeeplinkDelegate` 메서드를 호출하여 설정하면 됩니다.
 
@@ -735,7 +735,8 @@ adjustConfig.setDeferredDeeplinkDelegate(DeferredDeeplinkCallback);
 Adjust.start(adjustConfig);
 ```
 
-지연된 딥링크에서는 `AdjustConfig` 객체에서 설정이 하나 더 필요합니다. Adjust SDK가 거치 딥링크 정보를 받으면, SDK가 이 URL을 열 것인지를 선택할 수 있습니다. 이 옵션은 객체에서 `setLaunchDeferredDeeplink` 메서드를 호출하여 설정할 수 있습니다.
+지연된 딥링크에서는 `AdjustConfig` 객체에서 설정이 하나 더 필요합니다. Adjust SDK가 
+딥링크 정보를 받으면, SDK가 이 URL을 열 것인지를 선택할 수 있습니다. 이 옵션은 객체에서 `setLaunchDeferredDeeplink` 메서드를 호출하여 설정할 수 있습니다.
 
 ```cs
 // ...
