@@ -935,7 +935,7 @@ Adjust는 딥링크를 사용하여 광고 캠페인 리인게이지먼트(re-en
 
 앱에서 딥링크 내용을 수신했다면, `Adjust.appWillOpenUrl` 메서드 호출을 추가하세요. 이 호출이 이루어지면 Adjust SDK는 딥링크 내에 새로운 어트리뷰션 정보가 있는지 확인하고, 새 정보가 있으면 Adjust 백엔드로 송신합니다. 딥링크 정보가 담긴 Adjust 트래커 URL을 클릭한 사용자를 리어트리뷰트해야 할 경우 앱에서 해당 사용자의 새 어트리뷰션 정보로 [어트리뷰션 콜백](#attribution-callback)이 촉발되는 것을 확인할 수 있습니다.    
 
-`Adjust.appWillOpenUrl` 호출은 다음과 같이 이루어집니다.
+`Adjust.appWillOpenUrl(Uri, Context)` 호출은 다음과 같이 이루어집니다.
 
 ```java
 @Override
@@ -946,7 +946,7 @@ protected void onCreate(Bundle savedInstanceState) {
     Intent intent = getIntent();
     Uri data = intent.getData();
 
-    Adjust.appWillOpenUrl(data);
+    Adjust.appWillOpenUrl(data, getApplicationContext());
 }
 ```
 
@@ -957,9 +957,10 @@ protected void onNewIntent(Intent intent) {
 
     Uri data = intent.getData();
 
-    Adjust.appWillOpenUrl(data);
+    Adjust.appWillOpenUrl(data, getApplicationContext());
 }
 ```
+참고 : Adjust.appWillOpenUrl (Uri) 메소드는 Android SDK v4.14.0 기준으로 사용되지 않게 되었습니다. 따라서 Adjust.appWillOpenUrl (Uri, Context) 메서드를 사용하시기 바랍니다.
 
 ## <a id="troubleshooting">문제 해결
 
