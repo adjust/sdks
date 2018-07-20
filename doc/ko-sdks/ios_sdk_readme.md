@@ -589,7 +589,7 @@ Adjust로 푸시 알림 토큰을 보내려면 app delegate의 `didRegisterForRe
 }
 ```
 
-푸시 토큰은 Audience Builder와 클라이언트 콜백에 사용되며, 향후 선보일 설치 취소(uninstall) 추적 기능에도 필요합니다.
+푸시 토큰은 Audience Builder와 클라이언트 콜백에 사용되며, 앱 제거(uninstall) 및 재설치 (reinstall) 트래킹을 위해 필수입니다.
 
 
 ### <a id="pre-installed-trackers">사전 설치 트래커
