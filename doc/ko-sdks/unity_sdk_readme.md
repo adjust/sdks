@@ -13,7 +13,7 @@
    * [Adjust 로그 기록(logging)](#adjust-logging)
    * [Google Play 서비스](#google-play-services)
    * [Proguard 설정](#sdk-proguard)
-   * [설치 참조자](#install-referrer)
+   * [Google Install Referrer](#install-referrer)
    * [빌드 후 프로세스](#post-build-process)
       * [iOS 빌드 후 프로세스](#post-build-ios)   
       * [안드로이드 빌드 후 프로세스](#post-build-android)
@@ -193,13 +193,13 @@ Proguard를 사용 중인 경우 다음 행을 Proguard 파일에 추가합니�
 -keep public class com.android.installreferrer.** { *; }
 ```
 
-### <a id="install-referrer"></a>참조자 설치
+### <a id="install-referrer"></a>Google Install Referrer
 
-Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **설치 참조자** 관련 정보를 필요로 합니다. 이 정보는 **Google Play 참조자 API**를 사용하거나 브로드캐스트 수신기로 **Google Play Store 인텐트**를 잡아 얻을 수 있습니다. 
+Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **Install referrer** 관련 정보를 필요로 합니다. 이 정보는 **Google Play Referrer API**를 사용하거나 브로드캐스트 리시버(broadcast receiver)로 **Google Play Store intent**를 잡아 얻을 수 있습니다. 
 
-**중요**: Google Play 참조자 API는 보다 안전하고 믿을만한 설치 참조자 정보 획득 방식을 제공하는 동시에 클릭 인젝션으로부터 어트리뷰션 제공자를 보호할 목적으로 Google이 새롭게 도입한 방식입니다. 따라서 앱에서 지원할 것을 **강력히 권장합니다**. Google Play Store 인텐트는 이보다 좀 덜 안전한 설치 참조자 정보 획득 방식입니다. 당분간은 새로운 Google Play 참조자 API와 공존하지만 향후에는 더 이상 사용하지 않을 예정입니다.
+**중요**: Google Play referrer API는 보다 안전하고 믿을만한 install referrer 정보 획득 방식을 제공하는 동시에 클릭 인젝션(click injection)으로부터 어트리뷰션 제공자를 보호할 목적으로 Google이 새롭게 도입한 방식입니다. 따라서 앱에서 지원할 것을 **강력히 권장합니다**. Google Play Store intent는 이보다 덜 안전한 install referrer 정보 획득 방식입니다. 당분간은 새로운 Google Play referrer API와 공존하지만 향후에는 더 이상 사용하지 않을 예정입니다.
 
-참조자 설치를 지원하려면 Maven 리포지토리에서 [설치 참조자 라이브러리][https://maven.google.com/com/android/installreferrer/installreferrer/1.0/installreferrer-1.0.aar]를 다운로드하십시오. `Plugins/Android` 폴더에 AAR 파일을 넣기만 하면 됩니다. Adjust가 빌드 후 프로세스로 `AndroidManifest.xml` 조정을 처리해 드립니다. 
+install referrer를 지원하려면 Maven 리포지토리에서 [install referrer 라이브러리][https://maven.google.com/com/android/installreferrer/installreferrer/1.0/installreferrer-1.0.aar]를 다운로드하십시오. `Plugins/Android` 폴더에 AAR 파일을 넣기만 하면 됩니다. Adjust가 빌드 후 프로세스로 `AndroidManifest.xml` 조정을 처리해 드립니다. 
 
 ### <a id="post-build-process">빌드 후 프로세스
 
@@ -228,8 +228,8 @@ iOS 빌드 후 프로세스에서는 생성된 Xcode 프로젝트를 다음과 �
  * `INTERNET` 권한 추가 (인터넷 연결에 필요)
  * `ACCESS_WIFI_STATE` 권한 추가 (Play Store 등을 통해 앱을 배포하지 않을 경우에 필요)
  * `ACCESS_NETWORK_STATE` 권한 추가 (MMC 및 MNC를 읽어들이는 데 필요)
- * `BIND_GET_INSTALL_REFERRER_SERVICE` 권한 추가 (Google 설치 참조자 API 작동에 필요)
- * Adjust 브로드캐스트 수신기 추가 (Google Play Store 인텐트를 통해 설치 참조자 정보를 얻는데 필요). 자세한 내용은 [안드로이드 SDK README][android] 페이지를 참조하십시오. `INSTALL_REFERRER` 인텐트를 취급하는 **자신의 브로드캐스트 수신기**를 사용하고 있는 경우 매니페스트 파일에 Adjust 브로드캐스트 수신기를 추가하지 않아도 된다는 사실을 명심하십시오. 지워도 무방하지만, [안드로이드 설명서][android-custom-receiver]에 설명한 대로  Adjust 브로드캐스트 수신기에 대한 호출을 자신의 브로드캐스트 수신기 안에 추가해야 합니다.
+ * `BIND_GET_INSTALL_REFERRER_SERVICE` 권한 추가 (Google 설치 referrer API 작동에 필요)
+ * Adjust 브로드캐스트 수신기 추가 (Google Play Store 인텐트를 통해 설치 referrer 정보를 얻는데 필요). 자세한 내용은 [안드로이드 SDK README][android] 페이지를 참조하십시오. `INSTALL_REFERRER` 인텐트를 취급하는 **자신의 브로드캐스트 리시버**를 사용하고 있는 경우 매니페스트 파일에 Adjust 브로드캐스트 수신기를 추가하지 않아도 된다는 사실을 명심하십시오. 지워도 무방하지만, [안드로이드 설명서][android-custom-receiver]에 설명한 대로  Adjust 브로드캐스트 수신기에 대한 호출을 자신의 브로드캐스트 리시버 안에 추가해야 합니다.
 
 ## <a id="additional-features">추가 기능
 
