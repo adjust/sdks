@@ -199,7 +199,7 @@ Adjust는 앱 설치를 소스에 제대로 어트리뷰트하기 위해 **Insta
 
 **중요**: Google Play referrer API는 보다 안전하고 믿을만한 install referrer 정보 획득 방식을 제공하는 동시에 클릭 인젝션(click injection)으로부터 어트리뷰션 제공자를 보호할 목적으로 Google이 새롭게 도입한 방식입니다. 따라서 앱에서 지원할 것을 **강력히 권장합니다**. Google Play Store intent는 이보다 덜 안전한 install referrer 정보 획득 방식입니다. 당분간은 새로운 Google Play referrer API와 공존하지만 향후에는 더 이상 사용하지 않을 예정입니다.
 
-install referrer를 지원하려면 Maven 리포지토리에서 [install referrer 라이브러리][https://maven.google.com/com/android/installreferrer/installreferrer/1.0/installreferrer-1.0.aar]를 다운로드하십시오. `Plugins/Android` 폴더에 AAR 파일을 넣기만 하면 됩니다. Adjust가 빌드 후 프로세스로 `AndroidManifest.xml` 조정을 처리해 드립니다. 
+install referrer를 지원하려면 Maven 리포지토리에서 [install referrer 라이브러리][install referrer library]를 다운로드하십시오. `Plugins/Android` 폴더에 AAR 파일을 넣기만 하면 됩니다. Adjust가 빌드 후 프로세스로 `AndroidManifest.xml` 조정을 처리해 드립니다. 
 
 ### <a id="post-build-process">빌드 후 프로세스
 
@@ -209,7 +209,7 @@ Adjust unity 패키지는 빌드 프로세스를 원활하게 만들기 위해 �
 
 이 스크립트는 Unity IDE 콘솔 결과 창에 로그 결과 메시지를 기록합니다.
    
-**iOS 빌드 후 프로세스**
+### <a id="post-build-ios">**iOS 빌드 후 프로세스**
 
 iOS 빌드 후 프로세스에서는 생성된 Xcode 프로젝트를 다음과 같이 변경합니다.
 
@@ -219,7 +219,7 @@ iOS 빌드 후 프로세스에서는 생성된 Xcode 프로젝트를 다음과 �
  * 또다른 링커 플래그인 `-ObjC` 추가 (빌드 시 Adjust Objective-C 카테고리를 인식하는 데 필요)
  * `Objective-C exceptions`를 활성화
 
-**안드로이드 빌드 후 프로세스**
+### <a id="post-build-android">**안드로이드 빌드 후 프로세스**
 
 안드로이드 빌드 후 프로세스는 `Assets/Plugins/Android/`에 있는 `AndroidManifest.xml` 파일에서 변경사항을 수행합니다. 
 
@@ -801,6 +801,8 @@ iOS 앱이 딥링크를 네이티브 수준에서 취급하도록 설정하려�
 [import_package]:           https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/import_package.png
 [android_sdk_location]:     https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/android_sdk_download.png
 [android_sdk_location_new]: https://raw.github.com/adjust/adjust_sdk/master/Resources/unity/v4/android_sdk_download_new.png
+
+[install referrer library]: https://maven.google.com/com/android/installreferrer/installreferrer/1.0/installreferrer-1.0.aar
 
 ## <a id="license"></a>라이선스
 
