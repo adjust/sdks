@@ -62,8 +62,6 @@
 
 [릴리스 페이지][releases]에서 최신 버전을 다운로드합니다. 페이지에는 Unity 패키지 두 가지가 있습니다.
 
-    * Adjust_v4.11.2_Unity_4.unitypackage - Unity IDE version 4를 사용하면 이 패키지를 다운로드하십시오.
-    * Adjust_v4.11.2_Unity_5.unitypackage - Unity IDE version 5를 사용하면 이 패키지를 다운로드하십시오.
 
 ### <a id="sdk-add">프로젝트에 SDK 추가
 
