@@ -14,6 +14,7 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [Adjust SDK for React Native][react]
 * [Adjust SDK for Titanium][titanium]
 * [Adjust SDK for Corona][corona]
+* [Adjust SDK for Flutter][flutter]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
@@ -27,3 +28,4 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [react]: https://github.com/adjust/react_native_sdk
 [titanium]: https://github.com/adjust/titanium_sdk
 [corona]: https://github.com/adjust/corona_sdk
+[flutter]: https://github.com/adjust/flutter_sdk
