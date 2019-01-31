@@ -25,8 +25,8 @@ WebView를 사용하는 안드로이드 앱을 위한 adjust.com™의 Android S
     * [기기 ID](#device-ids)
     * [딥링크](#deeplink)
         * [기본 딥링크 시나리오](#deeplinking-standard)
-        * [거치(deferred) 딥링크 시나리오](#deeplinking-deferred)
-        * [딥링크를 통한 리어트리뷰션(reattribution, 광고효과재분석)](#deeplinking-reattribution)
+        * [디퍼드(deferred) 딥링크 시나리오](#deeplinking-deferred)
+        * [딥링크를 통한 리어트리뷰션(reattribution)](#deeplinking-reattribution)
 * [라이선스](#license)
 
 ## <a id="basic-integration"></a>기본 연동기능
