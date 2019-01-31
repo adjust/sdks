@@ -490,9 +490,9 @@ function adjust_deeplink(deeplink) {
 }
 ```
 
-#### <a id="deeplinking-deferred">거치 딥링크 시나리오
+#### <a id="deeplinking-deferred">디퍼 딥링크 시나리오
 
-거치 딥링크가 열려 adjust SDK가 이를 열 것인지 결정하기 전에 알림을 얻으려면 콜백 메소드를 등록하면 됩니다.
+디퍼드 딥링크가 열려 adjust SDK가 이를 열 것인지 결정하기 전에 알림을 얻으려면 콜백 메소드를 등록하면 됩니다.
 
 이 콜백은 `AdjustConfig` 인스턴스에서도 설정됩니다.
 
@@ -503,7 +503,7 @@ adjustConfig.setDeferredDeeplinkCallback(function(deferredDeeplink) {
 })
 ```
 
-SDK가 서버로부터 거치 딥링크를 받아 이를 열기 전에 콜백 기능이 호출됩니다.
+SDK가 서버로부터 디퍼드 딥링크를 받아 이를 열기 전에 콜백 기능이 호출됩니다.
 
 `AdjustConfig` 인스턴스에서 설정을 다르게 하면, SDK에 이 링크를 열 것인지 아닌지를 알릴 수 있습니다. `setOpenDeferredDeeplink` 메소드를 호출하면 됩니다.
 
