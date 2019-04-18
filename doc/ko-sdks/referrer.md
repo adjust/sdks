@@ -6,11 +6,11 @@
 public class InstallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Adjust
+        // Adjust receiver.
         new AdjustReferrerReceiver().onReceive(context, intent);
-
-        // Google Analytics
+        // Google Analytics receiver.
         new CampaignTrackingReceiver().onReceive(context, intent);
+        // And any other receiver which needs the intent.
     }
 }
 ```
@@ -20,6 +20,7 @@ public class InstallReceiver extends BroadcastReceiver {
 ```java
 <receiver
     android:name="com.your.app.InstallReceiver"
+    android:permission="android.permission.INSTALL_PACKAGES"
     android:exported="true" >
     <intent-filter>
         <action android:name="com.android.vending.INSTALL_REFERRER" />
