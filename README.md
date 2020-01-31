@@ -16,6 +16,7 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [Adjust SDK for Corona][corona]
 * [Adjust SDK for Flutter][flutter]
 * [Adjust SDK for Unreal Engine][unreal]
+* [Adjust SDK for Web][web]
 
 [ios]: https://github.com/adjust/ios_sdk
 [android]: https://github.com/adjust/android_sdk
@@ -31,3 +32,4 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [corona]: https://github.com/adjust/corona_sdk
 [flutter]: https://github.com/adjust/flutter_sdk
 [unreal]: https://github.com/adjust/unreal_sdk
+[web]: https://github.com/adjust/web_sdk
