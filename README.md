@@ -1,11 +1,11 @@
 ## Summary
 
-We currently provide the adjust™ SDK for the following platforms. Click on a link to find the respective downloads and installation instructions.
+We currently provide the Adjust™ SDK for the following platforms. Click on a link to find the respective downloads and installation instructions.
 
 * [Adjust SDK for iOS][ios]
 * [Adjust SDK for Android][android]
 * [Adjust SDK for Windows][windows]
-* [Adjust SDK for Adobe Air][air]
+* [Adjust SDK for Adobe AIR][air]
 * [Adjust SDK for Unity][unity]
 * [Adjust SDK for Cordova][cordova]
 * [Adjust SDK for Marmalade][marmalade]
@@ -16,6 +16,7 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 * [Adjust SDK for Corona][corona]
 * [Adjust SDK for Flutter][flutter]
 * [Adjust SDK for Unreal Engine][unreal]
+* [Adjust SDK for MAUI][maui]
 * [Adjust SDK for Web][web]
 
 [ios]: https://github.com/adjust/ios_sdk
@@ -32,4 +33,5 @@ We currently provide the adjust™ SDK for the following platforms. Click on a l
 [corona]: https://github.com/adjust/corona_sdk
 [flutter]: https://github.com/adjust/flutter_sdk
 [unreal]: https://github.com/adjust/unreal_sdk
+[maui]: https://github.com/adjust/maui_sdk
 [web]: https://github.com/adjust/web_sdk
